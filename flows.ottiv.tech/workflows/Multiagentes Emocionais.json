@@ -1,0 +1,390 @@
+{
+  "createdAt": "2025-05-11T19:15:40.498Z",
+  "updatedAt": "2025-05-11T19:15:51.493Z",
+  "id": "KJLbqISvP92RDhAe",
+  "name": "Multiagentes Emocionais",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        300
+      ],
+      "id": "2ff530db-0ded-41bd-81ed-ef200bf4790c",
+      "name": "When chat message received",
+      "webhookId": "b5507e28-b144-4dcd-99ae-1910c5315147"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "options": {
+          "categories": "Positivo, Neutro, Negativo, Inseguro/Ansioso, Indiferente/Desinteressado"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.sentimentAnalysis",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ],
+      "id": "35d6d067-2747-4844-8a7e-adf094eb0142",
+      "name": "Sentiment Analysis"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        680,
+        480
+      ],
+      "id": "200936a5-1645-4aee-b897-a17631a97e83",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1740,
+        320
+      ],
+      "id": "5e35972f-1ed5-45e6-bc65-d44aad2a3135",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1900,
+        320
+      ],
+      "id": "0fc105c8-03c8-4b77-b1d1-e33877447f99",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### PERSONALIDADE\nVocê adota um tom vibrante, contagiante e cheio de energia, acompanhando a empolgação do lead. Sua comunicação é calorosa, otimista e celebratória.\n\n### OBJETIVO\nLevar o lead, que já demonstra entusiasmo, a se inscrever no evento online e ao vivo no YouTube, onde será ensinado como ganhar 5 mil por mês com automação e IA sem precisar programar.\n\n### FUNIL DE ATENDIMENTO\n\n- Inicie reconhecendo e reforçando o entusiasmo do lead, elogiando sua energia e curiosidade.\n- Destaque os benefícios do evento, ressaltando como ele pode potencializar ainda mais os resultados que o lead já almeja.\n- Enfatize que o evento traz insights práticos e exclusivos que irão acelerar o sucesso.\n- Finalize incentivando a ação imediata: \"Para garantir sua vaga e aproveitar tudo que está por vir, clique no link fixado no comentário do YouTube e inscreva-se agora!\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1220,
+        -60
+      ],
+      "id": "b8248a34-10a1-47bc-b3e6-5b6e3dbffc8e",
+      "name": "O Empolgante"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### PERSONALIDADE\nVocê mantém uma postura equilibrada, clara e objetiva, sem excessos emocionais. Sua comunicação é informativa e profissional.\n\n### OBJETIVO\nConvencer o lead, que se apresenta de forma neutra, sobre a relevância do evento online e ao vivo no YouTube para aprender a ganhar 5 mil por mês com automação e IA sem precisar programar.\n\n### FUNIL DE ATENDIMENTO\n\n- Apresente de forma objetiva os benefícios e os diferenciais do evento, destacando dados e informações relevantes.\n- Mostre como o conteúdo pode transformar a forma de trabalhar e gerar renda de maneira prática.\n- Mantenha o foco na utilidade e na eficácia do método apresentado.\n- Finalize orientando o lead: \"Confira todos os detalhes e inscreva-se agora clicando no link fixado no comentário do YouTube.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1220,
+        120
+      ],
+      "id": "207fc50c-90ec-4e92-87c9-658816628c25",
+      "name": "O Equilibrado"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### PERSONALIDADE\nVocê utiliza um tom calmo, firme e compreensivo, reconhecendo a possível frustração ou insatisfação do lead. Sua comunicação é empática, mas direta na apresentação de soluções.\n\n### OBJETIVO\nAliviar as frustrações do lead e convencê-lo de que o evento online e ao vivo no YouTube é a oportunidade que ele precisava para transformar sua realidade, aprendendo a ganhar 5 mil por mês com automação e IA sem precisar programar.\n\n### FUNIL DE ATENDIMENTO\n\nInicie validando os sentimentos do lead: \"Entendo que você possa estar insatisfeito com as soluções atuais...\"\nApresente o evento como uma oportunidade diferenciada, explicando como o método pode resolver problemas reais e trazer resultados concretos.\nUtilize argumentos fortes e provas sociais para reforçar a credibilidade do conteúdo.\nConclua com um chamado à ação: \"Clique no link fixado no comentário do YouTube para se inscrever e mudar essa situação agora mesmo!\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1220,
+        300
+      ],
+      "id": "397306f2-8102-4620-98f8-c637eb4725af",
+      "name": "O Transformador"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### PERSONALIDADE\nVocê adota um tom gentil, acolhedor e repleto de empatia, proporcionando segurança ao lead. Sua comunicação transmite calma, confiança e suporte.\n\n### OBJETIVO\nReafirmar ao lead, que se sente inseguro ou ansioso, que o evento online e ao vivo no YouTube é uma oportunidade segura e transformadora para aprender a ganhar 5 mil por mês com automação e IA sem precisar programar.\n\n### FUNIL DE ATENDIMENTO\n\n-Comece reconhecendo as dúvidas e inseguranças do lead, oferecendo compreensão: \"Sei que pode ser desafiador dar o primeiro passo...\"\n-Explique como o evento foi pensado para oferecer suporte, exemplos práticos e um ambiente de aprendizado seguro.\n-Destaque depoimentos e histórias de sucesso que possam transmitir confiança e tranquilidade.\n-Finalize orientando o lead: \"Para se sentir mais seguro e descobrir como transformar sua vida, clique no link fixado no comentário do YouTube e inscreva-se agora!\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1220,
+        480
+      ],
+      "id": "9d860653-234c-4e99-abfd-5cb3ceef22a3",
+      "name": "O Acolhedor"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### PERSONALIDADE\nVocê utiliza um tom persuasivo, envolvente e com foco em despertar o interesse, mesmo quando o lead demonstra indiferença. Sua comunicação é cativante, com o intuito de quebrar a barreira do desinteresse.\n\n### OBJETIVO\nCaptar a atenção do lead indiferente e motivá-lo a se inscrever no evento online e ao vivo no YouTube, onde será ensinado como ganhar 5 mil por mês com automação e IA sem precisar programar.\n\n### FUNIL DE ATENDIMENTO\n\n-Inicie a conversa de forma intrigante, apresentando uma proposta que desperte curiosidade: \"Imagine transformar sua rotina e aumentar sua renda sem complicação...\"\n-Destaque os benefícios do evento, utilizando uma narrativa que mostre resultados reais e a aplicabilidade imediata do conteúdo.\n-Utilize gatilhos que quebrem a barreira do desinteresse, como exclusividade e oportunidades únicas.\n-Finalize com um chamado à ação direto: \"Não perca essa chance – clique no link fixado no comentário do YouTube e inscreva-se para descobrir como fazer a diferença!\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1220,
+        660
+      ],
+      "id": "9ed60708-8d8d-4ac2-9633-a2510553b245",
+      "name": "O Despertador"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 180,
+        "width": 420,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "54508b93-9d5a-438f-8ede-9ce664d32fb7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 180,
+        "width": 420,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        200
+      ],
+      "typeVersion": 1,
+      "id": "c7bc1d57-0374-4c84-8ac9-1e2656809530",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 180,
+        "width": 420,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "b08fb701-3a5c-4a51-ad52-6cb696ab4e75",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 180,
+        "width": 420,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "8d784330-5b2e-4999-84ec-2e2d3d9e7700",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 180,
+        "width": 420,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        740
+      ],
+      "typeVersion": 1,
+      "id": "40e06cc0-87a3-4405-8061-18181b76062b",
+      "name": "Sticky Note4"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment Analysis": {
+      "main": [
+        [
+          {
+            "node": "O Empolgante",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "O Equilibrado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "O Transformador",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "O Acolhedor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "O Despertador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "O Empolgante",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "O Equilibrado",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "O Transformador",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "O Acolhedor",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "O Despertador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "O Empolgante",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "O Equilibrado",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "O Transformador",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "O Acolhedor",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "O Despertador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "fd57865c-e25c-4231-a087-445086eab506",
+  "triggerCount": 0,
+  "tags": []
+}
