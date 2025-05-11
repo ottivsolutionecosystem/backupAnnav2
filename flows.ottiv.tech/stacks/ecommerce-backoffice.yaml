@@ -1,0 +1,87 @@
+services:
+  ecommerce-backoffice:
+    image: directus/directus:11.7
+
+    environment:
+      - PORT=8090
+      ## Secret Keys & Env
+      - KEY=va3ZrOzr2fzAzLYuRkFNsHbeAQ6zO75D
+      - SECRET=hgZHfVYGEKREVVuTwqtUClzrc69WXGgX
+      - APP_ENV=production
+      - ADMIN_EMAIL=ottiv.ecosystem@gmail.com
+      - ADMIN_PASSWORD=DsX12rf0qEz4!cS
+      - PUBLIC_URL=https://store.ottiv.io
+      
+      ## 17/03/2025 Correcao para nao sair do directus e dar erro de Cookies
+      - AUTH_TOKEN_EXPIRY=30d
+      - REFRESH_TOKEN_EXPIRY=30d
+      - REFRESH_TOKEN_COOKIE_SECURE=false
+      - REFRESH_TOKEN_COOKIE_SAME_SITE=lax
+      - ACCESS_TOKEN_TTL=144000m
+      - SESSION_COOKIE_TTL=30d
+
+      ## Dados SMTP
+      # - EMAIL_SMTP_USER=contato@mail.com
+      # - EMAIL_SMTP_PASSWORD=xxxx
+      # - EMAIL_SMTP_HOST=smtp.hostinger.com
+      # - EMAIL_SMTP_PORT=587
+      # - EMAIL_SMTP_IGNORE_TLS=true
+      # - EMAIL_FROM=contato@mail.com
+      # - EMAIL_TEMPLATES_PATH=/directus/templates
+
+      ## Dados MinIO
+      - STORAGE_LOCATIONS=s3
+      - STORAGE_S3_DRIVER=s3 
+      - STORAGE_S3_KEY=9VR21qq14FZtSDUtEZIr
+      - STORAGE_S3_SECRET=LEeUx80dJSqWsMw8ccxAH9GfPhc6JWaDDB5VVibu
+      - STORAGE_S3_BUCKET=store
+      - STORAGE_S3_REGION=us-east-1
+      - STORAGE_S3_ENDPOINT=s3.ottiv.tech
+      - STORAGE_S3_FORCE_PATH_STYLE=true
+
+      ## Redis
+      - CACHE_ENABLED=true
+      - CACHE_STORE=redis
+      - CACHE_AUTO_PURGE=true
+      - REDIS=redis://redis:6379/9
+
+      ## Dados Postgres
+      - DB_CLIENT=pg
+      - DB_HOST=postgres_postgres
+      - DB_PORT=5432
+      - DB_DATABASE=store
+      - DB_USER=postgres
+      - DB_PASSWORD=PsJgjf0qZz4#p
+      ## Cors
+      - CORS_ENABLED=true
+      - CORS_ORIGIN=true
+      - CORS_METHODS=GET,POST,PATCH,DELETE
+    volumes:
+      - extensions:/directus/extensions
+      - templates:/directus/templates
+ 
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.directus.rule: "Host(`store.ottiv.io`)"
+        traefik.http.routers.directus.entrypoints: "websecure"
+        traefik.http.routers.directus.tls.certresolver: "le"
+        traefik.http.routers.directus.service: "ecommerce-backoffice"
+        traefik.http.services.ecommerce-backoffice.loadbalancer.server.port: "8090"
+    networks:
+      - externa
+      - interna
+volumes:
+  extensions:
+  templates:
+  
+networks:
+  interna:
+    external: true
+  externa:
+    external: true
