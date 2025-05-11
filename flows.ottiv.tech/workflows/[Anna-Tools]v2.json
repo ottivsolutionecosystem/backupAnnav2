@@ -1,0 +1,1617 @@
+{
+  "createdAt": "2025-05-11T15:21:41.252Z",
+  "updatedAt": "2025-05-11T16:28:28.842Z",
+  "id": "om4ttWclw2bmQACi",
+  "name": "[Anna-Tools]v2",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatwoot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        360
+      ],
+      "id": "04f5a007-b316-4c30-9ac2-d418ef46ce44",
+      "name": "Chatwoot Input",
+      "webhookId": "d503e6f9-0989-42d5-a598-e268b20c3182"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        520,
+        460
+      ],
+      "id": "060634a2-6ff5-422e-80c4-706e5823ac19",
+      "name": "No Operation "
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "numberOutputs": 2,
+        "output": "={{ \n  $json.body.event === 'message_created' &&\n  $json.body.conversation.messages[0].sender_type !== 'AgentBot' &&\n  $json.body.conversation.meta.sender.phone_number !== '+123456'\n    ? 0 : 1\n}}"
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        320,
+        360
+      ],
+      "id": "4fb7f013-119f-4e21-b71b-6a0f1b1560c8",
+      "name": "Switch "
+    },
+    {
+      "parameters": {
+        "queue": "main-n8n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        260
+      ],
+      "id": "36cf0c89-70ae-4755-8fc7-ebe2841798eb",
+      "name": "Sender",
+      "credentials": {
+        "rabbitmq": {
+          "id": "J5zvYNI1tbp2cp5B",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "queue": "dlx-queue",
+        "options": {
+          "acknowledge": "executionFinishesSuccessfully",
+          "jsonParseBody": true,
+          "onlyContent": true
+        }
+      },
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        120,
+        1100
+      ],
+      "id": "dc206507-8a06-452f-946e-3cef0e26d3e1",
+      "name": "DLX Consumer",
+      "credentials": {
+        "rabbitmq": {
+          "id": "J5zvYNI1tbp2cp5B",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $json.body.sender.id.toString() }}"
+      },
+      "id": "7140e778-5b0b-42af-81ad-b46d07fc0ef3",
+      "name": "Reset List ",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        320,
+        1100
+      ],
+      "notesInFlow": false,
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 500,
+        "width": 700,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        160
+      ],
+      "id": "e067523f-6e28-4c11-b7b9-5e5f9639e387",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 500,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        1000
+      ],
+      "id": "11af4071-aae4-4ba0-81be-8614e74f69d5",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1640,
+        "width": 2580,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "94679fe2-e49c-49e0-ad27-5e92f61d19f2",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "url": "https://openrouter.ai/api/v1/models",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.openrouter_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        1100
+      ],
+      "id": "84d99033-0766-4652-a426-e3432ef33449",
+      "name": "Get Models",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "global_vars",
+          "mode": "list",
+          "cachedResultName": "global_vars"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        320,
+        780
+      ],
+      "id": "2a082a45-4a11-4f08-a8bb-a451a31ef86b",
+      "name": "Get Global Vars",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 500,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        1000
+      ],
+      "id": "65ba719f-3268-4ee5-87f8-5ca3060433b5",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "Início do workflow, recebe dados, filtra eles, e envia pro RabbitMQ.",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        180
+      ],
+      "id": "e064c8c6-b2d5-4016-bdd5-b3b6599600c4",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "Limpa o Redis em caso de execuções mal sucedidas",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        980
+      ],
+      "id": "97e9063e-ee8d-490b-85eb-9e5fa4de25cc",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "Atualiza a lista de modelos de LLMs disponíveis no sistema",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        980
+      ],
+      "id": "cd7e3d2b-706a-4964-ace9-d3f910a937cb",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "tableName": {
+          "__rl": true,
+          "value": "users",
+          "mode": "list",
+          "cachedResultName": "users"
+        },
+        "additionalFields": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTrigger",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        1420
+      ],
+      "id": "bae63e26-fa97-47f1-a30e-63c8744a1af4",
+      "name": "Listen Insert Users",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Listen Insert Users').item.json.payload.picture_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        1420
+      ],
+      "id": "b7600bbe-ba7e-44b2-9327-ef70a7a4a532",
+      "name": "Download Picture"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "global_vars",
+          "mode": "list",
+          "cachedResultName": "global_vars"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1440,
+        1420
+      ],
+      "id": "902c7281-e688-47cc-8ed6-b1a5dccd5e40",
+      "name": "Get Global Vars 2",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "users",
+          "mode": "list",
+          "cachedResultName": "users"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Listen Insert Users').item.json.payload.id }}",
+            "date_updated": "={{ $now }}",
+            "picture": "={{ $json.data.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date_created",
+              "displayName": "date_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_updated",
+              "displayName": "date_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "picture_url",
+              "displayName": "picture_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "picture",
+              "displayName": "picture",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2040,
+        1420
+      ],
+      "id": "661990fd-4d98-4d31-b3af-25a479934c1d",
+      "name": "Add Picture",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://{{ $('Get Global Vars 2').item.json.directus_service }}:8055/files",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Global Vars 2').item.json.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        1420
+      ],
+      "id": "44286f5f-c63c-47f3-ace6-7c0401793161",
+      "name": "Upload Picture"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 1100,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        1320
+      ],
+      "id": "0f52a7d3-d294-4938-8ca4-7ef370605a84",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Adiciona a fato do usuário quando ele é criado",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        1300
+      ],
+      "id": "4e67fbb8-e187-4872-8348-cb1b0c081c6f",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 500,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        680
+      ],
+      "id": "10c79bdc-d667-46a9-860c-d56a56635e06",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 700,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        740,
+        360
+      ],
+      "id": "c61041ab-b241-4976-91de-5f1452f6b477",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "command": "N8N_CLEAN_HOST=$(echo $N8N_HOST | sed 's|https://||' | sed 's|/$||') && \\\nrm -rf /home/node/$N8N_CLEAN_HOST/n8n-backups && \\\nmkdir -p /home/node/$N8N_CLEAN_HOST/n8n-backups && \\\nn8n export:credentials --decrypted --backup --output=/home/node/$N8N_CLEAN_HOST/n8n-backups > /dev/null 2>&1 && \\\nn8n export:workflow --backup --output=/home/node/$N8N_CLEAN_HOST/n8n-backups > /dev/null 2>&1 && \\\necho $N8N_CLEAN_HOST"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        840,
+        460
+      ],
+      "id": "1bd2955c-da1d-4e3c-8717-ff0f0e262172",
+      "name": "n8n Backups"
+    },
+    {
+      "parameters": {
+        "fileSelector": "=/home/node/{{ $('n8n Backups').first().json.stdout }}/n8n-backups/*.json",
+        "options": {
+          "fileName": ""
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        460
+      ],
+      "id": "f8583b14-cd59-45a1-9cf8-fd4718a4bd05",
+      "name": "Get Files"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        460
+      ],
+      "id": "8bc7b4d5-5e5e-4edc-86e4-7a369a2436ee",
+      "name": "Convert Files"
+    },
+    {
+      "parameters": {
+        "content": "Exporta os backups do n8n para a sua máquina",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        760,
+        340
+      ],
+      "id": "37cbfa6f-8a9c-4f02-ab4f-76dd601c1a9f",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "url": "=http://{{ $('Get Global Vars').item.json.directus_service }}:8055/schema/snapshot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Global Vars').item.json.directus_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0278b4e6-7720-400d-991e-52b43ee820d5",
+      "name": "Get Schema",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        860
+      ],
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('n8n Backups').first().json.stdout }}/{{ $('Convert Files').all()[$itemIndex].json.data.keys().includes('nodes') ? 'workflows' : 'credentials' }}/{{ $('Convert Files').all()[$itemIndex].json.data.name }}",
+        "value": "={{ JSON.stringify($('Convert Files').all()[$itemIndex].json.data, null, 2) }}",
+        "keyType": "string"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        460
+      ],
+      "id": "fef36c18-6ddc-4b23-96c8-627d7e1eaf79",
+      "name": "Set n8n Backups",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "data",
+        "key": "={{ $('n8n Backups').first().json.stdout }}/{{ $('Convert Files').all()[$itemIndex].json.data.keys().includes('nodes') ? 'workflows' : 'credentials' }}/{{ $('Convert Files').all()[$itemIndex].json.data.name }}",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        460
+      ],
+      "id": "64169e5e-6ccf-48cc-8be7-fe8cb55c6486",
+      "name": "Get n8n Backups",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Código unificado para realizar backup no GitHub de:\n *   - Itens do n8n (workflows/credentials) – todos os itens do nó \"Convert Files\" serão salvos.\n *   - Stacks do Portainer (em YAML).\n *   - Schema do Directus (o conteúdo do nó \"Get Schema\").\n *\n * Requisitos:\n * - \"Get Global Vars\" fornece github_username e github_repository.\n * - \"n8n Backups\" retorna JSON com \"stdout\" (caminho base para backups).\n * - \"Convert Files\" contém os itens a serem salvos, inclusive aquele com data.type === 'githubApi'\n *      (token GitHub em data.data.accessToken).\n * - \"Get n8n Backups\" retorna os backups anteriores dos itens n8n.\n * - \"Get Stacks\" retorna, para cada stack:\n *      * json.stackName – nome da stack.\n *      * json.file.StackFileContent – conteúdo (YAML) da stack.\n * - \"Get Stacks Backups\" retorna um array onde cada item possui json.data (backup anterior da stack).\n * - \"Get Schema\" retorna o schema do Directus em json.data.\n * - \"Get Schema Backup\" retorna, se existir, o backup anterior do schema em json.data.\n *\n * Lógica:\n *  - Para cada item, o novo conteúdo (após trim) é comparado com o backup (após trim):\n *      * Se forem iguais, nenhuma operação é realizada.\n *      * Se o backup for null, a operação primária é de criação.\n *      * Se o backup existir e for diferente, a operação primária é de atualização.\n *  - Não é feita verificação GET prévia; se a operação primária falhar, é feito um GET para obter o SHA atual e\n *    tenta-se a operação inversa (fallback):\n *       * Se tentou criar, passa a atualizar (obtendo o SHA via GET).\n *       * Se tentou atualizar, passa a criar (removendo o SHA).\n *  - Um delay de 1 segundo é aplicado somente se uma requisição PUT (ou fallback) for efetuada.\n *  - A propriedade \"advancedLogs\" será incluída nos resultados somente se advancedLogsEnabled for true;\n *    caso contrário, essa chave não será adicionada.\n */\n\n// ----------------------------------------------------------------------\n// Configurações Gerais (hardcode)\n// ----------------------------------------------------------------------\nconst advancedLogsEnabled = false; // Altere para true para exibir logs avançados\n\n// ----------------------------------------------------------------------\n// Importa o axios para requisições HTTP\nconst axios = require('axios');\n\n// Função de delay (aguarda ms milissegundos)\nconst delay = ms => new Promise(resolve => setTimeout(resolve, ms));\n\n// ===================================================================\n// 1. Configurações Comuns\n// ===================================================================\n\n// Obtém as variáveis globais do GitHub a partir do nó \"Get Global Vars\"\nconst globalVars = $('Get Global Vars').first().json;\nconst owner = globalVars.github_username;\nconst repo = globalVars.github_repository;\nconsole.log(`Usuário GitHub: ${owner}`);\nconsole.log(`Repositório GitHub: ${repo}`);\n\n// Obtém o caminho base para os backups (nó \"n8n Backups\")\nconst backupNode = $('n8n Backups').first().json;\nconst basePath = backupNode.stdout;\nconsole.log(`Caminho base para backups: ${basePath}`);\n\n// ===================================================================\n// 2. Dados de Entrada para Cada Grupo\n// ===================================================================\n\n// (a) Itens n8n para backup (workflows/credentials)\n//     - Todos os itens do nó \"Convert Files\" serão processados para backup.\nconst convertItemsAll = $('Convert Files').all();\nconst n8nItems = convertItemsAll;  \nconsole.log(`Total de itens n8n para processar: ${n8nItems.length}`);\n\n// Backup anterior dos itens n8n (ordem compatível)\nconst n8nBackupItems = $('Get n8n Backups').all();\nconsole.log(`Total de backups n8n obtidos: ${n8nBackupItems.length}`);\n\n// (b) Itens de stacks para backup (do Portainer)\n//     - Itens vêm do nó \"Get Stacks\" (cada um com stackName e file.StackFileContent)\nconst stackItems = $('Get Stacks').all();\nconsole.log(`Total de stacks para processar: ${stackItems.length}`);\n\n// Backup anterior das stacks (cada item com json.data)\nconst stackBackupItems = $('Get Stacks Backups').all();\nconsole.log(`Total de backups de stacks obtidos: ${stackBackupItems.length}`);\n\n// (c) Schema do Directus\n//     - O novo conteúdo vem do nó \"Get Schema\" (json.data, formatado com JSON.stringify)\nconst schemaNewContent = JSON.stringify($('Get Schema').first().json.data, null, 2);\nconst schemaFilePath = `${basePath}/schema.json`;\nconst schemaCommitMessage = \"Backup schema\";\n// Obtém o backup anterior do schema do nó \"Get Schema Backup\"\nlet schemaBackup = null;\ntry {\n  schemaBackup = $('Get Schema Backup').first().json.data;\n  console.log(\"Backup anterior do schema obtido.\");\n} catch (e) {\n  console.log(\"Nenhum backup anterior do schema encontrado.\");\n}\n\n// (d) Token de acesso do GitHub (usa o primeiro item com data.type === 'githubApi')\nconst githubItem = convertItemsAll.find(item => item.json.data.type === 'githubApi');\nif (!githubItem) {\n  throw new Error(\"Nenhum item com type 'githubApi' foi encontrado em Convert Files.\");\n}\nconst accessToken = githubItem.json.data.data.accessToken;\nconsole.log(\"Token de acesso do GitHub obtido com sucesso.\");\n\n// ===================================================================\n// 3. Monta um Array Unificado de Itens para Processamento\n// ===================================================================\nlet unifiedItems = [];\n\n// Processa os itens n8n\nn8nItems.forEach((item, index) => {\n  const fileData = item.json.data;\n  let fileName = fileData.name;\n  if (!fileName.endsWith('.json')) {\n    fileName += '.json';\n  }\n  // Define a pasta: \"workflows\" se existir a key \"nodes\", senão \"credentials\"\n  const folderType = (fileData && ('nodes' in fileData)) ? 'workflows' : 'credentials';\n  const filePath = `${basePath}/${folderType}/${fileName}`;\n  const newContent = JSON.stringify(fileData, null, 2);\n  const commitMessage = `Backup ${fileData.type}`;\n  let backupContent = null;\n  let existingSha = null;\n  if (n8nBackupItems[index] && n8nBackupItems[index].json && typeof n8nBackupItems[index].json.data !== 'undefined') {\n    backupContent = n8nBackupItems[index].json.data;\n    existingSha = n8nBackupItems[index].json.sha;\n  }\n  unifiedItems.push({\n    group: \"n8n\",\n    identifier: fileName,\n    filePath: filePath,\n    newContent: newContent,\n    commitMessage: commitMessage,\n    backupContent: backupContent,\n    existingSha: existingSha\n  });\n});\n\n// Processa os itens de stacks\nstackItems.forEach((item, index) => {\n  const stackName = item.json.stackName;\n  const filePath = `${basePath}/stacks/${stackName}.yaml`;\n  const newContent = item.json.file.StackFileContent;\n  const commitMessage = `Backup stack: ${stackName}`;\n  let backupContent = null;\n  if (stackBackupItems[index] && stackBackupItems[index].json && typeof stackBackupItems[index].json.data !== 'undefined') {\n    backupContent = stackBackupItems[index].json.data;\n  }\n  unifiedItems.push({\n    group: \"stack\",\n    identifier: stackName,\n    filePath: filePath,\n    newContent: newContent,\n    commitMessage: commitMessage,\n    backupContent: backupContent,\n    existingSha: null\n  });\n});\n\n// Adiciona o item de schema\nunifiedItems.push({\n  group: \"schema\",\n  identifier: \"schema.json\",\n  filePath: schemaFilePath,\n  newContent: schemaNewContent,\n  commitMessage: schemaCommitMessage,\n  backupContent: schemaBackup,\n  existingSha: null\n});\n\nconsole.log(`Total de itens unificados para backup: ${unifiedItems.length}`);\n\n// ===================================================================\n// 4. Função Auxiliar para Requisições HTTP (axios)\n// ===================================================================\nasync function makeRequest(method, url, payload) {\n  console.log(`Iniciando requisição ${method.toUpperCase()} para ${url}`);\n  try {\n    const response = await axios({\n      method,\n      url,\n      data: payload,\n      headers: {\n        Authorization: `Bearer ${accessToken}`,\n        Accept: 'application/vnd.github.v3+json',\n        'Content-Type': 'application/json'\n      }\n    });\n    console.log(`Requisição ${method.toUpperCase()} concluída com sucesso.`);\n    return response;\n  } catch (error) {\n    const errorDetails = error.response ? error.response.data : '';\n    console.error(`Erro na requisição ${method.toUpperCase()} para ${url}: ${error.message}`, errorDetails);\n    throw error;\n  }\n}\n\n// ===================================================================\n// 5. Processa Cada Item (Criar/Atualizar Arquivo no GitHub)\n// ===================================================================\nconst results = [];\n\nfor (let i = 0; i < unifiedItems.length; i++) {\n  const item = unifiedItems[i];\n  console.log(`\\n--- Processando [${item.group}] '${item.identifier}' ---`);\n\n  // Normaliza os conteúdos para comparação (remove espaços extras no início/fim)\n  const normalizedNewContent = item.newContent.trim();\n  const normalizedBackupContent = (typeof item.backupContent === 'string')\n    ? item.backupContent.trim()\n    : null;\n  \n  // Prepara informações avançadas para logs\n  const advancedInfo = {\n    group: item.group,\n    identifier: item.identifier,\n    filePath: item.filePath,\n    commitMessage: item.commitMessage,\n    newContent: item.newContent,\n    normalizedNewContent: normalizedNewContent,\n    backupContent: item.backupContent,\n    normalizedBackupContent: normalizedBackupContent,\n    primaryAction: null,\n    payload: {}\n  };\n  \n  // Se o novo conteúdo for igual ao backup (após normalização), nenhuma operação é realizada.\n  if (normalizedBackupContent === normalizedNewContent) {\n    console.log(`Arquivo '${item.identifier}' já está atualizado. Operação ignorada.`);\n    let resultObj = {\n      identifier: item.identifier,\n      filePath: item.filePath,\n      action: 'none',\n      status: 'up-to-date'\n    };\n    if (advancedLogsEnabled) {\n      resultObj.advancedLogs = advancedInfo;\n    }\n    results.push(resultObj);\n    continue;\n  }\n  \n  // Define a operação com base no backup: se backupContent é null, operação \"create\", senão \"update\".\n  const primaryAction = (normalizedBackupContent === null) ? 'create' : 'update';\n  advancedInfo.primaryAction = primaryAction;\n  \n  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(item.filePath)}`;\n  console.log(`URL da API do GitHub: ${url}`);\n  \n  // Prepara o payload\n  const encodedContent = Buffer.from(item.newContent).toString('base64');\n  const payload = {\n    message: item.commitMessage,\n    content: encodedContent,\n    branch: 'main',\n    committer: {\n      name: 'n8n Backup Bot',\n      email: 'backup@example.com'\n    }\n  };\n  advancedInfo.payload = payload;\n  \n  // Se a operação for update e não tivermos SHA, obtém-o via GET\n  if (primaryAction === 'update') {\n    if (item.existingSha) {\n      payload.sha = item.existingSha;\n    } else {\n      try {\n        console.log(`Obtendo SHA para atualização do arquivo '${item.identifier}'...`);\n        const getResponse = await axios.get(url, {\n          headers: {\n            Authorization: `Bearer ${accessToken}`,\n            Accept: 'application/vnd.github.v3+json'\n          }\n        });\n        payload.sha = getResponse.data.sha;\n        console.log(`SHA obtido: ${payload.sha}`);\n      } catch (error) {\n        console.error(`Erro ao obter SHA para atualização do arquivo '${item.identifier}': ${error.message}`);\n        let resultObj = {\n          identifier: item.identifier,\n          filePath: item.filePath,\n          status: 'failed',\n          error: error.toString(),\n          details: error.response ? error.response.data : null\n        };\n        if (advancedLogsEnabled) {\n          resultObj.advancedLogs = advancedInfo;\n        }\n        results.push(resultObj);\n        continue;\n      }\n    }\n  }\n  \n  let operationPerformed = false;\n  let actionLog = '';\n  \n  // Tenta a operação primária\n  try {\n    console.log(`Tentando ${primaryAction === 'create' ? 'criar' : 'atualizar'} o arquivo '${item.identifier}'...`);\n    const response = await makeRequest('put', url, payload);\n    actionLog = primaryAction === 'create' ? 'created' : 'updated';\n    console.log(`Arquivo '${item.identifier}' ${actionLog} com sucesso.`);\n    let resultObj = {\n      identifier: item.identifier,\n      filePath: item.filePath,\n      action: actionLog,\n      status: 'success',\n      data: response.data\n    };\n    if (advancedLogsEnabled) {\n      resultObj.advancedLogs = advancedInfo;\n    }\n    results.push(resultObj);\n    operationPerformed = true;\n  } catch (error) {\n    console.error(`Erro na tentativa primária (${primaryAction}) para o arquivo '${item.identifier}': ${error.message}`, error.response ? error.response.data : '');\n    // Tenta a operação inversa (fallback)\n    try {\n      console.log(`Tentando ação alternativa para o arquivo '${item.identifier}'...`);\n      const getResponse = await axios.get(url, {\n        headers: {\n          Authorization: `Bearer ${accessToken}`,\n          Accept: 'application/vnd.github.v3+json'\n        }\n      });\n      const fetchedSha = getResponse.data.sha;\n      console.log(`SHA obtido na tentativa alternativa: ${fetchedSha}`);\n      if (primaryAction === 'create') {\n        payload.sha = fetchedSha;\n        actionLog = 'fallback: updated (primary create error)';\n      } else {\n        delete payload.sha;\n        actionLog = 'fallback: created (primary update error)';\n      }\n      const response = await makeRequest('put', url, payload);\n      console.log(`Arquivo '${item.identifier}' ${actionLog} com sucesso.`);\n      let resultObj = {\n        identifier: item.identifier,\n        filePath: item.filePath,\n        action: actionLog,\n        status: 'success',\n        data: response.data\n      };\n      if (advancedLogsEnabled) {\n        resultObj.advancedLogs = advancedInfo;\n      }\n      results.push(resultObj);\n      operationPerformed = true;\n    } catch (error2) {\n      console.error(`Falha na tentativa alternativa para o arquivo '${item.identifier}': ${error2.message}`, error2.response ? error2.response.data : '');\n      let resultObj = {\n        identifier: item.identifier,\n        filePath: item.filePath,\n        status: 'failed',\n        error: error2.toString(),\n        details: error2.response ? error2.response.data : null\n      };\n      if (advancedLogsEnabled) {\n        resultObj.advancedLogs = advancedInfo;\n      }\n      results.push(resultObj);\n      operationPerformed = true;\n    }\n  }\n  \n  if (operationPerformed) {\n    await delay(1000);\n  }\n}\n\n// Retorna os resultados no formato esperado pelo n8n\nreturn results.map(result => ({ json: result }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        660
+      ],
+      "id": "1e29ab1a-17c7-4c21-9641-1dd0d8ee55c7",
+      "name": "Update GitHub"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('n8n Backups').all()[$itemIndex].json.stdout }}/schema.json",
+        "value": "={{ JSON.stringify($('Get Schema').all()[$itemIndex].json.data, null, 2) }}",
+        "keyType": "string"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        860
+      ],
+      "id": "603f1dff-9725-434a-a65c-52ff7fcf16b8",
+      "name": "Set Schema Backup",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "data",
+        "key": "={{ $('n8n Backups').first().json.stdout }}/schema.json",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        860
+      ],
+      "id": "f5f1e5cb-4a1a-4c78-b324-4fc12fe66c0e",
+      "name": "Get Schema Backup",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "data",
+        "key": "={{ $('n8n Backups').first().json.stdout }}/stacks/{{ $('Get Stacks').item.json.stackName }}",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        660
+      ],
+      "id": "2e0fa82d-c300-49c8-b08f-8d50c6c6f253",
+      "name": "Get Stacks Backups",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('n8n Backups').first().json.stdout }}/stacks/{{ $('Get Stacks').all()[$itemIndex].json.stackName }}",
+        "value": "={{ $('Get Stacks').all()[$itemIndex].json.file.StackFileContent }}",
+        "keyType": "string"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        660
+      ],
+      "id": "99ccaebb-03a2-4e75-94c4-0e64dd4bd944",
+      "name": "Set Stacks Backups",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1960,
+        660
+      ],
+      "id": "1c83295a-f9c5-457a-97db-c92327094c98",
+      "name": "Append"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Código para recuperar todas as stacks do Portainer e os respectivos arquivos (file) de cada stack.\n * \n * Lógica:\n * 1. Obtém as credenciais do Portainer a partir do nó \"Get Global Vars\" e valida que não sejam nulas.\n * 2. Realiza login no Portainer para obter o token JWT.\n * 3. Obtém todas as stacks do Portainer.\n * 4. Para cada stack, obtém o arquivo associado (file).\n * 5. Se ocorrer algum erro, os logs detalhados serão retornados.\n * 6. Se tudo ocorrer normalmente, retorna apenas os resultados dos arquivos.\n * \n * Os resultados são retornados no formato esperado pelo n8n: cada item encapsulado em { json: { ... } }.\n */\n\nconst axios = require('axios');\n\n// Função de delay (aguarda ms milissegundos)\nconst delay = ms => new Promise(resolve => setTimeout(resolve, ms));\n\n// ----------------------------------------------------------------------\n// 1. Obter parâmetros do Portainer\n// ----------------------------------------------------------------------\nconst globalVars = $('Get Global Vars').first().json;\nconst portainerUsername = globalVars.portainer_username;\nconst portainerPassword = globalVars.portainer_password;\n\nif (!portainerUsername || !portainerPassword) {\n  const errorMsg = `Parâmetros inválidos: portainer_username='${portainerUsername}', portainer_password='${portainerPassword}'`;\n  console.error(errorMsg);\n  throw new Error(errorMsg);\n}\n\nconsole.log(`Parâmetros do Portainer: username='${portainerUsername}', password='${portainerPassword ? '***' : 'null'}`);\n\n// URL base do Portainer (substituindo 'portainer' pelo valor da variável global)\nconst portainerUrl = `http://${globalVars.portainer_service}:9000`;\n\n// ----------------------------------------------------------------------\n// 2. Função para logar no Portainer e obter um token JWT\n// ----------------------------------------------------------------------\nasync function loginPortainer() {\n  const url = `${portainerUrl}/api/auth`;\n  console.log(`Realizando login no Portainer em: ${url}`);\n  try {\n    const response = await axios.post(url, {\n      Username: portainerUsername,\n      Password: portainerPassword\n    });\n    console.log(\"Login realizado com sucesso. Token JWT obtido.\");\n    return response.data.jwt;\n  } catch (error) {\n    const errDetails = error.response ? error.response.data : error.message;\n    console.error(\"Erro ao realizar login no Portainer:\", errDetails);\n    throw new Error(`Erro no login no Portainer: ${JSON.stringify(errDetails)}`);\n  }\n}\n\n// ----------------------------------------------------------------------\n// 3. Função para obter todas as stacks do Portainer\n// ----------------------------------------------------------------------\nasync function getStacks(jwt) {\n  const url = `${portainerUrl}/api/stacks`;\n  console.log(`Obtendo stacks do Portainer em: ${url}`);\n  try {\n    const response = await axios.get(url, {\n      headers: {\n        Authorization: `Bearer ${jwt}`\n      }\n    });\n    console.log(`Total de stacks obtidas: ${response.data.length}`);\n    return response.data;\n  } catch (error) {\n    const errDetails = error.response ? error.response.data : error.message;\n    console.error(\"Erro ao obter stacks:\", errDetails);\n    throw new Error(`Erro ao obter stacks: ${JSON.stringify(errDetails)}`);\n  }\n}\n\n// ----------------------------------------------------------------------\n// 4. Função para obter o arquivo (file) de uma stack específica\n// ----------------------------------------------------------------------\nasync function getStackFile(jwt, stackId) {\n  const url = `${portainerUrl}/api/stacks/${stackId}/file`;\n  console.log(`Obtendo arquivo da stack ${stackId} em: ${url}`);\n  try {\n    const response = await axios.get(url, {\n      headers: {\n        Authorization: `Bearer ${jwt}`\n      }\n    });\n    console.log(`Arquivo da stack ${stackId} obtido com sucesso.`);\n    return response.data;\n  } catch (error) {\n    const errDetails = error.response ? error.response.data : error.message;\n    console.error(`Erro ao obter arquivo da stack ${stackId}:`, errDetails);\n    throw new Error(`Erro ao obter arquivo da stack ${stackId}: ${JSON.stringify(errDetails)}`);\n  }\n}\n\n// ----------------------------------------------------------------------\n// 5. Função principal\n// ----------------------------------------------------------------------\nasync function main() {\n  const results = [];\n  const logs = [];\n  \n  try {\n    // Realiza login e obtém o token JWT\n    const jwt = await loginPortainer();\n    logs.push({ step: \"login\", message: \"Login realizado com sucesso.\", jwt });\n    \n    // Obtém todas as stacks\n    const stacks = await getStacks(jwt);\n    logs.push({ step: \"getStacks\", message: \"Stacks obtidas com sucesso.\", total: stacks.length });\n    \n    // Para cada stack, obtém o arquivo associado\n    for (const stack of stacks) {\n      console.log(`Processando stack - ID: ${stack.Id}, Nome: ${stack.Name}`);\n      try {\n        const file = await getStackFile(jwt, stack.Id);\n        logs.push({ step: \"getStackFile\", stackId: stack.Id, message: \"Arquivo obtido com sucesso.\" });\n        results.push({\n          stackId: stack.Id,\n          stackName: stack.Name,\n          file: file\n        });\n      } catch (error) {\n        logs.push({ step: \"getStackFile\", stackId: stack.Id, message: \"Erro ao obter arquivo.\", error: error.toString() });\n        results.push({\n          stackId: stack.Id,\n          stackName: stack.Name,\n          error: error.toString()\n        });\n      }\n      await delay(1000);\n    }\n    \n    // Se tudo ocorrer normalmente, retorna apenas os resultados\n    return results.map(item => ({ json: item }));\n    \n  } catch (error) {\n    console.error(\"Erro no processamento principal:\", error.toString());\n    // Em caso de erro, retorna os logs detalhados junto com a mensagem de erro\n    return [{ json: { error: error.toString(), logs } }];\n  }\n}\n\nreturn main();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        660
+      ],
+      "id": "acf0f058-dd34-4780-bdae-f3b2c9dc2b1e",
+      "name": "Get Stacks"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Este código recupera os backups do repositório GitHub,\n * cujos arquivos foram salvos na pasta definida em $('n8n Backups').first().json.stdout.\n * Ele retorna:\n *  - credentials: um array com os conteúdos JSON de cada arquivo na pasta \"credentials\"\n *  - workflows: um array com os conteúdos JSON de cada arquivo na pasta \"workflows\"\n *  - schema: o conteúdo JSON do arquivo \"schema.json\"\n *\n * As requisições são autenticadas usando o token obtido do nó \"Convert Files\" (item com data.type === 'githubApi').\n */\n\n// Importa o axios para as requisições HTTP\nconst axios = require('axios');\n\n// Configurações iniciais\nconst basePath = $('n8n Backups').first().json.stdout;\nconst globalVars = $('Get Global Vars').first().json;\nconst owner = globalVars.github_username;\nconst repo = globalVars.github_repository;\n\n// Obtém o token de acesso do GitHub do nó \"Convert Files\"\nconst convertItems = $('Convert Files').all();\nconst githubItem = convertItems.find(item => item.json.data.type === 'githubApi');\nif (!githubItem) {\n  throw new Error(\"Nenhum item com type 'githubApi' foi encontrado em Convert Files.\");\n}\nconst accessToken = githubItem.json.data.data.accessToken;\n\n// Função para fazer GET em um caminho do repositório e retornar o objeto (ou array) JSON com o conteúdo do arquivo\nasync function getFileContent(path) {\n  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;\n  const response = await axios.get(url, {\n    headers: {\n      Authorization: `Bearer ${accessToken}`,\n      Accept: 'application/vnd.github.v3+json'\n    }\n  });\n  // A API retorna um objeto com a propriedade \"content\" (base64 encoded)\n  const contentBase64 = response.data.content;\n  // Remove quebras de linha se existirem e decodifica\n  const contentStr = Buffer.from(contentBase64.replace(/\\n/g, ''), 'base64').toString('utf8');\n  return contentStr;\n}\n\n// Função para listar os arquivos de um diretório e retornar um array de caminhos\nasync function listDirectoryFiles(path) {\n  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;\n  const response = await axios.get(url, {\n    headers: {\n      Authorization: `Bearer ${accessToken}`,\n      Accept: 'application/vnd.github.v3+json'\n    }\n  });\n  // A resposta é um array de objetos, cada um representando um arquivo (ou subdiretório)\n  // Filtramos apenas os arquivos (type === 'file')\n  return response.data.filter(item => item.type === 'file');\n}\n\n// Função que obtém e parseia todos os arquivos de um diretório (esperando JSON)\nasync function getDirectoryJSON(path) {\n  const files = await listDirectoryFiles(path);\n  const results = [];\n  for (let file of files) {\n    try {\n      const contentStr = await getFileContent(file.path);\n      // Tenta fazer o parse; se der erro, guarda o texto bruto\n      const parsed = JSON.parse(contentStr);\n      results.push(parsed);\n    } catch (e) {\n      // Se não for JSON, podemos armazenar o conteúdo bruto ou tratar de outra forma\n      results.push({ error: \"Erro no parse JSON\", raw: contentStr });\n    }\n  }\n  return results;\n}\n\n// Função principal para recuperar os backups e parseá-los\nasync function main() {\n  // Monta os caminhos:\n  // As credenciais estarão na pasta: {basePath}/credentials\n  // Os workflows estarão na pasta: {basePath}/workflows\n  // O schema estará em: {basePath}/schema.json\n  const credentialsPath = `${basePath}/credentials`;\n  const workflowsPath = `${basePath}/workflows`;\n  const schemaPath = `${basePath}/schema.json`;\n\n  // Obtém os arquivos e parseia-os\n  let credentials = [];\n  let workflows = [];\n  let schema = null;\n  \n  try {\n    credentials = await getDirectoryJSON(credentialsPath);\n  } catch (e) {\n    console.error(\"Erro ao recuperar arquivos de credentials:\", e);\n  }\n  \n  try {\n    workflows = await getDirectoryJSON(workflowsPath);\n  } catch (e) {\n    console.error(\"Erro ao recuperar arquivos de workflows:\", e);\n  }\n  \n  try {\n    const schemaContentStr = await getFileContent(schemaPath);\n    schema = JSON.parse(schemaContentStr);\n  } catch (e) {\n    console.error(\"Erro ao recuperar ou parsear schema:\", e);\n    schema = { error: \"Erro ao recuperar ou parsear schema\", raw: null };\n  }\n  \n  // Retorna os resultados já parseados\n  return [{ json: { credentials, workflows, schema } }];\n}\n\n// Executa a função principal e retorna o resultado\nreturn main();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        140
+      ],
+      "id": "d99b2fb3-ad23-4904-8328-562f196bad48",
+      "name": "Get Backups",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Código final para:\n *   - Criar as credenciais e workflows no n8n a partir dos backups, somente se eles ainda não existirem.\n *   - Atualizar o schema do Directus aplicando o diff do backup.\n *\n * Requisitos:\n * - O nó \"Get Backups\" deve retornar um JSON com a estrutura:\n *     { \n *       credentials: [ { name, type, data, ... }, ... ],\n *       workflows: [ { name, nodes, connections, ... }, ... ],\n *       schema: { ... }\n *     }\n *\n * - O nó \"Convert Files\" deve retornar vários itens; dentre eles, o item com data.type === 'n8nApi'\n *   contém o token da n8n API (campo data.data.apiKey) e os demais itens possuem a propriedade data.name,\n *   que representam os itens atuais (credenciais e workflows) do n8n.\n *\n * - O nó \"Get Global Vars\" possui o token do Directus em directus_token.\n *\n * Endpoints:\n *   - n8n API: http://{n8n_editor_service}:5678/api/v1\n *       * POST /credentials: { name, type, data }\n *       * POST /workflows: { name, nodes, connections, settings }\n *   - Directus:\n *       * Diff: POST http://{directus_service}:8055/schema/diff?force=true  \n *              (payload: backup schema; retorno: { data: { hash, diff, ... } })\n *       * Apply: POST http://{directus_service}:8055/schema/apply  \n *              (payload: o objeto retornado em data do diff)\n *\n * Logs detalhados são gerados para cada etapa e um delay de 1 segundo é aplicado entre operações.\n *\n * A variável interna advancedLogsEnabled controla se a chave advancedLogs será incluída nos resultados.\n */\n\nconst axios = require('axios');\n\n// ----------------------------------------------------------------------\n// Configurações Gerais (hardcoded)\n// ----------------------------------------------------------------------\nconst advancedLogsEnabled = false; // Altere para true para incluir logs avançados\n\n// Função de delay\nconst delay = ms => new Promise(resolve => setTimeout(resolve, ms));\n\n// ----------------------------------------------------------------------\n// 1. Obter dados e tokens\n// ----------------------------------------------------------------------\n\n// Backup dos itens a partir do nó \"Get Backups\"\nconst backupData = $('Get Backups').first().json; \n// Estrutura esperada: { credentials: [...], workflows: [...], schema: { ... } }\n\n// Itens atuais do n8n (para verificação de nomes) a partir do nó \"Convert Files\"\nconst currentItems = $('Convert Files').all();  \n// Cada item tem em item.json.data.name\n\n// Token da n8n API: busca o item cujo data.type === 'n8nApi'\nconst n8nApiItem = currentItems.find(item => item.json.data.type === 'n8nApi');\nif (!n8nApiItem) {\n  throw new Error(\"Nenhum item com type 'n8nApi' foi encontrado em Convert Files.\");\n}\nconst n8nApiToken = n8nApiItem.json.data.data.apiKey;\nconsole.log(`Token da n8n API obtido: ${n8nApiToken}`);\n\n// Token do Directus: obtido do nó \"Get Global Vars\"\nconst globalVars = $('Get Global Vars').first().json;\nconst directusToken = globalVars.directus_token;\nconsole.log(`Token do Directus obtido: ${directusToken}`);\n\n// Endpoints base (ajustados conforme as variáveis dos serviços)\nconst n8nBaseUrl = `http://${globalVars.n8n_editor_service}:5678/api/v1`;\nconst directusBaseUrl = `http://${globalVars.directus_service}:8055`;\n\n// ----------------------------------------------------------------------\n// 2. Funções auxiliares para chamadas HTTP\n// ----------------------------------------------------------------------\n\n// Função para criar uma credencial no n8n via POST\nasync function createN8nCredential(payload) {\n  const url = `${n8nBaseUrl}/credentials`;\n  const response = await axios.post(url, payload, { \n    headers: { \n      \"X-N8N-API-KEY\": n8nApiToken, \n      \"Content-Type\": \"application/json\" \n    } \n  });\n  return response.data;\n}\n\n// Função para criar um workflow no n8n via POST\nasync function createN8nWorkflow(payload) {\n  const url = `${n8nBaseUrl}/workflows`;\n  const response = await axios.post(url, payload, { \n    headers: { \n      \"X-N8N-API-KEY\": n8nApiToken, \n      \"Content-Type\": \"application/json\" \n    } \n  });\n  return response.data;\n}\n\n// Função para obter o diff do schema do Directus via POST\nasync function diffDirectusSchema(schemaBackup) {\n  const url = `${directusBaseUrl}/schema/diff?force=true`;\n  const response = await axios.post(url, schemaBackup, { \n    headers: { \n      Authorization: `Bearer ${directusToken}`, \n      \"Content-Type\": \"application/json\" \n    } \n  });\n  // Retorna o objeto diff (que estará na propriedade \"data\" do response)\n  return response.data;\n}\n\n// Função para aplicar o diff no schema do Directus via POST\nasync function applyDirectusSchema(diffData) {\n  const url = `${directusBaseUrl}/schema/apply`;\n  const response = await axios.post(url, diffData, { \n    headers: { \n      Authorization: `Bearer ${directusToken}`, \n      \"Content-Type\": \"application/json\" \n    } \n  });\n  return response.data;\n}\n\n// ----------------------------------------------------------------------\n// 3. Função principal para recriar itens e atualizar o schema\n// ----------------------------------------------------------------------\nasync function main() {\n  const logs = [];\n  \n  // 3.1 Criar Credenciais\n  const backupCredentials = backupData.credentials || [];\n  for (let cred of backupCredentials) {\n    // Verifica se já existe uma credencial com o mesmo nome entre os itens atuais (usando data.name)\n    const exists = currentItems.find(item => item.json.data.name === cred.name);\n    if (exists) {\n      logs.push({ message: `Credencial '${cred.name}' já existe. Ignorada.` });\n      continue;\n    }\n    // Prepara o payload para criação da credencial.\n    // O endpoint espera que o campo \"data\" seja um objeto.\n    const payload = {\n      name: cred.name,\n      type: cred.type,\n      data: cred.data\n    };\n    try {\n      logs.push({ message: `Criando credencial '${cred.name}'...`, payload });\n      const result = await createN8nCredential(payload);\n      logs.push({ message: `Credencial '${cred.name}' criada com sucesso.`, result });\n    } catch (error) {\n      logs.push({ \n        message: `Erro ao criar credencial '${cred.name}'.`, \n        error: error.toString(), \n        details: error.response ? error.response.data : null \n      });\n    }\n    await delay(1000);\n  }\n  \n  // 3.2 Criar Workflows\n  const backupWorkflows = backupData.workflows || [];\n  for (let wf of backupWorkflows) {\n    // Verifica se já existe um workflow com o mesmo nome entre os itens atuais\n    const exists = currentItems.find(item => item.json.data.name === wf.name);\n    if (exists) {\n      logs.push({ message: `Workflow '${wf.name}' já existe. Ignorado.` });\n      continue;\n    }\n    // Prepara o payload para criação do workflow.\n    // **Importante:** Incluímos \"settings\": {} pois é uma propriedade obrigatória.\n    const payload = {\n      name: wf.name,\n      nodes: wf.nodes,\n      connections: wf.connections,\n      settings: {}\n    };\n    try {\n      logs.push({ message: `Criando workflow '${wf.name}'...`, payload });\n      const result = await createN8nWorkflow(payload);\n      logs.push({ message: `Workflow '${wf.name}' criado com sucesso.`, result });\n    } catch (error) {\n      logs.push({ \n        message: `Erro ao criar workflow '${wf.name}'.`, \n        error: error.toString(), \n        details: error.response ? error.response.data : null \n      });\n    }\n    await delay(1000);\n  }\n  \n  // 3.3 Atualizar Schema do Directus\n  let diffData = null;\n  let attempts = 0;\n  const maxAttempts = 3;\n  while (attempts < maxAttempts) {\n    try {\n      logs.push({ message: \"Obtendo diff do schema do Directus...\", backupSchema: backupData.schema });\n      diffData = await diffDirectusSchema(backupData.schema);\n      logs.push({ message: \"Diff do schema obtido com sucesso.\", diffData });\n      break;\n    } catch (error) {\n      attempts++;\n      logs.push({ \n        message: `Erro ao obter diff do schema (tentativa ${attempts} de ${maxAttempts}).`, \n        error: error.toString(), \n        details: error.response ? error.response.data : null \n      });\n      await delay(2000);\n    }\n  }\n  \n  if (diffData && diffData.data) {\n    try {\n      logs.push({ message: \"Aplicando diff no schema do Directus...\", diffData: diffData.data });\n      const updatedSchema = await applyDirectusSchema(diffData.data);\n      logs.push({ message: \"Schema do Directus atualizado com sucesso.\", updatedSchema });\n    } catch (error) {\n      logs.push({ \n        message: \"Erro ao aplicar diff no schema do Directus.\", \n        error: error.toString(), \n        details: error.response ? error.response.data : null \n      });\n    }\n  } else {\n    logs.push({ message: \"Nenhum diff obtido; o schema não foi alterado.\" });\n  }\n  \n  return logs;\n}\n\nreturn main().then(logs => logs.map(log => ({ json: log })));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        140
+      ],
+      "id": "1ba9f2c1-0190-41e3-bd3c-11a64b3b351d",
+      "name": "Recover Backup",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 500,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        40
+      ],
+      "id": "e478e104-79fb-4152-ad51-7babaeefd413",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "Gerencia seus backups no GitHub\n[Gere o seu Personal access tokens](https://github.com/settings/tokens)",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        380
+      ],
+      "id": "a56cd588-6a9f-4fb8-b4c9-7980518bb69d",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "Recupera suas credenciais, workflows e schema do Directus",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        20
+      ],
+      "id": "6a41e34c-1a4b-4b22-b5b2-5729d2ed373b",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "Executa o workflow a cada 1 Hora",
+        "height": 80,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        660
+      ],
+      "id": "faa0c6cf-66d6-48d4-bd9d-c201918b1a33",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 700,
+        "width": 1100,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        360
+      ],
+      "id": "67d2e4b1-22c1-46ae-a619-7674f76c3f84",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        120,
+        780
+      ],
+      "id": "2fa9a70b-ca4d-4efe-b367-c3dba5405bd2",
+      "name": "1H Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/voices",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "show_legacy",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "={{ $('Get Global Vars').first().json.elevenlabs_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        780
+      ],
+      "id": "9e9017f3-e2e1-489d-ba4b-7ca5053fd462",
+      "name": "Get Elevenlabs Voices",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/models",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "={{ $('Get Global Vars').first().json.elevenlabs_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        780
+      ],
+      "id": "6d539bac-3e75-45b2-8491-c2fcaf32ddcd",
+      "name": "Get Elevenlabs Models",
+      "executeOnce": true,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=http://{{ $('Get Global Vars').item.json.directus_service }}:8055/fields/ai_agents/model",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Global Vars').first().json.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"meta\": {\n    \"interface\": \"select-dropdown\",\n    \"options\": {\n      \"choices\": {{ \n        JSON.stringify($json.data.map(model => ({\n          \"text\": model.name,\n          \"value\": model.id\n        })))\n      }},\n      \"allowOther\": false\n    }\n  }\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        1100
+      ],
+      "id": "45a351d0-8bfe-47e8-b152-c3737b4d0c20",
+      "name": "Update Models",
+      "notesInFlow": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=http://{{ $('Get Global Vars').first().json.directus_service }}:8055/fields/ai_agents/elevenlabs_voice",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Global Vars').item.json.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"meta\": {\n    \"interface\": \"select-dropdown\",\n    \"options\": {\n      \"choices\": {{ \n        JSON.stringify($json.voices.map(voice => ({\n          \"text\": voice.name,\n          \"value\": voice.voice_id\n        })))\n      }},\n      \"allowOther\": false\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        780
+      ],
+      "id": "fcfc1b2b-a637-4455-840a-651db10faf04",
+      "name": "Update Voices",
+      "notesInFlow": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=http://{{ $('Get Global Vars').first().json.directus_service }}:8055/fields/ai_agents/elevenlabs_model",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Global Vars').first().json.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"meta\": {\n    \"interface\": \"select-dropdown\",\n    \"options\": {\n      \"choices\": {{ \n        JSON.stringify($('Get Elevenlabs Models').all().map(model => ({\n          \"text\": model.json.name,\n          \"value\": model.json.model_id\n        })))\n      }},\n      \"allowOther\": false\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        780
+      ],
+      "id": "1f9303d0-9c1f-4e25-9060-9f842e1e3173",
+      "name": "Update Elevenlabs Models",
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        680
+      ],
+      "id": "9d6791db-fd65-46d2-9c89-bd77e11b5169",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "timer",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        1420
+      ],
+      "id": "3b888299-51ff-4cfc-b8f6-042ef3b93ea4",
+      "name": "Set Timer Tool",
+      "webhookId": "76c56df0-890d-462c-b434-a5a83163c7e7"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.body.timer_seconds }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        1420
+      ],
+      "id": "8c6c7b2d-2138-4261-a6f0-f4615007603c",
+      "name": "Timer",
+      "webhookId": "6be01e27-3b1e-436c-9fa6-c3175005d4c2"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "core_chat_histories",
+          "mode": "list",
+          "cachedResultName": "core_chat_histories"
+        },
+        "limit": "={{ $json.body.mapping.system.context_window }}",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $json.body.mapping.system.conversations_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        520,
+        1420
+      ],
+      "id": "4813921b-39eb-4a6e-9914-82661bf4dba1",
+      "name": "Get History",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"{{ $('Set Timer Tool').item.json.body.mapping.system.model }}\",\n  \"messages\": {{ JSON.stringify(\n    (() => {\n      let msgs = $('Get History').all().map(item => {\n        let msg = { ...item.json.message };\n        msg.role = msg.type === 'human' ? 'user' : msg.type === 'ai' ? 'assistant' : msg.type;\n        Object.keys(msg).forEach(key => {\n          const value = msg[key];\n          if ((Array.isArray(value) && value.length === 0) || (typeof value === 'object' && value !== null && Object.keys(value).length === 0)) {\n            delete msg[key];\n          }\n        });\n        return msg;\n      });\n      let group1_ai = msgs.filter(m => m.type === 'ai' && m.content.includes(\"1 minuto\"));\n      let group1_human = msgs.filter(m => m.type === 'human' && m.content.toLowerCase().includes(\"agora de 1m\"));\n      let group2_ai = msgs.filter(m => m.type === 'ai' && m.content.includes(\"10 segundos\"));\n      let group2_human = msgs.filter(m => m.type === 'human' && m.content.toLowerCase().includes(\"add timer\"));\n      let finalMessages = [{role:\"system\",content:\"IMPORTANTE, Avise ao user que o timer esgotou\"}].concat(group1_ai, group1_human, group2_ai, group2_human);\n      return finalMessages.reverse();\n    })(), null, 2) }}\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        1420
+      ],
+      "id": "7a4e3155-36e2-4790-a7e8-0c720067697a",
+      "name": "Agent",
+      "executeOnce": true,
+      "credentials": {
+        "openRouterApi": {
+          "id": "HazROGudWX4X3jKd",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://{{ $('Set Timer Tool').first().json.body.mapping.system.chatwoot_service }}:3000/api/v1/accounts/{{ $('Set Timer Tool').first().json.body.mapping.chatwoot.account_id }}/conversations/{{ $('Set Timer Tool').first().json.body.mapping.chatwoot.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Set Timer Tool').first().json.body.mapping.chatwoot.bot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.choices[0].message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        1420
+      ],
+      "id": "6f3aae7c-ff87-45a2-8e3b-805a7735ae60",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 1100,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        1320
+      ],
+      "id": "66f28321-9ac0-4ee2-b40b-71949a2635b1",
+      "name": "Sticky Note24"
+    }
+  ],
+  "connections": {
+    "Chatwoot Input": {
+      "main": [
+        [
+          {
+            "node": "Switch ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch ": {
+      "main": [
+        [
+          {
+            "node": "Sender",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DLX Consumer": {
+      "main": [
+        [
+          {
+            "node": "Reset List ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Models": {
+      "main": [
+        [
+          {
+            "node": "Update Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Global Vars": {
+      "main": [
+        [
+          {
+            "node": "Get Models",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "n8n Backups",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Elevenlabs Voices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen Insert Users": {
+      "main": [
+        [
+          {
+            "node": "Get Global Vars 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Picture": {
+      "main": [
+        [
+          {
+            "node": "Upload Picture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Global Vars 2": {
+      "main": [
+        [
+          {
+            "node": "Download Picture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Picture": {
+      "main": [
+        [
+          {
+            "node": "Add Picture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n Backups": {
+      "main": [
+        [
+          {
+            "node": "Get Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Files": {
+      "main": [
+        [
+          {
+            "node": "Convert Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Files": {
+      "main": [
+        [
+          {
+            "node": "Get n8n Backups",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Schema",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Stacks",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Backups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Schema": {
+      "main": [
+        [
+          {
+            "node": "Get Schema Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get n8n Backups": {
+      "main": [
+        [
+          {
+            "node": "Append",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update GitHub": {
+      "main": [
+        [
+          {
+            "node": "Set n8n Backups",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Stacks Backups",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Schema Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Schema Backup": {
+      "main": [
+        [
+          {
+            "node": "Append",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Get Stacks Backups": {
+      "main": [
+        [
+          {
+            "node": "Append",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Append": {
+      "main": [
+        [
+          {
+            "node": "Update GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Stacks": {
+      "main": [
+        [
+          {
+            "node": "Get Stacks Backups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Backups": {
+      "main": [
+        [
+          {
+            "node": "Recover Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1H Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Global Vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Elevenlabs Voices": {
+      "main": [
+        [
+          {
+            "node": "Update Voices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Elevenlabs Models": {
+      "main": [
+        [
+          {
+            "node": "Update Elevenlabs Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Voices": {
+      "main": [
+        [
+          {
+            "node": "Get Elevenlabs Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Timer Tool": {
+      "main": [
+        [
+          {
+            "node": "Timer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timer": {
+      "main": [
+        [
+          {
+            "node": "Get History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get History": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:1H Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c0937b3c-5e28-4424-9071-a5327ae365d6",
+  "triggerCount": 5,
+  "tags": []
+}
