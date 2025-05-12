@@ -1,0 +1,3762 @@
+{
+  "createdAt": "2025-05-12T03:02:53.287Z",
+  "updatedAt": "2025-05-12T03:02:53.287Z",
+  "id": "BYwLLGVvl57bliuU",
+  "name": "Recuperador de Vendas V2",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "81ca6c4a-2e81-4376-b306-9d0881dd4f34",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        1680
+      ],
+      "id": "78e2f793-a2ad-485c-a2ee-c979f5b72b87",
+      "name": "Webhook",
+      "webhookId": "81ca6c4a-2e81-4376-b306-9d0881dd4f34"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Boleto gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Boleto gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "290e550f-7112-4cf8-a1b0-1ef6eb0aaafe",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PIX gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pix gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a65f84a4-420c-4042-8259-cbf92e5baa3a",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PicPay gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PicPay gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8f051c35-d5f7-4539-bdaf-643b9d043f87",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Nupay gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nupay gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5775a34c-8d20-4e6d-836d-83b7f285c250",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Compra recusada",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Compra recusada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "93e3b624-1f38-4846-baea-7765637f3fa0",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Carrinho abandonado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Carrinho abandonado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "46504d4a-d43c-488e-b318-278a895e1a9b",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Compra aprovada",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Compra aprovada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "11cee697-ea92-45ab-a231-46495cb5d476",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PIX expirado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PIX expirado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42335a14-33c1-4bc2-a936-7746de1981b0",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Boleto expirado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Boleto expirado"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -460,
+        1560
+      ],
+      "id": "d2f93116-b7a3-4ce1-9b11-0829999441db",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "cfa4f65f-cd5b-4e56-98e5-127f7cf5a54b",
+              "name": "Link Boleto",
+              "value": "={{ $json.body.payment.link }}",
+              "type": "string"
+            },
+            {
+              "id": "941cf6b5-8731-4d70-a088-f933bcdc96b8",
+              "name": "Cod barras",
+              "value": "={{ $json.body.payment.barcode }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        120
+      ],
+      "id": "316b6226-6a9b-4b06-b770-e4e89fc12bc3",
+      "name": "Boleto Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um boleto referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição. E vou te enviar o código do boleto novamente caso tenha tido algum problema..."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        120
+      ],
+      "id": "39f018c3-d995-42ed-83ac-5819b836ce09",
+      "name": "HTTP Request1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Boleto Dados').item.json['Telefone'] }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Boleto Dados').item.json['Cod barras'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        100
+      ],
+      "id": "985c2b95-d835-491a-a14c-fd136f51c131",
+      "name": "HTTP Request2",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        20
+      ],
+      "id": "a95126be-e428-4173-b691-5cc15ae43777",
+      "name": "Supabase"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request1').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        360
+      ],
+      "id": "dab1fb38-c422-4da7-8476-e4ac43616cae",
+      "name": "Supabase1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        360
+      ],
+      "id": "08394426-fe68-405a-a4c7-6276d964ad53",
+      "name": "Erro",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "941cf6b5-8731-4d70-a088-f933bcdc96b8",
+              "name": "Cod pix",
+              "value": "={{ $json.body.payment.qrcode }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        760
+      ],
+      "id": "e5e84743-5f88-4b63-9eed-58081e09245c",
+      "name": "Pix Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um Pix referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição. E vou te enviar o código do Pix novamente caso tenha tido algum problema..."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        760
+      ],
+      "id": "16a47907-060b-4dc4-b0d0-a933144e86ad",
+      "name": "HTTP Request3",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Pix Dados').item.json['Cod pix'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1460,
+        680
+      ],
+      "id": "668d210e-9878-47aa-9f22-757644d6153e",
+      "name": "HTTP Request4",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Pix Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Pix Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Pix Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Pix Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        660
+      ],
+      "id": "f1daa8ed-2442-439a-b891-07bca5d412b4",
+      "name": "Supabase2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1740,
+        1040
+      ],
+      "id": "635cba5a-808e-49db-ac5e-cc0837f9ee81",
+      "name": "Erro1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um pagamento no Picpay referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        1460
+      ],
+      "id": "e94a1eb2-9d5f-4219-85df-e2ba371ea1f8",
+      "name": "HTTP Request5",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1440
+      ],
+      "id": "970c44bd-3dd3-4da4-8a90-3ea654d45d59",
+      "name": "Supabase4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        1700
+      ],
+      "id": "4b6e4857-1ca4-4e7b-ab9b-c8ca90ba78b2",
+      "name": "Erro2",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        1460
+      ],
+      "id": "30bf91ec-2452-4912-8ec1-c4eefeb8b9f9",
+      "name": "Picpay Dados"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        2140
+      ],
+      "id": "2cf7b26c-ba84-4415-8a13-e5e60b48be85",
+      "name": "Nupay Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um pagamento no Nupay referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        2140
+      ],
+      "id": "d5b09dea-87b2-4262-8e0f-5d3646ee5718",
+      "name": "HTTP Request6",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        2120
+      ],
+      "id": "ee753a44-09b6-48b8-b533-e4960253b675",
+      "name": "Supabase6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        2340
+      ],
+      "id": "0088e7e2-87e9-4234-b09c-93f4118efc93",
+      "name": "Erro3",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## BOLETO GERADO \n### -Enviar mensagem informando código do boleto gerado.\n### -Salvar Lead no banco de dados do Supabase\n",
+        "height": 520,
+        "width": 2820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "14a68d09-7a13-4608-964f-9c0c3075d3f9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## PIX GERADO \n### -Enviar mensagem informando código do boleto gerado.\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 620,
+        "width": 2820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        600
+      ],
+      "id": "e18c3441-e403-483c-8ffe-0116118fb778",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## PICPAY GERADO \n### -Enviar mensagem informando que a compra foi gerada pelo PicPay, e oferecendo suporte para dúvidas (pode integrar um bot de IA para fazer a conversão).\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 600,
+        "width": 2820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1280
+      ],
+      "id": "245f666a-cb81-4344-8ac8-66fb8499264d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## NUPAY GERADO \n### -Enviar mensagem informando que a compra foi gerada pelo NuPay, e oferecendo suporte para dúvidas (pode integrar um bot de IA para fazer a conversão).\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 2840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1940
+      ],
+      "id": "320f70af-76fd-41da-ad48-4679fb68c7d4",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## COMPRA RECUSADA \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 2840,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2560
+      ],
+      "id": "bd130db3-8531-4a31-b00c-b5bd619bbde8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "a532f8cb-cd37-4cfb-8d56-987a8d93a9f3",
+              "name": "Meio pagamento",
+              "value": "={{ $json.body.payment_method }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "234a12a5-4b0b-48ba-8464-886692fa153d",
+              "name": "bandeira",
+              "value": "={{ $json.body.payment.brand }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "a2a6859a-d2a3-4901-b84a-cb59f641105f",
+              "name": "id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "url checkout",
+              "value": "={{ $json.body.checkout_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        2800
+      ],
+      "id": "82fcf09c-a443-43b6-857a-19fd202b83a6",
+      "name": "Compra Recusada"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Pix Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Pix Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Pix Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Pix Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request3').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        1000
+      ],
+      "id": "586c4c71-0c6d-49d5-9ead-fd3f26ef5806",
+      "name": "Supabase3"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request5').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1700
+      ],
+      "id": "f95a5cce-ebf7-4e99-8cad-a432ca5af009",
+      "name": "Supabase5"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request6').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        2340
+      ],
+      "id": "9e8b34e8-b128-45f1-9d08-4943671a7f69",
+      "name": "Supabase7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você chegou na reta final para participar da comunidade: {{ $json.produtos[0].name }} e não finalizou a compra. Estou passando aqui para te dar 30% OFF na comunidade. Basta garantir sua vaga pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        2800
+      ],
+      "id": "093757e8-3aac-425e-81d1-7aba3b93519c",
+      "name": "HTTP Request7",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        2940
+      ],
+      "id": "a61f20cd-a83c-4e44-b5cc-ebc6aff061b7",
+      "name": "Erro4",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra Recusada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request7').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        2940
+      ],
+      "id": "69322a8c-a8c3-4f07-9c72-a7a2b1e203c0",
+      "name": "Supabase9"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - compra recusada",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome completo",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Email }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Compra Recusada').item.json.produtos }}"
+            },
+            {
+              "fieldId": "id venda",
+              "fieldValue": "={{ $('Compra Recusada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "url checkout",
+              "fieldValue": "={{ $('Compra Recusada').item.json['url checkout'] }}"
+            },
+            {
+              "fieldId": "evento",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "meio pagamento",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Meio pagamento'] }}"
+            },
+            {
+              "fieldId": "valor total",
+              "fieldValue": "={{ $('Compra Recusada').item.json['valor total'] }}"
+            },
+            {
+              "fieldId": "bandeira",
+              "fieldValue": "={{ $('Compra Recusada').item.json.bandeira }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        2660
+      ],
+      "id": "5388d874-c19b-4b0a-b3cb-4e22a56eb3f8",
+      "name": "Supabase8"
+    },
+    {
+      "parameters": {
+        "content": "## CARRINHO ABANDONADO \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 2820,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3180
+      ],
+      "id": "fbdaeaf5-92ea-40de-b67c-08cabca21337",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "url checkout",
+              "value": "={{ $json.body.checkout_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        3420
+      ],
+      "id": "a1e99322-b51c-4063-9961-e21e024685c8",
+      "name": "Carrinho Abandonado"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você chegou na reta final para participar da comunidade: {{ $json.produtos[0].name }} e n8n, e não finalizou a compra. mas parece que não finalizou a compra. Alguma dúvida? Estou aqui para te ajudar! 🤓"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        3380
+      ],
+      "id": "54a32796-678a-48da-946f-a836964c45d9",
+      "name": "HTTP Request8",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        3520
+      ],
+      "id": "174dac00-c495-416a-9605-9453688c1a30",
+      "name": "Erro5",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request8').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        3520
+      ],
+      "id": "9c1bae0e-bc38-4a0e-98d2-a371bd5bdc1c",
+      "name": "Supabase10"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - carrinho abandonado",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome completo",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Email }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.produtos }}"
+            },
+            {
+              "fieldId": "url checkout",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['url checkout'] }}"
+            },
+            {
+              "fieldId": "evento",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Evento }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2340,
+        3200
+      ],
+      "id": "e0976c70-4617-4aa4-a9c8-15bf4b1b85a1",
+      "name": "Supabase11"
+    },
+    {
+      "parameters": {
+        "content": "## COMPRA APROVADA \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 3800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3800
+      ],
+      "id": "a4c4d638-3409-4708-ab4c-ecaa46953241",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui!\n\n🎉 Bem-vindo(a) ao curso Automações com IA e n8n!\n\nVocê acaba de dar um passo incrível rumo à automação dos seus processos e à conquista de mais tempo e produtividade! 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        4060
+      ],
+      "id": "22367d01-cca1-452f-a17a-50a824878276",
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1900,
+        4180
+      ],
+      "id": "9395db29-49d7-49e8-a344-e21915e49cef",
+      "name": "Erro6",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra aprovada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2800,
+        4180
+      ],
+      "id": "a0bd6349-3f84-4ea0-8870-e879a41fbc6a",
+      "name": "Supabase12"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - Compra Aprovada",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra aprovada').item.json.id_venda }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "utm",
+              "fieldValue": "={{ $('Compra aprovada').item.json.utm }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Compra aprovada').item.json.produtos }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        3900
+      ],
+      "id": "1764f746-10f3-4190-a2f8-3bd6ac944504",
+      "name": "Supabase13",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        4080
+      ],
+      "id": "b43a07dc-6c8d-4923-9db6-b78ab71a178b",
+      "name": "Compra aprovada"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Compra aprovada\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=📌 Aqui estão seus próximos passos:\n\n1️⃣ Acesse a área de membros com os templates e +50 aulas: (https://app.kirvano.com/)\n\n2️⃣ Confira os primeiros módulos e veja como começar!\n\n3️⃣ Entre no grupo exclusivo de alunos: (https://t.me/+ZN-EJmYEpJ0wYzQx)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        3860
+      ],
+      "id": "e259a25c-2b56-4d9c-bb26-36e95f6e7d44",
+      "name": "HTTP Request9",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Compra aprovada\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=💬 Qualquer dúvida, é só chamar! Estamos aqui para te ajudar nessa jornada. Vamos nessa? 💪"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        3860
+      ],
+      "id": "91978625-d001-4269-9d94-0ed51dba13d2",
+      "name": "HTTP Request10",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "email": "={{ $('Compra aprovada').item.json.Email }}",
+        "createContactAttributes": {
+          "attributesValues": [
+            {
+              "fieldName": "NOME",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'].split(\" \").first() }}"
+            },
+            {
+              "fieldName": "SOBRENOME",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'].split(\" \").last() }}"
+            },
+            {
+              "fieldName": "SMS",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            }
+          ]
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1900,
+        3920
+      ],
+      "id": "b2e42da1-1f9b-4761-aaa5-d766c9e06835",
+      "name": "Brevo",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 1,
+        "receipients": "={{ $('Compra aprovada').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        3900
+      ],
+      "id": "9071e5c8-16f3-4554-9ec0-6ac6048e4a1d",
+      "name": "Brevo1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Carrinho Abandonado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        2380,
+        3420
+      ],
+      "id": "5abd3e65-b939-485d-9709-e8fa1360f002",
+      "name": "Brevo2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        4640
+      ],
+      "id": "7ea7065b-8fa6-4747-9259-22c8c44e9c75",
+      "name": "PIX expirado"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('PIX expirado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        4600
+      ],
+      "id": "70d74747-de12-4cec-9641-bc9c31bd6687",
+      "name": "Brevo3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=⚠️ {{ $item(\"0\").$node[\"PIX expirado\"].json[\"Nome completo\"] }}, seu boleto do curso Automações com IA e n8n expirou. Mas não se preocupe, ainda dá tempo de garantir sua vaga!\n\n🎁 E se eu te contar que os bônus continuam valendo? Templates, créditos VPS, grupo exclusivo... tudo isso te espera!\n\n👉 Gere um novo boleto aqui:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        4640
+      ],
+      "id": "28dcfbb5-29da-4e1a-81cf-7d047c772f4b",
+      "name": "HTTP Request11",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"PIX expirado\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/feb37686-d086-4a25-b507-2b47650d44b9"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        4640
+      ],
+      "id": "0932d5c8-699f-4467-88b1-17f0aee23f95",
+      "name": "HTTP Request12",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Boleto expirado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        5260
+      ],
+      "id": "fa2343cc-f158-44e0-84d4-d0f891357f4a",
+      "name": "Brevo4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=⚠️ {{ $item(\"0\").$node[\"Boleto expirado\"].json[\"Nome completo\"] }}, seu pix do curso Automações com IA e n8n expirou. Mas não se preocupe, ainda dá tempo de garantir sua vaga!\n\n🎁 E se eu te contar que os bônus continuam valendo? Templates, créditos VPS, grupo exclusivo... tudo isso te espera!\n\n👉 Gere um novo pix aqui:"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        5260
+      ],
+      "id": "f0a2e1d3-39ee-4eaf-9908-39af0bc1570a",
+      "name": "HTTP Request13",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Boleto expirado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        5260
+      ],
+      "id": "7910e033-d971-4613-aa01-84a4d1df41db",
+      "name": "HTTP Request14",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        5260
+      ],
+      "id": "bfb6b6f5-2d33-4948-bd74-d0d0e9a8d685",
+      "name": "Boleto expirado"
+    },
+    {
+      "parameters": {
+        "content": "## PIX EXPIRADO",
+        "height": 560,
+        "width": 2220,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        4500
+      ],
+      "id": "2eccc0bd-a61e-4e56-9c5b-e398fb1e211f",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## BOLETO EXPIRADO\n",
+        "height": 560,
+        "width": 1940,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        5140
+      ],
+      "id": "34e492a7-beed-472e-8cb3-0755f670f137",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2520,
+        3540
+      ],
+      "id": "9c7019c5-ca26-49f1-9d32-aa80a6b7299f",
+      "name": "HTTP Request15",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        2700
+      ],
+      "id": "268a2be3-ec82-4a16-a979-025302dbcb03",
+      "name": "HTTP Request16",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Compra Recusada').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        2660
+      ],
+      "id": "e274a1e3-5f42-4453-8259-31d7daad2838",
+      "name": "Brevo5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1660,
+        200
+      ],
+      "id": "baf0c39f-db13-4b34-a053-16deeb0a0289",
+      "name": "Wait",
+      "webhookId": "af89092d-6cae-4a28-b208-663be68ec938"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Boleto Dados\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=💡 {{ $item(\"0\").$node[\"Boleto Dados\"].json[\"Nome Completo\"] }}, sabia que com o nosso curso você pode criar automações completas sem precisar saber programar? E ainda ganha:\n\n-Templates prontos 🛠️\n-$200 de crédito na VPS 💰\n-Acesso ao grupo exclusivo de membros 🤝\n\nGaranta sua vaga no preço de lançamento! 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2040,
+        160
+      ],
+      "id": "94525b45-1498-4382-862f-6e7201cbcd08",
+      "name": "HTTP Request17",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        360
+      ],
+      "id": "0bfad0ce-fd81-4821-a53c-0f87fca2ee9d",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=💡 {{ $item(\"0\").$node[\"Carrinho Abandonado\"].json[\"Nome completo\"] }}, sabia que com o nosso curso você pode criar automações completas sem precisar saber programar? E ainda ganha:\n\n-Templates prontos 🛠️\n-$200 de crédito na VPS 💰\n-Acesso ao grupo exclusivo de membros 🤝\n\nGaranta sua vaga no preço de lançamento! 👇"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        3220
+      ],
+      "id": "06e1bc88-3459-4ccc-87c0-96bcc9b9e1a1",
+      "name": "HTTP Request18",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        980,
+        3280
+      ],
+      "id": "4a74e137-eb19-40d9-918b-b87ad21b3c5e",
+      "name": "Wait1",
+      "webhookId": "8fd020e6-d41f-4fa8-8b49-b75406146f6c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/feb37686-d086-4a25-b507-2b47650d44b9"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        3200
+      ],
+      "id": "22c61f81-8554-424b-be78-214012cd0f83",
+      "name": "HTTP Request19",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1660,
+        3200
+      ],
+      "id": "2de0a737-0363-4b7e-ae7c-cf201d67365a",
+      "name": "Wait2",
+      "webhookId": "8fd020e6-d41f-4fa8-8b49-b75406146f6c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=💡 {{ $item(\"0\").$node[\"Pix Dados\"].json[\"Nome Completo\"] }}, sabia que com o nosso curso você pode criar automações completas sem precisar saber programar? E ainda ganha:\n\n-Templates prontos 🛠️\n-$200 de crédito na VPS 💰\n-Acesso ao grupo exclusivo de membros 🤝\n\nGaranta sua vaga no preço de lançamento! 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        660
+      ],
+      "id": "5af585e6-ef00-487c-b52c-2cad201df101",
+      "name": "HTTP Request20",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1780,
+        640
+      ],
+      "id": "51a6480b-6b02-4c58-acbe-d504a43a124c",
+      "name": "Wait3",
+      "webhookId": "877a4afc-1d86-4d73-a144-befaaac0a7ab"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        4640
+      ],
+      "id": "283f4ffb-b9ea-4eb3-8303-0706f6ff002f",
+      "name": "Wait4",
+      "webhookId": "b22d7ad2-2f3b-488a-a4f5-4ffe874627f9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"PIX expirado\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=✨ Última chance, {{ $item(\"0\").$node[\"PIX expirado\"].json[\"Nome completo\"] }}! Não perca a oportunidade de dominar automações com IA e n8n. Bora transformar sua rotina e seus negócios? 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        4640
+      ],
+      "id": "4b9bcb08-aeac-464d-8e60-cb0d83e53c1b",
+      "name": "HTTP Request22",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1380,
+        4640
+      ],
+      "id": "43618656-f07b-4822-9527-e42a990c3ec4",
+      "name": "Wait5",
+      "webhookId": "1b63baa0-f1b1-4f3f-bdec-96762043e603"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        5260
+      ],
+      "id": "3ec7acb3-917d-4d5d-97c6-176a42edeb55",
+      "name": "Wait6",
+      "webhookId": "0e57ab58-5c1e-4c16-8ee3-3265817061bd"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1260,
+        5260
+      ],
+      "id": "e2715d9d-1767-44e8-9ce1-3aebbb3beeab",
+      "name": "Wait7",
+      "webhookId": "4a6f118b-5532-4827-82fe-94c377cf4ad8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Boleto expirado\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=✨ Última chance, {{ $item(\"0\").$node[\"Boleto expirado\"].json[\"Nome completo\"] }}! Não perca a oportunidade de dominar automações com IA e n8n. Bora transformar sua rotina e seus negócios? 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1460,
+        5260
+      ],
+      "id": "5b1e2a9f-b14b-4a15-ba6a-afd6eb598190",
+      "name": "HTTP Request23",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        3940
+      ],
+      "id": "c66273ca-9786-40ad-90c4-e4d176a65df3",
+      "name": "Wait8",
+      "webhookId": "c76f4093-ff9b-4c45-9c12-24f2eae4c523"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1400,
+        3820
+      ],
+      "id": "53b3e1b2-f024-4831-83a2-6bb0e1ef2c45",
+      "name": "Wait9",
+      "webhookId": "96081462-9788-4b67-bfaf-17a5bbcea3d0"
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2680,
+        3900
+      ],
+      "id": "179c914b-b015-452b-ba59-639481efae22",
+      "name": "Wait10",
+      "webhookId": "40b4a57e-7c43-4ac3-a536-cdbae0a2ee7c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Compra aprovada\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=👋 Oi {{ $item(\"0\").$node[\"Compra aprovada\"].json[\"Nome completo\"] }}, tudo bem por aí? Só passando pra saber como está sua experiência com o curso até agora. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2980,
+        3900
+      ],
+      "id": "667b07eb-a58b-4583-a87f-2faa88ea80ac",
+      "name": "HTTP Request21",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3220,
+        3880
+      ],
+      "id": "63dfbdf4-d928-408f-acac-deb359d2744f",
+      "name": "Wait11",
+      "webhookId": "ca9a1091-fd34-40c4-9d23-b3e24dba9a2c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $item(\"0\").$node[\"Compra aprovada\"].json[\"Telefone\"] }}"
+            },
+            {
+              "name": "text",
+              "value": "=Já deu uma olhadinha nos primeiros módulos? 📚"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3500,
+        3880
+      ],
+      "id": "b27763a9-ae2c-49f0-a0a6-9c98577aa733",
+      "name": "HTTP Request24",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3900,
+        3840
+      ],
+      "id": "c0ae2878-f53f-4515-aee3-ddd62ef0fc05",
+      "name": "No Operation, do nothing1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Boleto Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pix Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Picpay Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nupay Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compra Recusada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Carrinho Abandonado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compra aprovada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PIX expirado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Boleto expirado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Boleto Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro1": {
+      "main": [
+        [
+          {
+            "node": "Supabase3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pix Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Supabase4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro2": {
+      "main": [
+        [
+          {
+            "node": "Supabase5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Picpay Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Supabase6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro3": {
+      "main": [
+        [
+          {
+            "node": "Supabase7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nupay Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compra Recusada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request16",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro4": {
+      "main": [
+        [
+          {
+            "node": "Supabase9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request8": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro5": {
+      "main": [
+        [
+          {
+            "node": "Supabase10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carrinho Abandonado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro6": {
+      "main": [
+        [
+          {
+            "node": "Supabase12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compra aprovada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request9": {
+      "main": [
+        [
+          {
+            "node": "Wait9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request10": {
+      "main": [
+        [
+          {
+            "node": "Brevo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase13": {
+      "main": [
+        [
+          {
+            "node": "Wait10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brevo": {
+      "main": [
+        [
+          {
+            "node": "Brevo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PIX expirado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request11": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request12": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request13": {
+      "main": [
+        [
+          {
+            "node": "Wait6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request14": {
+      "main": [
+        [
+          {
+            "node": "Wait7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Boleto expirado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request16": {
+      "main": [
+        [
+          {
+            "node": "Brevo5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brevo5": {
+      "main": [
+        [
+          {
+            "node": "Supabase8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brevo1": {
+      "main": [
+        [
+          {
+            "node": "Supabase13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request17",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request18": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request19": {
+      "main": [
+        [
+          {
+            "node": "Supabase11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request19",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request20": {
+      "main": [
+        [
+          {
+            "node": "Supabase2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request17": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request22",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request23",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait8": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait9": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait10": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request21": {
+      "main": [
+        [
+          {
+            "node": "Wait11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait11": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request24",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request24": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Pix Dados": [
+      {
+        "json": {
+          "Evento": "PIX gerado",
+          "Nome Completo": "João da Silva",
+          "Cod pix": "00020201011325br.gov.bcb.pixBADE53BA66C4121804702BR5823KIRVANO PAGAMENTOS LTDA***7213D5D7",
+          "Produtos": [
+            {
+              "id": "4dc82838-018b-4eb2-9254-647107dfd11d",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "0941d93c-65c9-424f-8fa6-94635cf4bc39",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/088c16f3-d351-4e7b-8b69-12becf4b2820/cover-1734469705288.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "f8656bc9-7caf-46d2-8058-7aec66742e20",
+              "name": "Excel para Investidores",
+              "offer_id": "1e8afdb6-2753-4584-be34-90b3b433edbe",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/ab6e9c75-6b60-4fca-8fdb-4bbca058f464/cover-1734469705288.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 18:08:25"
+        }
+      }
+    ],
+    "Picpay Dados": [
+      {
+        "json": {
+          "Evento": "PicPay gerado",
+          "Nome Completo": "João da Silva",
+          "Produtos": [
+            {
+              "id": "3f1691e1-9c1f-467f-9298-c7db5c1b7846",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "ca05ebb1-07e1-46a6-b297-a7775d230efb",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/a028fab1-3792-459c-85fe-663a163108b7/cover-1734470488256.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "ad4dff9a-aa11-472e-82bc-35d7c4a09b80",
+              "name": "Excel para Investidores",
+              "offer_id": "eb4631e2-d02a-4c3e-a443-68e1b195f23c",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/ae282f6d-b269-47a5-9fa6-d529706157f0/cover-1734470488256.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 18:21:28"
+        }
+      }
+    ],
+    "Nupay Dados": [
+      {
+        "json": {
+          "Evento": "Nupay gerado",
+          "Nome Completo": "João da Silva",
+          "Produtos": [
+            {
+              "id": "71dbdef9-9dbf-409e-a89f-1f9bc8000787",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "b02fbe84-109e-4ea5-ba82-3bf89e9b2d05",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/35843d4b-dbe9-40c0-ac58-8819d90543db/cover-1734483935243.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "c1dbcd81-0ed1-4b2a-8bca-f5441a6f37e0",
+              "name": "Excel para Investidores",
+              "offer_id": "931648cb-506d-4a7c-ac75-fc925826ff2f",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/9059ab22-eae3-4a27-99d7-ac422b7363f4/cover-1734483935243.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 22:05:35"
+        }
+      }
+    ],
+    "Compra Recusada": [
+      {
+        "json": {
+          "Nome completo": "João da Silva",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Evento": "Compra recusada",
+          "Meio pagamento": "CREDIT_CARD",
+          "valor total": "R$ 169,80",
+          "bandeira": "visa",
+          "produtos": [
+            {
+              "id": "9cc4b41e-1bc5-4445-a49b-bbc918c9e566",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "df8dbb54-b078-4d79-8c82-d5df4a2b69db",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/37d02536-74b4-4504-b01e-627248488996/cover-1734484201735.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "0de9bfcf-e466-4db1-9db2-5508c908fb05",
+              "name": "Excel para Investidores",
+              "offer_id": "aa56b52f-9ad0-48c4-bf06-b9a431a32e3c",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/b49232a6-e563-4dfb-8ef9-7d8fc610ca6e/cover-1734484201735.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "data": "2024-12-17 22:10:01",
+          "id venda": "D2RP8RQ7",
+          "url checkout": "https://pay.kirvano.com/recovery/81cf1cb2-e8d6-4a58-ae65-6b3ccd1b26cf"
+        }
+      }
+    ]
+  },
+  "versionId": "828f0de9-904f-43ab-bf39-91e62d9ff1ee",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-05-12T03:02:47.642Z",
+      "updatedAt": "2025-05-12T03:02:47.642Z",
+      "id": "J0enshMRxKm5itw6",
+      "name": "GgNocode"
+    }
+  ]
+}
