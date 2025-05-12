@@ -1,0 +1,341 @@
+{
+  "createdAt": "2025-05-12T01:38:38.111Z",
+  "updatedAt": "2025-05-12T01:38:38.111Z",
+  "id": "VnQerFzWXYdf61qW",
+  "name": "Analise de Vídeo do Youtube",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ytube",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0bdcd5fb-8530-4b13-a7d0-04fc70df3d06",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        400,
+        -260
+      ],
+      "webhookId": "9024e29e-9080-4cf5-9a6b-0d918468f195",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {},
+      "id": "289e5af8-5211-4e5b-864a-3b316641ab3e",
+      "name": "YouTube Transcript",
+      "type": "n8n-nodes-youtube-transcription.youtubeTranscripter",
+      "position": [
+        1200,
+        -260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "transcript",
+        "options": {}
+      },
+      "id": "1d2a89c7-8df5-4760-bce3-17233460765c",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        600,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6ad20fef-8d98-4962-b88b-87050e0942ff",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        1600,
+        -120
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.title }}\n{{ $json.youtubeUrl }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "7886bfef-af0e-4c5a-a49e-8f3d65272e53",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1600,
+        120
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "8a5b9cf2-4328-4ae3-a9d7-ccf7fbfd6072"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3ee42e4c-3cee-4934-97e7-64c96b5691ed",
+              "name": "youtubeUrl",
+              "type": "string",
+              "value": "={{ $json.body.youtubeUrl }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4370cbd3-b449-40fe-b93d-de8382a44744",
+      "name": "Get YouTube URL",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        600,
+        -260
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "jsCode": "const extractYoutubeId = (url) => {\n // Regex pattern that matches both youtu.be and youtube.com URLs\n const pattern = /(?:youtube\\.com\\/(?:[^\\/]+\\/.+\\/|(?:v|e(?:mbed)?)\\/|.*[?&]v=)|youtu\\.be\\/)([^\"&?\\/\\s]{11})/;\n const match = url.match(pattern);\n return match ? match[1] : null;\n};\n\n// Input URL from previous node\nconst youtubeUrl = items[0].json.youtubeUrl; // Adjust this based on your workflow\n\n// Process the URL and return the video ID\nreturn [{\n json: {\n videoId: extractYoutubeId(youtubeUrl)\n }\n}];\n"
+      },
+      "id": "9aac9697-c6b4-4099-a9ba-fd75095b8cdf",
+      "name": "YouTube Video ID",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        800,
+        -260
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.videoId }}",
+        "options": {}
+      },
+      "id": "72161c12-b374-41c9-966c-7b59e84e214f",
+      "name": "Get YouTube Video",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        1000,
+        -260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6e9171f2-2955-4b68-9628-8923a6c123b3",
+      "name": "gpt-4o-mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1020,
+        180
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Please analyze the given text and create a structured summary following these guidelines:\n\n1. Break down the content into main topics using Level 2 headers (##)\n2. Under each header:\n - List only the most essential concepts and key points\n - Use bullet points for clarity\n - Keep explanations concise\n - Preserve technical accuracy\n - Highlight key terms in bold\n3. Organize the information in this sequence:\n - Definition/Background\n - Main characteristics\n - Implementation details\n - Advantages/Disadvantages\n4. Format requirements:\n - Use markdown formatting\n - Keep bullet points simple (no nesting)\n - Bold important terms using **term**\n - Use tables for comparisons\n - Include relevant technical details\n\nPlease provide a clear, structured summary that captures the core concepts while maintaining technical accuracy.\n\nHere is the text: {{ $json.concatenated_text\n }}",
+        "batching": {}
+      },
+      "id": "eba86e02-972c-4ada-900d-547fa39c4f90",
+      "name": "Summarize & Analyze Transcript",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1000,
+        0
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "text",
+              "separateBy": " "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7316fa54-3f88-4578-baad-2bec262ea87c",
+      "name": "Concatenate",
+      "type": "n8n-nodes-base.summarize",
+      "position": [
+        800,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf132004-6636-411f-9d85-0c696fda84c4",
+              "name": "summary",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "id": "63c8d0e3-685c-488a-9b45-363cf52479ea",
+              "name": "topics",
+              "type": "array",
+              "value": "=[]"
+            },
+            {
+              "id": "171f30cf-34e9-42f3-8735-814024bfde0b",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $('Get YouTube Video').item.json.snippet.title }}"
+            },
+            {
+              "id": "7f26f5a3-e695-49d1-b1e8-9260c31f1b3d",
+              "name": "description",
+              "type": "string",
+              "value": "={{ $('Get YouTube Video').item.json.snippet.description }}"
+            },
+            {
+              "id": "d0594232-cb39-453c-b015-3b039c098e1f",
+              "name": "id",
+              "type": "string",
+              "value": "={{ $('Get YouTube Video').item.json.id }}"
+            },
+            {
+              "id": "17b6ca08-ce89-4467-bd25-0d2d182f7a8b",
+              "name": "youtubeUrl",
+              "type": "string",
+              "value": "={{ $('Webhook').item.json.body.youtubeUrl }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af258ca1-53d2-45f7-b8e4-5ed3c3eeaf4e",
+      "name": "Response Object",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1360,
+        0
+      ],
+      "typeVersion": 3.4
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get YouTube URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Concatenate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Concatenate": {
+      "main": [
+        [
+          {
+            "node": "Summarize & Analyze Transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4o-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarize & Analyze Transcript",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get YouTube URL": {
+      "main": [
+        [
+          {
+            "node": "YouTube Video ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response Object": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Video ID": {
+      "main": [
+        [
+          {
+            "node": "Get YouTube Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize & Analyze Transcript": {
+      "main": [
+        [
+          {
+            "node": "Response Object",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "22147789-ab18-46dc-8e49-dadddd972c2b",
+  "triggerCount": 0,
+  "tags": []
+}
