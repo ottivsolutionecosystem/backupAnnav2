@@ -1,0 +1,341 @@
+{
+  "createdAt": "2025-05-12T01:27:30.626Z",
+  "updatedAt": "2025-05-12T01:27:30.626Z",
+  "id": "1EE5BGZ4ggkI7HpG",
+  "name": "Agente de Resumo de conversa",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        180,
+        220
+      ],
+      "id": "a90b5e71-15c2-49ed-a4bb-4874553401af",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "N8N [gg] - historico",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_cliente",
+              "condition": "eq",
+              "keyValue": "553195495346@s.whatsapp.net"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        620,
+        220
+      ],
+      "id": "29edb6d0-eeef-4e5d-a0bc-938459ff8974",
+      "name": "buscarCliente1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "vmbLlYURN86tjFUz",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=[\n  {\n    \"role\": \"system\",\n    \"content\": \"Você é um assistente especializado em atendimento ao cliente. Sua tarefa é analisar o histórico de mensagens e identificar ações necessárias para continuar o atendimento.\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Aqui está o histórico de mensagens:\\n\\n{{ $('Code1').first().json.summary }}\\n\\nCom base nisso, gere um resumo e identifique ações importantes para prosseguir o atendimento.\"\n  }\n]\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1360,
+        220
+      ],
+      "id": "a8ba988b-c418-489b-9a11-75b3857f07e8",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "AI4IQqSjjt7NDuVK",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.all().flatMap(node => node.json);\n\n// Organizar mensagens por ordem de envio\nmessages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));\n\nlet lastMessage = messages[messages.length - 1]; // Última mensagem no histórico\nlet unansweredMessages = messages.filter(msg => msg.resposta_agente === null && msg.msg_cliente !== null);\nlet lastAgentReply = messages.reverse().find(msg => msg.resposta_agente !== null);\n\n// Criar um resumo\nlet summary = `📌 **Resumo do Histórico do Cliente:**\\n\\n`;\nsummary += `🆔 Cliente: ${lastMessage.nome_cliente}\\n`;\nsummary += `📅 Última interação: ${lastMessage.created_at}\\n`;\n\nif (unansweredMessages.length > 0) {\n    summary += `🚨 **Mensagens pendentes de resposta**: ${unansweredMessages.length}\\n`;\n    summary += `📩 Última mensagem do cliente: \"${lastMessage.msg_cliente}\"\\n`;\n} else {\n    summary += `✅ **Sem mensagens pendentes**. Atendimento atualizado.\\n`;\n}\n\nif (lastAgentReply) {\n    summary += `💬 Última resposta do agente: \"${lastAgentReply.resposta_agente}\"\\n`;\n}\n\nreturn [{ summary }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        220
+      ],
+      "id": "0044f29e-5bc7-484e-b4b1-51304b234561",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.ggnocode.com/message/sendText/João Teles - teste 1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=553195495346@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.resumo }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2620,
+        220
+      ],
+      "id": "9232684e-3e2b-47d2-a0ad-0d9523688be2",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d0ce3f1a-3df2-4d4f-aca2-07c6067ca28b",
+              "name": "resumo",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        220
+      ],
+      "id": "57301aa7-688f-4f62-9273-cfde95559012",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        220
+      ],
+      "id": "07cc0c29-da2c-4d61-adb9-256b2e296d29",
+      "name": "Wait1",
+      "webhookId": "6e1c0d51-e63c-4815-8bcb-4b3c2305aed1"
+    },
+    {
+      "parameters": {
+        "content": "# RESUMO DA CONVERSA DO AGENTE",
+        "height": 600,
+        "width": 2820,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "2318ef50-86d8-4ab3-9cc2-a674c06941b8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## BUSCA HISTÓRICO",
+        "height": 260,
+        "width": 280,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        520,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "6778e61f-150b-4b1f-9412-59541d040425",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## RESUMO 1",
+        "height": 260,
+        "width": 280,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "5daf69a4-d8f7-4b43-a98c-7f6dfb1dc9c7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## CHAT MODEL",
+        "height": 260,
+        "width": 340,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1320,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "ec540ae4-3473-4dab-8406-773e5c5b007c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## ENVIA WHATS",
+        "height": 260,
+        "width": 260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2540,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "ac9ef63e-7deb-451f-9d99-5037f686dd83",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## SET DATA",
+        "height": 260,
+        "width": 260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "ab2c2cce-0333-4686-bfa1-94032de0fcdc",
+      "name": "Sticky Note5"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "buscarCliente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscarCliente1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a49ba5ee-8810-4b92-a85d-65979ef2ee82",
+  "triggerCount": 0,
+  "tags": []
+}
