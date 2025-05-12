@@ -1,0 +1,24 @@
+version: '3.8'
+
+services: 
+  site_ottiv:
+    image: ottiv/site_ottv:1.0
+    ports:
+      - "3010:80"
+    networks:
+      - externa
+      - interna
+    deploy: 
+      labels: 
+        traefik.enable: "true"
+        traefik.http.routers.site_ottiv.rule: "Host(`ottiv.io`)"
+        traefik.http.routers.site_ottiv.entrypoints: "websecure"
+        traefik.http.routers.site_ottiv.tls: "true"
+        traefik.http.routers.site_ottiv.tls.certresolver: "le"
+        traefik.http.services.site_ottiv.loadbalancer.server.port: 80
+
+networks:
+  interna:
+    external: true
+  externa:
+    external: true
