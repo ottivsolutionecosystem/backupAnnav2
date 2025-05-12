@@ -1,0 +1,487 @@
+{
+  "createdAt": "2025-05-12T03:01:26.286Z",
+  "updatedAt": "2025-05-12T03:01:26.286Z",
+  "id": "KtNss0w5lrR7ZYnC",
+  "name": "Agente Disparador",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        620,
+        60
+      ],
+      "id": "3f0a96a3-04bc-40f2-bfe4-7c4b63a667f1",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "<CLIETNE></CLIETNE>",
+        "options": {
+          "systemMessage": "= Sua clínica pode estar perdendo dinheiro sem perceber!\n\n🚀 Sua clínica pode estar perdendo dinheiro sem perceber!\n\nJá imaginou uma I.A. que agenda pacientes sozinha, reduz faltas e ainda aumenta seu faturamento? Tudo isso sem sobrecarregar sua secretária!\n\nE o melhor? Essa tecnologia já é realidade! Me conta: onde a I.A. pode te ajudar no dia a dia da sua clínica? 💡👇\n\n\nPege a mensagem acima e realize algumas pequenas mudanças na hora de enviar ao apenas para que não fique toda ela igual.\n\nGere sempre uma mensagem resumida desta para não ficar algo muito grande para a secretaria ler.\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1080,
+        80
+      ],
+      "id": "aa3a2f06-d81b-4db5-b032-45260c105d80",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        260
+      ],
+      "id": "136cd9ac-7df3-4351-ad10-301dcdc7c4de",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI",
+          "mode": "list",
+          "cachedResultName": "Agente Disparador",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $('Google Sheets1').item.json.TITULO }}",
+            "numero": "={{ $('Google Sheets1').item.json.phone }}",
+            "mensagem": "={{ $('AI Agent').item.json.output }}",
+            "id": "={{ $('Delay').item.json.randomNumber }}",
+            "data_hora": "={{ $now.format('DD/MM/YYYY HH:mm:ss') }}\n"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "numero",
+              "displayName": "numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_hora",
+              "displayName": "data_hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2200,
+        300
+      ],
+      "id": "ab2d006a-b730-435c-8733-1210afbf80e9",
+      "name": "Google Sheets"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI",
+          "mode": "list",
+          "cachedResultName": "Prospec GMN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2023033319,
+          "mode": "list",
+          "cachedResultName": "Resultados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI/edit#gid=2023033319"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        40,
+        60
+      ],
+      "id": "ab854c7a-d721-482e-b1a2-2eb6200a90c4",
+      "name": "Google Sheets1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        60
+      ],
+      "id": "0f4a83c9-69bf-4669-99df-1f8ab20d7bfc",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $item(\"0\").$node[\"Gerar número\"].json[\"randomNumber\"] }}"
+      },
+      "id": "8bbe472c-73f6-450f-ab47-bec001b229c7",
+      "name": "Delay",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        80
+      ],
+      "webhookId": "b10f2338-86d1-4a16-b45c-14513cad6551"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Executa o código de geração do número aleatório\nconst min = 1;\nconst max = 2;\nconst randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;\n\n// Retorna o valor em um array de objetos com a propriedade \"json\"\nreturn [\n  {\n    json: {\n      randomNumber: randomNumber,\n    },\n  },\n];"
+      },
+      "id": "11c3f533-e8d0-4f01-876a-5afdf9aff5c6",
+      "name": "Gerar número",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1620,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Loop para disparar 1 á 1",
+        "height": 240,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "id": "17149f28-e0fc-4267-8f90-5172525a5dc6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Start\n",
+        "height": 240,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8d6f9ef2-e1c5-4725-b693-acdd22f7b7ea",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Planilha com Contatos",
+        "height": 240
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "72360143-fb75-4c7c-8d13-26257a9597ca",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "IA Agent",
+        "height": 380,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        900,
+        0
+      ],
+      "id": "565cd80d-09e9-48e4-ab8c-4165ed8afc6c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Tempo aleatorio",
+        "height": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        0
+      ],
+      "id": "f075deab-0bba-40cd-bb9c-322f08e722d8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Cronometro",
+        "height": 260,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        0
+      ],
+      "id": "24e60062-c4f0-4889-b5e4-953156c25d16",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f32f35f-e985-47e0-be28-f6959d9844a9",
+              "name": "api_url",
+              "value": "https://dinastia-evolution.fn1zyc.easypanel.host/",
+              "type": "string"
+            },
+            {
+              "id": "4291ce09-2085-4137-b13e-37949e349c36",
+              "name": "api_instance1",
+              "value": "luizfernando",
+              "type": "string"
+            },
+            {
+              "id": "4331c9c5-4713-4c11-8c08-c703e2c63332",
+              "name": "api_key1",
+              "value": "8655CE01ED55-41CB-A6E0-4A3ACE298C66",
+              "type": "string"
+            },
+            {
+              "id": "1b318dc7-40c1-4630-85b8-9da6f418ece7",
+              "name": "phone",
+              "value": "={{ $json.Phone }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49accbd1-6ea7-478c-bf92-250c007d65b3",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        300,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados').item.json.api_url }}message/sendText/{{ $('Dados').item.json.api_instance1 }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados').item.json.api_key1 }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Dados').item.json.phone }}\",\n  \"options\": {\n    \"delay\": -5000,\n    \"presence\": \"composing\",\n    \"quoted\": {\n      \"key\": {\n        \"fromMe\": true\n      }\n    }\n  },\n  \"text\": \"{{ $('AI Agent').item.json.output.replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"').replace(/\\//g, '\\\\/').replace(/\\u0008/g, '\\\\b').replace(/\\u0009/g, '\\\\t').replace(/\\u000A/g, '\\\\n').replace(/\\u000C/g, '\\\\f').replace(/\\u000D/g, '\\\\r') }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2200,
+        80
+      ],
+      "id": "aca94e4b-c7d1-466c-b2b7-34f8944c35a0",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gerar número",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar número": {
+      "main": [
+        [
+          {
+            "node": "Delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delay": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "12849376-f4b8-4ebc-987e-211689750b43",
+  "triggerCount": 0,
+  "tags": []
+}
