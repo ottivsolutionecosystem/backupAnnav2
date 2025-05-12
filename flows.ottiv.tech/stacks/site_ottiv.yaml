@@ -2,7 +2,7 @@ version: '3.8'
 
 services: 
   site_ottiv:
-    image: ottiv/site_ottv:1.0
+    image: ottiv/site_ottv:${VERSION:-1.0}
     ports:
       - "3010:80"
     networks:
