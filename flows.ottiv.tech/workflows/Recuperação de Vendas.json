@@ -1,0 +1,3135 @@
+{
+  "createdAt": "2025-05-12T02:57:25.853Z",
+  "updatedAt": "2025-05-12T02:58:09.266Z",
+  "id": "GHGyk1SmSjG1JnXl",
+  "name": "Recuperação de Vendas",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f6d521df-7517-465b-8ef4-af80c52172db",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        1680
+      ],
+      "id": "e9720de8-7503-4da8-a87d-fc9bc625d442",
+      "name": "Webhook",
+      "webhookId": "f6d521df-7517-465b-8ef4-af80c52172db"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Boleto gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Boleto gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "290e550f-7112-4cf8-a1b0-1ef6eb0aaafe",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PIX gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pix gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a65f84a4-420c-4042-8259-cbf92e5baa3a",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PicPay gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PicPay gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8f051c35-d5f7-4539-bdaf-643b9d043f87",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Nupay gerado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nupay gerado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5775a34c-8d20-4e6d-836d-83b7f285c250",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Compra recusada",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Compra recusada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "93e3b624-1f38-4846-baea-7765637f3fa0",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Carrinho abandonado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Carrinho abandonado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "46504d4a-d43c-488e-b318-278a895e1a9b",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Compra aprovada",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Compra aprovada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "11cee697-ea92-45ab-a231-46495cb5d476",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "PIX expirado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PIX expirado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42335a14-33c1-4bc2-a936-7746de1981b0",
+                    "leftValue": "={{ $json.body.event_description }}",
+                    "rightValue": "Boleto expirado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Boleto expirado"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -460,
+        1560
+      ],
+      "id": "c035e298-ead6-4266-9f22-cd63ff2dc272",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "cfa4f65f-cd5b-4e56-98e5-127f7cf5a54b",
+              "name": "Link Boleto",
+              "value": "={{ $json.body.payment.link }}",
+              "type": "string"
+            },
+            {
+              "id": "941cf6b5-8731-4d70-a088-f933bcdc96b8",
+              "name": "Cod barras",
+              "value": "={{ $json.body.payment.barcode }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        120
+      ],
+      "id": "2e19b191-2de1-4c5d-8d67-2b23461e449a",
+      "name": "Boleto Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url evolution",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um boleto referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição. E vou te enviar o código do boleto novamente caso tenha tido algum problema..."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        120
+      ],
+      "id": "bf1c55da-be14-4090-9ac3-00700fd832f9",
+      "name": "HTTP Request1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Boleto Dados').item.json['Telefone'] }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Boleto Dados').item.json['Cod barras'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        100
+      ],
+      "id": "98a7db73-d2ed-48ac-8029-cddc8b676154",
+      "name": "HTTP Request2",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        80
+      ],
+      "id": "e6c7661f-eb90-489e-8910-d747ac1b7226",
+      "name": "Supabase"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Boleto Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Boleto Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request1').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        360
+      ],
+      "id": "1b031448-eaa6-4b05-bcf4-58c77b5adb2a",
+      "name": "Supabase1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        360
+      ],
+      "id": "b7b8cb65-bd95-4a6d-984e-e39f3ba91cba",
+      "name": "Erro",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "941cf6b5-8731-4d70-a088-f933bcdc96b8",
+              "name": "Cod pix",
+              "value": "={{ $json.body.payment.qrcode }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        760
+      ],
+      "id": "c2fda53c-95c0-4e3d-af35-ae90b547a3cd",
+      "name": "Pix Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um Pix referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição. E vou te enviar o código do Pix novamente caso tenha tido algum problema..."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        760
+      ],
+      "id": "c24e3f2b-b968-4f1e-aac9-fd7ba04c4f6d",
+      "name": "HTTP Request3",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Pix Dados').item.json['Cod pix'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        760
+      ],
+      "id": "6a1aa231-f650-450b-a71e-948cf0cbe37f",
+      "name": "HTTP Request4",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Pix Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Pix Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Pix Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Pix Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        760
+      ],
+      "id": "14acb80d-2f8d-4f3a-808f-c60d9e8441aa",
+      "name": "Supabase2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1140,
+        1000
+      ],
+      "id": "21f0b919-54ae-46ab-b3a2-f3e4b10348f4",
+      "name": "Erro1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um pagamento no Picpay referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        1460
+      ],
+      "id": "e130eee9-4364-4c0d-b7e2-5e0d57e21f8f",
+      "name": "HTTP Request5",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1440
+      ],
+      "id": "8db1a1b4-273e-493d-a17d-a9054a8243a6",
+      "name": "Supabase4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        1700
+      ],
+      "id": "a8289b21-1058-412d-b0c0-7c142f05ca10",
+      "name": "Erro2",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        1460
+      ],
+      "id": "90c7dafb-3a82-4116-984e-fe0fb880400f",
+      "name": "Picpay Dados"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b3478da-d3ef-40fc-9472-2a590233b548",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6f5df1-eb51-4545-939b-5db44e5b6ac2",
+              "name": "Nome Completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9d2390-8dd6-419d-a8b5-34e6a9c76f11",
+              "name": "Produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "feb6de8a-c009-4f8a-9cc7-cf509f9d129a",
+              "name": "Id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e94fadc3-3315-4ff5-9a56-9658b624c48f",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6638a6-ac0c-495a-b40d-81376eb94bf6",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "4c510516-c00e-4777-a4ee-62c6a868d042",
+              "name": "Data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        2140
+      ],
+      "id": "78cbac8d-0fda-498c-b7bc-505f11df83b1",
+      "name": "Nupay Dados"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome Completo'] }} ✌🏻, Germano aqui! Notei que você gerou um pagamento no Nupay referente ao produto {{ $json.Produtos[0].name }}. Estou passando por aqui para saber se precisa de alguma ajuda com o pagamento ou ficou com alguma dúvida? Qualquer coisa estou à disposição."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        2140
+      ],
+      "id": "93b09582-7360-4443-8c75-92c10db01cee",
+      "name": "HTTP Request6",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - enviados",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Id venda'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        2120
+      ],
+      "id": "dc7f988d-747a-4663-9878-7625cbfa2a0c",
+      "name": "Supabase6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        2340
+      ],
+      "id": "8ff7f083-5749-443b-a374-011781bfc19e",
+      "name": "Erro3",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## BOLETO GERADO \n### -Enviar mensagem informando código do boleto gerado.\n### -Salvar Lead no banco de dados do Supabase\n",
+        "height": 520,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "80e82004-e58a-4190-99aa-24b07218d843",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## PIX GERADO \n### -Enviar mensagem informando código do boleto gerado.\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 620,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        580
+      ],
+      "id": "51b9964c-89a8-4b3f-9c58-b6fd62624454",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## PICPAY GERADO \n### -Enviar mensagem informando que a compra foi gerada pelo PicPay, e oferecendo suporte para dúvidas (pode integrar um bot de IA para fazer a conversão).\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 600,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1280
+      ],
+      "id": "631008c9-2d35-4cc6-ab1c-fc4aa62d7038",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## NUPAY GERADO \n### -Enviar mensagem informando que a compra foi gerada pelo NuPay, e oferecendo suporte para dúvidas (pode integrar um bot de IA para fazer a conversão).\n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1940
+      ],
+      "id": "0e507ed6-e270-4a42-8c50-297aaee345cc",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## COMPRA RECUSADA \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 1760,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2560
+      ],
+      "id": "d80e3297-5804-477e-a318-c267e8821e48",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "a532f8cb-cd37-4cfb-8d56-987a8d93a9f3",
+              "name": "Meio pagamento",
+              "value": "={{ $json.body.payment_method }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "234a12a5-4b0b-48ba-8464-886692fa153d",
+              "name": "bandeira",
+              "value": "={{ $json.body.payment.brand }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "a2a6859a-d2a3-4901-b84a-cb59f641105f",
+              "name": "id venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "url checkout",
+              "value": "={{ $json.body.checkout_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        2800
+      ],
+      "id": "95ebd22f-3d23-4144-b5c7-afd198037a6e",
+      "name": "Compra Recusada"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Pix Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Pix Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Pix Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Pix Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Pix Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request3').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        1000
+      ],
+      "id": "32bc924b-b839-427d-8ac3-ffb7f7d3a0b0",
+      "name": "Supabase3"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Picpay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Picpay Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request5').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1700
+      ],
+      "id": "5c63f73d-3fcf-48af-a8bf-164838602618",
+      "name": "Supabase5"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Nome Completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Nupay Dados').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Nupay Dados').item.json['Id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request6').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        2340
+      ],
+      "id": "0fed2dee-fb15-4181-8c22-f2674effa259",
+      "name": "Supabase7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você chegou na reta final para participar da comunidade: {{ $json.produtos[0].name }} e não finalizou a compra. Estou passando aqui para te dar 30% OFF na comunidade. Basta garantir sua vaga pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        2800
+      ],
+      "id": "f5c6b15e-df32-4971-b6e1-e1e748637163",
+      "name": "HTTP Request7",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        2940
+      ],
+      "id": "41815576-bbfa-4f59-ac88-38a71b09d9df",
+      "name": "Erro4",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra Recusada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request7').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        2940
+      ],
+      "id": "b611cbbd-6b18-4990-b338-774066da3d8e",
+      "name": "Supabase9"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - compra recusada",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome completo",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Email }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Compra Recusada').item.json.produtos }}"
+            },
+            {
+              "fieldId": "id venda",
+              "fieldValue": "={{ $('Compra Recusada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "url checkout",
+              "fieldValue": "={{ $('Compra Recusada').item.json['url checkout'] }}"
+            },
+            {
+              "fieldId": "evento",
+              "fieldValue": "={{ $('Compra Recusada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "meio pagamento",
+              "fieldValue": "={{ $('Compra Recusada').item.json['Meio pagamento'] }}"
+            },
+            {
+              "fieldId": "valor total",
+              "fieldValue": "={{ $('Compra Recusada').item.json['valor total'] }}"
+            },
+            {
+              "fieldId": "bandeira",
+              "fieldValue": "={{ $('Compra Recusada').item.json.bandeira }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        2660
+      ],
+      "id": "e6d288b0-7cf2-43b5-884e-3a7a665ff4ac",
+      "name": "Supabase8"
+    },
+    {
+      "parameters": {
+        "content": "## CARRINHO ABANDONADO \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 1760,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3180
+      ],
+      "id": "406adc6a-2acb-460b-8422-690226a1b387",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "url checkout",
+              "value": "={{ $json.body.checkout_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        3420
+      ],
+      "id": "b3c76dca-e33f-4c82-9457-27302d021b8b",
+      "name": "Carrinho Abandonado"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você chegou na reta final para participar da comunidade: {{ $json.produtos[0].name }} e não finalizou a compra. Estou passando aqui para te dar 30% OFF na comunidade. Basta garantir sua vaga pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        3440
+      ],
+      "id": "bd94c862-3697-4748-b5fd-34dff58d88a3",
+      "name": "HTTP Request8",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        3500
+      ],
+      "id": "8892f353-86bf-4506-b5a5-55757f67ae6d",
+      "name": "Erro5",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request8').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        3500
+      ],
+      "id": "0a834bbc-4216-4996-a376-e6c64ecf9d5b",
+      "name": "Supabase10"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - carrinho abandonado",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome completo",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Email }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.produtos }}"
+            },
+            {
+              "fieldId": "url checkout",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json['url checkout'] }}"
+            },
+            {
+              "fieldId": "evento",
+              "fieldValue": "={{ $('Carrinho Abandonado').item.json.Evento }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        3300
+      ],
+      "id": "6f355502-8986-4a9e-ab00-cdd3248a0a02",
+      "name": "Supabase11"
+    },
+    {
+      "parameters": {
+        "content": "## COMPRA APROVADA \n### -Salvar Lead no banco de dados do Supabase",
+        "height": 560,
+        "width": 1760,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3800
+      ],
+      "id": "f56ca5df-dbdf-4d18-8902-ea7754f485f5",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Seja bem-vindo à Comunidade Automações com IA. Acesse o grupo do Telegram para ficar de olho nos avisos ou tirar suas dúvidas pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        4100
+      ],
+      "id": "df529d63-c644-41cd-804b-d05c5f54c58f",
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        4180
+      ],
+      "id": "3ea7c6ea-ad3c-4f1a-8b46-e0d5482a5bdd",
+      "name": "Erro6",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - falha recuperação",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $('Webhook').item.json.body.created_at }}"
+            },
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra aprovada').item.json['id venda'] }}"
+            },
+            {
+              "fieldId": "Erro",
+              "fieldValue": "={{ $('HTTP Request').item.json.error.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        4160
+      ],
+      "id": "dd8e861a-d2bf-4c77-9030-8a2b220c8de0",
+      "name": "Supabase12"
+    },
+    {
+      "parameters": {
+        "tableId": "N8N [gg] - Compra Aprovada",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Nome Completo",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'] }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Email }}"
+            },
+            {
+              "fieldId": "Telefone",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "Id_venda",
+              "fieldValue": "={{ $('Compra aprovada').item.json.id_venda }}"
+            },
+            {
+              "fieldId": "Evento",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Evento }}"
+            },
+            {
+              "fieldId": "utm",
+              "fieldValue": "={{ $('Compra aprovada').item.json.utm }}"
+            },
+            {
+              "fieldId": "produtos",
+              "fieldValue": "={{ $('Compra aprovada').item.json.produtos }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        3920
+      ],
+      "id": "76d140b0-2905-470a-893c-def273bf36d8",
+      "name": "Supabase13"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        4080
+      ],
+      "id": "32838337-2777-44df-bbc2-62c9e6a5a0f3",
+      "name": "Compra aprovada"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://t.me/+ZN-EJmYEpJ0wYzQx"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        3940
+      ],
+      "id": "bb83eb4b-6423-48b4-bddd-4835ba117ab4",
+      "name": "HTTP Request9",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Compra aprovada').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Espero que aproveite o conteúdo! Estamos preparando novas aulas de uma automação com disparo de WhatsApp e Email para relacionamento com Leads/Clientes. Em breve vão estar disponível na Área de Membros. Bons estudos! 🧑🏻‍💻"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        3920
+      ],
+      "id": "09a5dad6-08f3-4026-92f2-06c684e6b5e8",
+      "name": "HTTP Request10",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "email": "={{ $('Compra aprovada').item.json.Email }}",
+        "createContactAttributes": {
+          "attributesValues": [
+            {
+              "fieldName": "NOME",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'].split(\" \").first() }}"
+            },
+            {
+              "fieldName": "SOBRENOME",
+              "fieldValue": "={{ $('Compra aprovada').item.json['Nome completo'].split(\" \").last() }}"
+            },
+            {
+              "fieldName": "SMS",
+              "fieldValue": "={{ $('Compra aprovada').item.json.Telefone }}"
+            }
+          ]
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1900,
+        3920
+      ],
+      "id": "7e8b67c1-c35a-4444-8263-64fd71566818",
+      "name": "Brevo"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 1,
+        "receipients": "={{ $('Compra aprovada').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        3920
+      ],
+      "id": "c32c75f2-4295-466e-bfce-1e76548edc32",
+      "name": "Brevo1"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Carrinho Abandonado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        3300
+      ],
+      "id": "22e3b489-9992-45ad-a470-b59b4bd94057",
+      "name": "Brevo2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        4640
+      ],
+      "id": "76160d35-4f2e-4fc0-9dab-992d18822e69",
+      "name": "PIX expirado"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('PIX expirado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        4640
+      ],
+      "id": "c3ebc7ac-463d-4c7a-8b74-b246083e498b",
+      "name": "Brevo3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você gerou um pix do produto: {{ $json.produtos[0].name }} e não finalizou a compra. Estou passando aqui para te dar 30% OFF na comunidade. Basta garantir sua vaga pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        4640
+      ],
+      "id": "2e047db1-8e08-42bf-b6ed-82e21c31a4a6",
+      "name": "HTTP Request11",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('PIX expirado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        4640
+      ],
+      "id": "0de13039-b155-4743-a209-9f07f9f4f3d2",
+      "name": "HTTP Request12",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Boleto expirado').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        5260
+      ],
+      "id": "8c6fc35c-4d55-4ef6-b0c6-2d626bcd858b",
+      "name": "Brevo4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=Olá  {{ $json['Nome completo'] }} ✌🏻, Germano aqui! Notei que você gerou um boleto do produto: {{ $json.produtos[0].name }} e não finalizou a compra. Estou passando aqui para te dar 30% OFF na comunidade. Basta garantir sua vaga pelo link abaixo 👇."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        5260
+      ],
+      "id": "ce047c26-5e88-48ea-b2e7-33bb196a277a",
+      "name": "HTTP Request13",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Boleto expirado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        5260
+      ],
+      "id": "44c80171-b802-464a-8b31-4009bccda112",
+      "name": "HTTP Request14",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3cd106cf-d8e3-4eb2-9029-0ab357771ce5",
+              "name": "Nome completo",
+              "value": "={{ $json.body.customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "894e3404-5536-48ca-801c-ac15a6882c7a",
+              "name": "Telefone",
+              "value": "={{ $json.body.customer.phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0f8b52-46b2-40e4-bdd0-43a0325af13e",
+              "name": "Email",
+              "value": "={{ $json.body.customer.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e3d2ceb-f7bf-4225-a64d-3a01390efe01",
+              "name": "Evento",
+              "value": "={{ $json.body.event_description }}",
+              "type": "string"
+            },
+            {
+              "id": "5814242d-a5dc-44a3-8f68-b4ff18c355ad",
+              "name": "valor total",
+              "value": "={{ $json.body.total_price }}",
+              "type": "string"
+            },
+            {
+              "id": "158f8c13-55b4-4337-b2bb-2f2116474c49",
+              "name": "produtos",
+              "value": "={{ $json.body.products }}",
+              "type": "array"
+            },
+            {
+              "id": "5b9953c0-6ce8-4d0c-8f5c-7d2e33ac0d26",
+              "name": "data",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "1265fe29-53c6-4ed1-beb4-2c5ee2080b5e",
+              "name": "id_venda",
+              "value": "={{ $json.body.sale_id }}",
+              "type": "string"
+            },
+            {
+              "id": "dfea3f13-29e0-46b8-8b8a-05bbcfa16d1b",
+              "name": "utm",
+              "value": "={{ $json.body.utm }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        5260
+      ],
+      "id": "d8bc95d9-6056-4739-9f92-2613caf44fb3",
+      "name": "Boleto expirado"
+    },
+    {
+      "parameters": {
+        "content": "## PIX EXPIRADO",
+        "height": 560,
+        "width": 1760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        4500
+      ],
+      "id": "595c0933-f508-4f5a-913c-ac23bc99d2b4",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## BOLETO EXPIRADO\n",
+        "height": 560,
+        "width": 1760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        5140
+      ],
+      "id": "586dbe06-6152-4bcf-bef3-a1a2efb45fc5",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Carrinho Abandonado').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        3300
+      ],
+      "id": "1f0f0875-23af-4489-b2a8-742bb57899d0",
+      "name": "HTTP Request15",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Compra Recusada').item.json.Telefone }}"
+            },
+            {
+              "name": "text",
+              "value": "=https://pay.kirvano.com/2b8ca26a-3950-4d2c-a978-9338bcc94be1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        2700
+      ],
+      "id": "b41d5c18-102b-4b5c-8abe-3ec8b06960a5",
+      "name": "HTTP Request16",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendTemplate",
+        "templateId": 2,
+        "receipients": "={{ $('Compra Recusada').item.json.Email }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        2660
+      ],
+      "id": "5c1e2e0a-a9e2-4f06-8fbc-e9079ca77cb7",
+      "name": "Brevo5"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Boleto Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pix Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Picpay Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nupay Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compra Recusada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Carrinho Abandonado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compra aprovada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PIX expirado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Boleto expirado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Boleto Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Supabase2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro1": {
+      "main": [
+        [
+          {
+            "node": "Supabase3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pix Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Supabase4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro2": {
+      "main": [
+        [
+          {
+            "node": "Supabase5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Picpay Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Supabase6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro3": {
+      "main": [
+        [
+          {
+            "node": "Supabase7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nupay Dados": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compra Recusada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request16",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro4": {
+      "main": [
+        [
+          {
+            "node": "Supabase9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request8": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request15",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro5": {
+      "main": [
+        [
+          {
+            "node": "Supabase10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carrinho Abandonado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Erro6": {
+      "main": [
+        [
+          {
+            "node": "Supabase12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compra aprovada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request9": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request10": {
+      "main": [
+        [
+          {
+            "node": "Supabase13",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase13": {
+      "main": [
+        [
+          {
+            "node": "Brevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brevo": {
+      "main": [
+        [
+          {
+            "node": "Brevo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase11": {
+      "main": [
+        [
+          {
+            "node": "Brevo2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PIX expirado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request11": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request12": {
+      "main": [
+        [
+          {
+            "node": "Brevo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request13": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request14": {
+      "main": [
+        [
+          {
+            "node": "Brevo4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Boleto expirado": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request15": {
+      "main": [
+        [
+          {
+            "node": "Supabase11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request16": {
+      "main": [
+        [
+          {
+            "node": "Brevo5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brevo5": {
+      "main": [
+        [
+          {
+            "node": "Supabase8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Boleto Dados": [
+      {
+        "json": {
+          "Evento": "Boleto gerado",
+          "Nome Completo": "João da Silva",
+          "Link Boleto": "https://pay-api.kirvano.com/bankslip/740a6c3d-f636-46c1-b0ee-105c79caa094/download",
+          "Cod barras": "30281847500000169802023169000000000000017904",
+          "Produtos": [
+            {
+              "id": "411abc90-c6db-497b-b55c-c2e90743ced8",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "37dffe0d-9866-4c76-a916-8ac7353b124c",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/f0b273fd-19cb-428d-baf2-71a6d11d3446/cover-1734445409734.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "d507a795-312f-4f97-959f-533ff6ae6c0b",
+              "name": "Excel para Investidores",
+              "offer_id": "21bf7c30-e920-41a8-81df-6e27eddfc3d9",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/7fc038dc-b6ca-4b91-bf8f-560a9db27ea1/cover-1734445409734.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com"
+        }
+      }
+    ],
+    "Pix Dados": [
+      {
+        "json": {
+          "Evento": "PIX gerado",
+          "Nome Completo": "João da Silva",
+          "Cod pix": "00020201011325br.gov.bcb.pixBADE53BA66C4121804702BR5823KIRVANO PAGAMENTOS LTDA***7213D5D7",
+          "Produtos": [
+            {
+              "id": "4dc82838-018b-4eb2-9254-647107dfd11d",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "0941d93c-65c9-424f-8fa6-94635cf4bc39",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/088c16f3-d351-4e7b-8b69-12becf4b2820/cover-1734469705288.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "f8656bc9-7caf-46d2-8058-7aec66742e20",
+              "name": "Excel para Investidores",
+              "offer_id": "1e8afdb6-2753-4584-be34-90b3b433edbe",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/ab6e9c75-6b60-4fca-8fdb-4bbca058f464/cover-1734469705288.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 18:08:25"
+        }
+      }
+    ],
+    "Picpay Dados": [
+      {
+        "json": {
+          "Evento": "PicPay gerado",
+          "Nome Completo": "João da Silva",
+          "Produtos": [
+            {
+              "id": "3f1691e1-9c1f-467f-9298-c7db5c1b7846",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "ca05ebb1-07e1-46a6-b297-a7775d230efb",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/a028fab1-3792-459c-85fe-663a163108b7/cover-1734470488256.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "ad4dff9a-aa11-472e-82bc-35d7c4a09b80",
+              "name": "Excel para Investidores",
+              "offer_id": "eb4631e2-d02a-4c3e-a443-68e1b195f23c",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/ae282f6d-b269-47a5-9fa6-d529706157f0/cover-1734470488256.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 18:21:28"
+        }
+      }
+    ],
+    "Nupay Dados": [
+      {
+        "json": {
+          "Evento": "Nupay gerado",
+          "Nome Completo": "João da Silva",
+          "Produtos": [
+            {
+              "id": "71dbdef9-9dbf-409e-a89f-1f9bc8000787",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "b02fbe84-109e-4ea5-ba82-3bf89e9b2d05",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/35843d4b-dbe9-40c0-ac58-8819d90543db/cover-1734483935243.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "c1dbcd81-0ed1-4b2a-8bca-f5441a6f37e0",
+              "name": "Excel para Investidores",
+              "offer_id": "931648cb-506d-4a7c-ac75-fc925826ff2f",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/9059ab22-eae3-4a27-99d7-ac422b7363f4/cover-1734483935243.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "Id venda": "D2RP8RQ7",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Data": "2024-12-17 22:05:35"
+        }
+      }
+    ],
+    "Compra Recusada": [
+      {
+        "json": {
+          "Nome completo": "João da Silva",
+          "Telefone": "5511987654321",
+          "Email": "exemplo@email.com",
+          "Evento": "Compra recusada",
+          "Meio pagamento": "CREDIT_CARD",
+          "valor total": "R$ 169,80",
+          "bandeira": "visa",
+          "produtos": [
+            {
+              "id": "9cc4b41e-1bc5-4445-a49b-bbc918c9e566",
+              "name": "Mercado de Ações no Brasil",
+              "offer_id": "df8dbb54-b078-4d79-8c82-d5df4a2b69db",
+              "offer_name": "Mercado de Ações no Brasil",
+              "description": "Conheça os principais conceitos de renda variável e o funcionamento dos mercados",
+              "price": "R$ 119,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/37d02536-74b4-4504-b01e-627248488996/cover-1734484201735.jpg",
+              "is_order_bump": false
+            },
+            {
+              "id": "0de9bfcf-e466-4db1-9db2-5508c908fb05",
+              "name": "Excel para Investidores",
+              "offer_id": "aa56b52f-9ad0-48c4-bf06-b9a431a32e3c",
+              "offer_name": "Excel para Investidores",
+              "description": "O melhor curso para quem quer começar a investir e ainda aprender a gerenciar sua carteira.",
+              "price": "R$ 49,90",
+              "photo": "https://s3.amazonaws.com/production.kirvano.com/products/b49232a6-e563-4dfb-8ef9-7d8fc610ca6e/cover-1734484201735.jpg",
+              "is_order_bump": true
+            }
+          ],
+          "data": "2024-12-17 22:10:01",
+          "id venda": "D2RP8RQ7",
+          "url checkout": "https://pay.kirvano.com/recovery/81cf1cb2-e8d6-4a58-ae65-6b3ccd1b26cf"
+        }
+      }
+    ]
+  },
+  "versionId": "8ab818c6-899f-45af-843c-541f2bb002ba",
+  "triggerCount": 0,
+  "tags": []
+}
