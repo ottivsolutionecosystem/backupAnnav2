@@ -1,0 +1,1168 @@
+{
+  "createdAt": "2025-05-12T03:01:26.286Z",
+  "updatedAt": "2025-05-13T20:01:25.293Z",
+  "id": "KtNss0w5lrR7ZYnC",
+  "name": "AGENTE FOLLOW UP + CLOSER",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        620,
+        60
+      ],
+      "id": "3f0a96a3-04bc-40f2-bfe4-7c4b63a667f1",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "<CLIETNE></CLIETNE>",
+        "options": {
+          "systemMessage": "= Sua clínica pode estar perdendo dinheiro sem perceber!\n\n🚀 Sua clínica pode estar perdendo dinheiro sem perceber!\n\nJá imaginou uma I.A. que agenda pacientes sozinha, reduz faltas e ainda aumenta seu faturamento? Tudo isso sem sobrecarregar sua secretária!\n\nE o melhor? Essa tecnologia já é realidade! Me conta: onde a I.A. pode te ajudar no dia a dia da sua clínica? 💡👇\n\n\nPege a mensagem acima e realize algumas pequenas mudanças na hora de enviar ao apenas para que não fique toda ela igual.\n\nGere sempre uma mensagem resumida desta para não ficar algo muito grande para a secretaria ler.\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1080,
+        80
+      ],
+      "id": "aa3a2f06-d81b-4db5-b032-45260c105d80",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        260
+      ],
+      "id": "136cd9ac-7df3-4351-ad10-301dcdc7c4de",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI",
+          "mode": "list",
+          "cachedResultName": "Agente Disparador",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kzfo39-oFc0KENoFJZB9u-PAT7wWc2RMFNl0Q5KHBFI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $('Google Sheets1').item.json.TITULO }}",
+            "numero": "={{ $('Google Sheets1').item.json.phone }}",
+            "mensagem": "={{ $('AI Agent').item.json.output }}",
+            "id": "={{ $('Delay').item.json.randomNumber }}",
+            "data_hora": "={{ $now.format('DD/MM/YYYY HH:mm:ss') }}\n"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "numero",
+              "displayName": "numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_hora",
+              "displayName": "data_hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2200,
+        300
+      ],
+      "id": "ab2d006a-b730-435c-8733-1210afbf80e9",
+      "name": "Google Sheets"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI",
+          "mode": "list",
+          "cachedResultName": "Prospec GMN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2023033319,
+          "mode": "list",
+          "cachedResultName": "Resultados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AJgyFQPknNKN1AKc7nH2URvh6DmQgvpPNZpsx8JfQCI/edit#gid=2023033319"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        40,
+        60
+      ],
+      "id": "ab854c7a-d721-482e-b1a2-2eb6200a90c4",
+      "name": "Google Sheets1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        60
+      ],
+      "id": "0f4a83c9-69bf-4669-99df-1f8ab20d7bfc",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $item(\"0\").$node[\"Gerar número\"].json[\"randomNumber\"] }}"
+      },
+      "id": "8bbe472c-73f6-450f-ab47-bec001b229c7",
+      "name": "Delay",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        80
+      ],
+      "webhookId": "b10f2338-86d1-4a16-b45c-14513cad6551"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Executa o código de geração do número aleatório\nconst min = 1;\nconst max = 2;\nconst randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;\n\n// Retorna o valor em um array de objetos com a propriedade \"json\"\nreturn [\n  {\n    json: {\n      randomNumber: randomNumber,\n    },\n  },\n];"
+      },
+      "id": "11c3f533-e8d0-4f01-876a-5afdf9aff5c6",
+      "name": "Gerar número",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1620,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Loop para disparar 1 á 1",
+        "height": 240,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "id": "17149f28-e0fc-4267-8f90-5172525a5dc6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Start\n",
+        "height": 240,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8d6f9ef2-e1c5-4725-b693-acdd22f7b7ea",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Planilha com Contatos",
+        "height": 240
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "72360143-fb75-4c7c-8d13-26257a9597ca",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "IA Agent",
+        "height": 380,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        900,
+        0
+      ],
+      "id": "565cd80d-09e9-48e4-ab8c-4165ed8afc6c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Tempo aleatorio",
+        "height": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        0
+      ],
+      "id": "f075deab-0bba-40cd-bb9c-322f08e722d8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Cronometro",
+        "height": 260,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        0
+      ],
+      "id": "24e60062-c4f0-4889-b5e4-953156c25d16",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f32f35f-e985-47e0-be28-f6959d9844a9",
+              "name": "api_url",
+              "value": "https://dinastia-evolution.fn1zyc.easypanel.host/",
+              "type": "string"
+            },
+            {
+              "id": "4291ce09-2085-4137-b13e-37949e349c36",
+              "name": "api_instance1",
+              "value": "luizfernando",
+              "type": "string"
+            },
+            {
+              "id": "4331c9c5-4713-4c11-8c08-c703e2c63332",
+              "name": "api_key1",
+              "value": "8655CE01ED55-41CB-A6E0-4A3ACE298C66",
+              "type": "string"
+            },
+            {
+              "id": "1b318dc7-40c1-4630-85b8-9da6f418ece7",
+              "name": "phone",
+              "value": "={{ $json.Phone }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49accbd1-6ea7-478c-bf92-250c007d65b3",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        300,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados').item.json.api_url }}message/sendText/{{ $('Dados').item.json.api_instance1 }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados').item.json.api_key1 }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Dados').item.json.phone }}\",\n  \"options\": {\n    \"delay\": -5000,\n    \"presence\": \"composing\",\n    \"quoted\": {\n      \"key\": {\n        \"fromMe\": true\n      }\n    }\n  },\n  \"text\": \"{{ $('AI Agent').item.json.output.replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"').replace(/\\//g, '\\\\/').replace(/\\u0008/g, '\\\\b').replace(/\\u0009/g, '\\\\t').replace(/\\u000A/g, '\\\\n').replace(/\\u000C/g, '\\\\f').replace(/\\u000D/g, '\\\\r') }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2200,
+        80
+      ],
+      "id": "aca94e4b-c7d1-466c-b2b7-34f8944c35a0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        2620,
+        120
+      ],
+      "id": "17b56357-c4b0-4791-820e-1eda862d9aeb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "conversas_teste",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        120
+      ],
+      "id": "493eb761-0ec3-4f71-926a-7924484dfbc4",
+      "name": "Supabase5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "conversas_teste",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "number",
+              "condition": "eq",
+              "keyValue": "={{ $('Supabase5').item.json.number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "3"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        340
+      ],
+      "id": "9a0b4616-847d-4657-9b4c-2e4d92124ba7",
+      "name": "Supabase9"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "conversas_teste",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "number",
+              "condition": "eq",
+              "keyValue": "={{ $('Supabase5').item.json.number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "2"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        120
+      ],
+      "id": "18cb16e5-345b-45eb-b40d-72a4f7c7eb56",
+      "name": "Supabase7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "conversas_teste",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "number",
+              "condition": "eq",
+              "keyValue": "={{ $('Supabase5').item.json.number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        -80
+      ],
+      "id": "726e9abd-a52f-463d-80b4-778b751797a3",
+      "name": "Supabase6",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "AgenteIA",
+        "remoteJid": "={{ $('Supabase5').item.json.number }}",
+        "messageText": "={{ $json.message.content }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3880,
+        -80
+      ],
+      "id": "70a9d3ca-2d97-4312-8f9a-bf6bf918bda1",
+      "name": "Evolution API"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae4aac33-588f-4ba7-bb04-94bb52efb6d7",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(60, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "c45bc5e4-aee7-4ecb-839d-b2c69df2d6f1",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(70, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "4f1ff5ca-dc52-455d-862c-7fa3822511fe",
+              "leftValue": "={{ $('Supabase5').item.json.etapa }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3280,
+        120
+      ],
+      "id": "9320a54b-cbcf-437e-95f4-ddf03337e4bb",
+      "name": "60 min"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae4aac33-588f-4ba7-bb04-94bb52efb6d7",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(1440, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "c45bc5e4-aee7-4ecb-839d-b2c69df2d6f1",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(1450, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "1b79bebb-c38c-4603-bbf9-3d33a34bd98e",
+              "leftValue": "={{ $('Supabase5').item.json.etapa }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3280,
+        340
+      ],
+      "id": "705cc18f-6f23-4556-a3ee-e53f91b949b3",
+      "name": "24 h"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Reformule essa mensagem de followup tornando a mensagem personalizada.\n\n{{ $('Supabase5').item.json.nome }}, podemos continuar?\n\nENVIE APENAS A MENSAGEM PRONTA.\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        3500,
+        -80
+      ],
+      "id": "c580059c-bd4c-45ff-a54c-8f0ff396e37e",
+      "name": "OpenAI"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Crie uma mensagem curta de followup usando o nome do usuário e tocando em uma dor, tornando a mensagem personalizada.\n\nNome: {{ $('Supabase5').item.json.nome }}\n\nDesejo: {{ $('Supabase5').item.json.desejo }}\n\nENVIE APENAS A MENSAGEM PRONTA."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        3500,
+        120
+      ],
+      "id": "a52170ee-beac-4c9d-a1cc-f7a4d5f64d09",
+      "name": "OpenAI1"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-image",
+        "instanceName": "AgenteIA",
+        "remoteJid": "={{ $('Supabase5').item.json.number }}",
+        "media": "https://static.dinamize.com.br/dinamizeszmsdg3x/uploads/2024/06/waiting.png",
+        "caption": "={{ $('Supabase5').item.json.nome }}, estou aqui te esperando me responder.",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3880,
+        340
+      ],
+      "id": "754539fe-9a1b-4d3e-9e5e-b61d8c43848e",
+      "name": "Evolution API3"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "AgenteIA",
+        "remoteJid": "={{ $('Supabase5').item.json.number }}",
+        "messageText": "={{ $json.message.content }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3880,
+        120
+      ],
+      "id": "74f802d1-0e16-4aa1-8a03-d8aaa9042abc",
+      "name": "Evolution API1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('OpenAI').item.json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        4320,
+        -80
+      ],
+      "id": "371d6dd2-8836-4f18-aa87-17ed552c7275",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('OpenAI1').item.json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        4320,
+        120
+      ],
+      "id": "3d505347-dd34-4098-846f-28fdf0734004",
+      "name": "Chat Memory Manager1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('OpenAI3').item.json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        4320,
+        340
+      ],
+      "id": "eb59445f-0479-400f-9980-4760274ca2b3",
+      "name": "Chat Memory Manager3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae4aac33-588f-4ba7-bb04-94bb52efb6d7",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(10, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "c45bc5e4-aee7-4ecb-839d-b2c69df2d6f1",
+              "leftValue": "={{ $now }}",
+              "rightValue": "={{ $('Supabase5').item.json.ultimaMensagem.toDateTime().plus(20, 'minutes') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "0f89d5e1-ce43-420e-971f-2bc03450cb92",
+              "leftValue": "={{ $('Supabase5').item.json.etapa }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3280,
+        -80
+      ],
+      "id": "6ab5d78e-ee94-4587-ac8b-4420d2f0a503",
+      "name": "10 min"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Supabase5').item.json.number }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        4720,
+        -80
+      ],
+      "id": "b6142d65-0f1d-43dd-ba8f-400dc2ec7ede",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Supabase5').item.json.number }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        4720,
+        120
+      ],
+      "id": "6ea52375-e17f-4491-95c0-5c13c8ec1785",
+      "name": "Window Buffer Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Supabase5').item.json.number }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        4720,
+        340
+      ],
+      "id": "18d70d48-0fb7-4abe-82ad-f766883c82ff",
+      "name": "Window Buffer Memory2"
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gerar número",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar número": {
+      "main": [
+        [
+          {
+            "node": "Delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delay": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase5": {
+      "main": [
+        [
+          {
+            "node": "10 min",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "60 min",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "24 h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase9": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase7": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase6": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API": {
+      "main": [
+        [
+          {
+            "node": "Supabase6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "60 min": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "24 h": {
+      "main": [
+        [
+          {
+            "node": "Evolution API3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API3": {
+      "main": [
+        [
+          {
+            "node": "Supabase9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API1": {
+      "main": [
+        [
+          {
+            "node": "Supabase7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10 min": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "9a2277eb-c62f-45e6-9633-99de2a4c358d",
+  "triggerCount": 0,
+  "tags": []
+}
