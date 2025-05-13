@@ -1,0 +1,214 @@
+{
+  "createdAt": "2025-05-13T22:29:13.258Z",
+  "updatedAt": "2025-05-13T22:47:07.282Z",
+  "id": "40XNOpy5xEESQKOA",
+  "name": "VENDE e LIGA",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "52cac349-a169-4bc1-b93f-64348dbfc2f7",
+      "name": "WhatsApp Trigger",
+      "webhookId": "8ccb7cb3-ea37-4d5d-b01d-147d8c4345e4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ee1d24b1-21f6-4736-ac8c-c51937a6ddd2",
+              "leftValue": "={{ $json.messages[0].text.body }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8c367153-6610-4d82-b6bc-513f861acfe1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        440,
+        -100
+      ],
+      "id": "48453f0e-6f5c-41a6-a224-42241c719ebd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        140
+      ],
+      "id": "0f74d8ff-cdb5-413f-9e1f-4d8ac2699ecf",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "AI4IQqSjjt7NDuVK",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        540,
+        140
+      ],
+      "id": "0a448fb7-8748-4422-af5d-b938bdf09ed6",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "recipientPhoneNumber": "+5700000000",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        820,
+        -100
+      ],
+      "id": "c9393b8d-89cc-45b4-b006-cbb0ea6e78c1",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "d1d8b3cf-294a-48d0-8d2d-fbd23cf69dc6"
+    },
+    {
+      "parameters": {
+        "content": "parei em 23 min\n\nhttps://www.youtube.com/watch?v=nry-0_Cayeg&t=84s"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        760,
+        -300
+      ],
+      "id": "0a46b2e1-774e-4a48-9061-fe5da1dfea05",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "32ebed57-02d8-4406-b41d-2f497893e68f",
+  "triggerCount": 0,
+  "tags": []
+}
