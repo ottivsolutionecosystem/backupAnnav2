@@ -1,0 +1,18 @@
+{
+  "createdAt": "2025-05-13T17:49:53.016Z",
+  "updatedAt": "2025-05-13T17:49:53.016Z",
+  "id": "2wpenovGPz9tSEv3",
+  "name": "chatwoot",
+  "active": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "64d9437a-6623-4066-9694-16cb87453fd6",
+  "triggerCount": 0,
+  "tags": []
+}
