@@ -1,18 +1,69 @@
 {
   "createdAt": "2025-05-13T17:49:53.016Z",
-  "updatedAt": "2025-05-13T17:49:53.016Z",
+  "updatedAt": "2025-05-13T20:01:52.776Z",
   "id": "2wpenovGPz9tSEv3",
   "name": "chatwoot",
   "active": false,
-  "nodes": [],
-  "connections": {},
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "aa82d383-814b-49c9-b7e5-409f43024d99",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://on.ottiv.io/api/v1/accounts/1/kanban_items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "9vCWKLjePFMJebExgENhMw7e"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"kanban_item\": {\n    \"funnel_id\": \"1\",\n    \"funnel_stage\": \"Lead Captado\",\n    \"position\": \"2\",\n    \"conversation_display_id\": null,\n    \"timer_started_at\": \"2025-05-13 14:52:04.688089\",\n    \"timer_duration\": 0,\n    \"custom_attributes\": {},\n    \"item_details\": {\n      \"title\": \"teste n8n\",\n      \"offers\": [],\n      \"agent_id\": null,\n      \"currency\": {\n        \"code\": \"BRL\",\n        \"locale\": \"pt-BR\",\n        \"symbol\": \"R$\"\n      },\n      \"priority\": \"none\",\n      \"deadline_at\": \"2025-05-13\",\n      \"description\": \"testes2 n8n\",\n      \"conversation_id\": null,\n      \"scheduling_type\": \"deadline\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "82e60051-fa23-4738-8bc4-e6ef580ab9e9",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "64d9437a-6623-4066-9694-16cb87453fd6",
+  "versionId": "f2274e4a-75a1-49f7-aa7d-5abf50b851cd",
   "triggerCount": 0,
   "tags": []
 }
