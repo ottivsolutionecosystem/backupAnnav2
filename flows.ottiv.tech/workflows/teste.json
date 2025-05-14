@@ -1,0 +1,18 @@
+{
+  "createdAt": "2025-05-14T15:05:12.836Z",
+  "updatedAt": "2025-05-14T15:05:12.836Z",
+  "id": "QdwOT6wNbjep5pcc",
+  "name": "teste",
+  "active": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "8d529a88-68ed-4ef5-b538-e4a5fd389ea7",
+  "triggerCount": 0,
+  "tags": []
+}
