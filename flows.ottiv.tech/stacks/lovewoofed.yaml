@@ -3,7 +3,11 @@ x-variaveis: &variaveis
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: PsJgjf0qZz4#p
   POSTGRES_DB: woofed_crm_production
-  DATABASE_URL: postgresql://postgres:PsJgjf0qZz4%23p@postgres_postgres:5432/woofed_crm_production  
+  POSTGRES_HOST: postgres_postgres
+  POSTGRES_PORT: 5432
+  
+  #DATABASE_URL: postgresql://postgres:PsJgjf0qZz4%23p@postgres_postgres:5432/woofed_crm_production  
+  
   REDIS_URL: redis://localhost:6379/5
   GOOD_JOB_EXECUTION_MODE: external
 
