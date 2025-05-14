@@ -1,0 +1,100 @@
+x-variaveis: &variaveis
+  # Databases
+  DATABASE_URL: postgres://postgres:PsJgjf0qZz4%23p@postgres_postgres/lovewoofed
+  REDIS_URL: redis://localhost:6379/5
+  GOOD_JOB_EXECUTION_MODE: external
+
+  # Idiomas disponíveis: pt-BR, es, en
+  LANGUAGE: en
+
+  # Credenciais de admin (comentadas por segurança)
+  # MOTOR_AUTH_USERNAME: lovewoofed
+  # MOTOR_AUTH_PASSWORD: lovewoofed
+
+  # Microsoft Clarity
+  MS_CLARITY_TOKEN: MS_CLARITY_TOKEN
+
+  FRONTEND_URL: https://crm.ottiv.io
+
+  # Habilitar página de registro de usuário
+  ENABLE_USER_SIGNUP: "false"
+
+  # EvolutionAPI
+  EVOLUTION_API_ENDPOINT: https://evolution.ottiv.tech
+  EVOLUTION_API_ENDPOINT_TOKEN: rGT55EjKvq0sONndzalftGHAk8A9TEkU
+
+  # Amazon S3 (comentado para preencher futuramente)
+  # S3_BUCKET_NAME:
+  # AWS_ACCESS_KEY_ID:
+  # AWS_SECRET_ACCESS_KEY:
+  # AWS_REGION:
+  # ACTIVE_STORAGE_SERVICE: amazon
+
+  # Nível de logs
+  # RAILS_LOG_LEVEL: debug
+
+  # HyperDX (observações mantidas)
+  # OTEL_EXPORTER_OTLP_ENDPOINT: https://in-otel.hyperdx.io
+  # OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+  # OTEL_SERVICE_NAME: '<NAME_OF_YOUR_APP_OR_SERVICE>'
+  # OTEL_EXPORTER_OTLP_HEADERS: 'authorization=<YOUR_HYPERDX_API_KEY_HERE>'
+
+  # Sentry
+  # SENTRY_DSN:
+
+  # NewRelic
+  # NEW_RELIC_LICENSE_KEY:
+  # NEW_RELIC_APPLICATION_LOGGING_ENABLED:
+
+  # Elastic APM
+  # ELASTIC_APM_SERVICE_NAME:
+  # ELASTIC_APM_SERVER_URL:
+  # ELASTIC_APM_SECRET_TOKEN:
+  # ELASTIC_APM_ENVIRONMENT:
+
+  # Analytics
+  # MATOMO_ENDPOINT:
+  # COUNTLY_ENDPOINT:
+  # COUNTLY_KEY:
+  # JUNE_KEY:
+  # POSTHOG_KEY:
+  # POSTHOG_HOST:
+
+  # Fuso horário
+  DEFAULT_TIMEZONE: 'Brasilia'
+
+  # OpenAI
+  OPENAI_API_KEY: 'sk-proj-5L2O...'
+
+  # Webpush
+  VAPID_PUBLIC_KEY: 'BKAJ0adNdV9KZTmYSfOcxFhWfKV1QOdfrj4H9DfhVHLdbZyJA2ryAy1OudxrTXVvOHby6FlRVlC9vvf5Lj87wBw'
+  VAPID_PRIVATE_KEY: 'THCqCM4ti8_QSd0CWd5W3ENx8PKFpeTBXC4n5ZgxTNo'
+
+services:
+  lovewoofed:
+    image: douglara/woofedcrm:latest
+    environment:
+      <<: *variaveis
+    networks:
+      - externa
+      - interna
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.lovewoofed.rule: "Host(`crm.ottiv.io`)"
+        traefik.http.routers.lovewoofed.service: "dozzle"
+        traefik.http.services.lovewoofed.loadbalancer.server.port: 3001
+        traefik.http.routers.lovewoofed.tls: "true"
+        traefik.http.routers.lovewoofed.tls.certresolver: "le"
+        traefik.http.routers.lovewoofed.entrypoints: "websecure"
+
+networks:
+  externa:
+    external: true
+  interna:
+    external: true
