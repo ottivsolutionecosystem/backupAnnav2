@@ -6,10 +6,8 @@ x-variaveis: &variaveis
   #POSTGRES_HOST: postgres_postgres
   #POSTGRES_PORT: 5432
   
-  DATABASE_URL: postgres://crm_user:Ab159753@10.0.3.12/woofed_crm_production?sslmode=disable
+  DATABASE_URL: postgres://postgres:PsJgjf0qZz4%23p@10.0.3.12/woofed_crm_production?sslmode=disable
 
-
-  
   REDIS_URL: redis://localhost:6379/5
   GOOD_JOB_EXECUTION_MODE: external
 
