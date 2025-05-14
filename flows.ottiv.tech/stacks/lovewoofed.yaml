@@ -1,6 +1,6 @@
 x-variaveis: &variaveis
   # Databases
-  DATABASE_URL: postgres://postgres:PsJgjf0qZz4%23p@postgres_postgres/lovewoofed
+  DATABASE_URL: postgresql://postgres:PsJgjf0qZz4%23p@postgres_postgres:5432/lovewoofed?schema=public
   REDIS_URL: redis://localhost:6379/5
   GOOD_JOB_EXECUTION_MODE: external
 
