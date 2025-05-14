@@ -1,12 +1,12 @@
 x-variaveis: &variaveis
   # Databases
-  POSTGRES_USER: crm_user
-  POSTGRES_PASSWORD: Ab159753
-  POSTGRES_DB: woofed_crm_production
-  POSTGRES_HOST: postgres_postgres
+  #POSTGRES_USER: crm_user
+  #POSTGRES_PASSWORD: Ab159753
+  #POSTGRES_DB: woofed_crm_production
+  #POSTGRES_HOST: postgres_postgres
   #POSTGRES_PORT: 5432
   
-  DATABASE_URL: postgres://crm_user:Ab159753@postgres_postgres/woofed_crm_production?sslmode=disable
+  DATABASE_URL: postgres://crm_user:Ab159753@localhost/woofed_crm_production?sslmode=disable
 
 
   
