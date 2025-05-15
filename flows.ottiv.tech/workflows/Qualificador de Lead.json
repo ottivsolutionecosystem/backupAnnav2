@@ -1,0 +1,912 @@
+{
+  "createdAt": "2025-05-15T02:15:25.297Z",
+  "updatedAt": "2025-05-15T02:15:25.297Z",
+  "id": "tNPY0GkXMueCfLf3",
+  "name": "Qualificador de Lead",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ccjf2OKszvVu5s8fGfx8xWITdduSAXSzKXeA1XksPAs",
+          "mode": "list",
+          "cachedResultName": "All Leads.",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ccjf2OKszvVu5s8fGfx8xWITdduSAXSzKXeA1XksPAs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1s8jK__rFXkz8Imds6948jcnw2unRc5g4BHOGfaGk9gM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "email": "={{ $json.email }}",
+            "what do you do for living?": "={{ $json['what do you do for living?'] }}",
+            "monthly income": "={{ $json['monthly income'] }}",
+            "how many tenants will in the unit?": "={{ $json['how many tenants will in the unit?'] }}",
+            "Submitted Date": "={{ $json['Submitted date'] }}"
+          },
+          "matchingColumns": [
+            "Овог - Эцэг, /эх/-ийн нэр"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "what do you do for living?",
+              "displayName": "what do you do for living?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "monthly income",
+              "displayName": "monthly income",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "how many tenants will in the unit?",
+              "displayName": "how many tenants will in the unit?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Submitted Date",
+              "displayName": "Submitted Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "processed",
+              "displayName": "processed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -260,
+        160
+      ],
+      "id": "7d31bc2b-697a-4249-bbbe-686fe0e3e84d",
+      "name": "All Leads"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ccjf2OKszvVu5s8fGfx8xWITdduSAXSzKXeA1XksPAs",
+          "mode": "list",
+          "cachedResultName": "All Leads.",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ccjf2OKszvVu5s8fGfx8xWITdduSAXSzKXeA1XksPAs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1s8jK__rFXkz8Imds6948jcnw2unRc5g4BHOGfaGk9gM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "processed": "Yes",
+            "Name": "={{ $('All Leads').item.json.Name }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "what do you do for living?",
+              "displayName": "what do you do for living?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "monthly income",
+              "displayName": "monthly income",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "how many tenants will in the unit?",
+              "displayName": "how many tenants will in the unit?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Submitted Date",
+              "displayName": "Submitted Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "processed",
+              "displayName": "processed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1020,
+        160
+      ],
+      "id": "b63135a1-6451-4734-82a3-bef06ec43bc8",
+      "name": "Update All Leads"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analysis: {{ $json.output }}",
+        "options": {
+          "systemMessage": "=# Role\nYour role is add the qualified leads to qualifed leads list, and send them email.\n\n# Rule\n- First, you must use the Add_Qualified_Leads tool to add the qualified leads to qualified leads list.\n- Second, you must use the Qualified_Leads tool to get information on qualified lead.\n- Third, you must use the Send_Email tool to send qualified lead email.\n- Fourth, you must use the Qualified_Leads_Processed tool to update the spreadsheet whether you've send the email or not.\n- Always do the above steps in order.\n\n# Additional Context\n- if the lead is not qualified, you do nothing.\n- Today's date: {{ $now.format('yyyy-MM-dd') }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        520,
+        160
+      ],
+      "id": "f7608207-fcc5-415f-8e03-d10038941ba3",
+      "name": "Task Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=what do you do for living: {{ $json['what do you do for living?'] }}\n\nmonthly income: {{ $json['monthly income'] }}\n\nhow many tenants will be in the unit: {{ $json['how many tenants will in the unit?'] }}",
+        "options": {
+          "systemMessage": "=#Role\nYou are a lead qualifier. Your task is to filter potential leads for our cohort.\n\nRequirements for Qualified Leads:\n- applicant must have background in software development.\n- monthly income must be $10,000 or more.\n- allow only 2 or less tenants.\n\n#Output format:\n- respond by writing a detailed reasoning paragraph, analysing each lead that comes in\n- Include clear YES/NO decision whther this person belongs on the \"qualified leads\" list"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        60,
+        160
+      ],
+      "id": "d40f3c5a-ac2d-4e7a-84d3-178f9a7613e3",
+      "name": "Qualifier Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17622e42-4e28-4e7f-b507-a2799c69b248",
+              "name": "Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "80ab8a83-3e34-4f19-9bdf-5e09bcc1f4c1",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "244a0861-fd9f-4cef-a639-f83a96bd32ba",
+              "name": "what do you do for living?",
+              "value": "={{ $json['what do you do for living?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "8e529e4d-a7a6-4153-9568-a7923e44e017",
+              "name": "monthly income",
+              "value": "={{ $json['monthly income'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e5ca3caf-ce49-450b-89aa-87559d970e17",
+              "name": "how many tenants will in the unit?",
+              "value": "={{ $json['how many tenants will in the unit?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6320e02d-f53d-481f-94b2-d1d6c2491803",
+              "name": "Submitted date",
+              "value": "={{ $json.submittedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -580,
+        160
+      ],
+      "id": "daea4bed-5f82-4481-9fcd-6406bc699da7",
+      "name": "Informations"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        40,
+        380
+      ],
+      "id": "9355b75b-560d-485c-8f81-3439b5768004",
+      "name": "Gemini 2.0 Flash"
+    },
+    {
+      "parameters": {
+        "formTitle": "Form",
+        "formDescription": "Fill up this form to apply for the cohort.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "what do you do for living?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "monthly income",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "$1,000 - $4,999"
+                  },
+                  {
+                    "option": "$5,000 - $9,999"
+                  },
+                  {
+                    "option": "$10,000 - $14,999"
+                  },
+                  {
+                    "option": "over $15,000"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "how many tenants will in the unit?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "1"
+                  },
+                  {
+                    "option": "2"
+                  },
+                  {
+                    "option": "3"
+                  },
+                  {
+                    "option": "4"
+                  },
+                  {
+                    "option": "5"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -900,
+        160
+      ],
+      "id": "b7919d68-59b7-4d1c-8ab6-36ed1f387a7c",
+      "name": "Applicant form",
+      "webhookId": "6bfb6ccd-96cb-4649-87ae-800080f8a22b"
+    },
+    {
+      "parameters": {
+        "content": "## Qualifications:\n1. Must be 2 or less people\n2. Must have over $10,000 MRR\n3. Must have background in software development\n\n",
+        "height": 140,
+        "width": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "3fccddec-14e7-4438-88e6-50c55f2cc2e7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Task Agent:\n- Add qualified leads to \"Qualified Leads List\"\n- Send personalized email about property / vacant room\n",
+        "height": 100,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "2b064084-1a3d-45ad-bd6d-e4f4da28913c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Applicant form",
+        "height": 80,
+        "width": 200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "5fa3a07c-d30d-4f98-a8a2-124a341d99b6",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Add to Leads list\n",
+        "height": 80,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "2fd85fee-670e-4230-9fd3-b933f839f9ba",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Check off if applicant is processed",
+        "height": 120,
+        "width": 180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        980,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "eeb7fccf-f839-432a-b018-f7830cb3ce8d",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        400
+      ],
+      "id": "b49078ed-0aca-4dd9-b029-765d3d497d93",
+      "name": "gpt-4o-mini"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI('email') }}",
+        "subject": "=Thank for applying to rent our unit!",
+        "emailType": "text",
+        "message": "=Hello {{ $fromAI('applicant_name') }},\n\nThank you for applying to our rental property. You have been qualified for the first stage!\n\nYou can schedule unit visit with this link [schedule link].\nHere is the location of our property [google map location].\n\nRegards,\nRental Property Manager",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "My Property Mangement Company"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        920,
+        520
+      ],
+      "id": "a8c4fa27-5524-4613-8a15-0df96c081c37",
+      "name": "Send_Email",
+      "webhookId": "b80626c4-2325-4f9c-99c0-3bca20debd76"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70",
+          "mode": "list",
+          "cachedResultName": "Qualified Leads.",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        780,
+        520
+      ],
+      "id": "0a0a2c99-4861-4f54-9ea1-b226910e5752",
+      "name": "Qualified_Leads"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70",
+          "mode": "list",
+          "cachedResultName": "Qualified Leads.",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('All Leads').item.json.Name }}",
+            "email": "={{ $('All Leads').item.json.email }}",
+            "what do you do for living?": "={{ $('All Leads').item.json['what do you do for living?'] }}",
+            "monthly income": "={{ $('All Leads').item.json['monthly income'] }}",
+            "how many tenants will in the unit?": "={{ $('All Leads').item.json['how many tenants will in the unit?'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "what do you do for living?",
+              "displayName": "what do you do for living?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "monthly income",
+              "displayName": "monthly income",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "how many tenants will in the unit?",
+              "displayName": "how many tenants will in the unit?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Location & Schedule sent",
+              "displayName": "Location & Schedule sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        620,
+        520
+      ],
+      "id": "5d134595-322b-40f5-abd5-eae695dc8ec0",
+      "name": "Add_Qualified_Leads"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70",
+          "mode": "list",
+          "cachedResultName": "Qualified Leads.",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1emoRa8si1aVNsePIz1tGRR0WLRomYTWwgTXy835bi70/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('All Leads').item.json.Name }}",
+            "Location & Schedule sent": "sent"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "what do you do for living?",
+              "displayName": "what do you do for living?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "monthly income",
+              "displayName": "monthly income",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "how many tenants will in the unit?",
+              "displayName": "how many tenants will in the unit?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location & Schedule sent",
+              "displayName": "Location & Schedule sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        1080,
+        520
+      ],
+      "id": "3eefd60e-dce8-4f5e-a5ae-3ccd47fdad4e",
+      "name": "Qualified_Leads_Processed"
+    }
+  ],
+  "connections": {
+    "All Leads": {
+      "main": [
+        [
+          {
+            "node": "Qualifier Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Agent": {
+      "main": [
+        [
+          {
+            "node": "Update All Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualifier Agent": {
+      "main": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Informations": {
+      "main": [
+        [
+          {
+            "node": "All Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini 2.0 Flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Qualifier Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Applicant form": {
+      "main": [
+        [
+          {
+            "node": "Informations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4o-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send_Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualified_Leads": {
+      "ai_tool": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add_Qualified_Leads": {
+      "ai_tool": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualified_Leads_Processed": {
+      "ai_tool": [
+        [
+          {
+            "node": "Task Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "7e98dbc4-dcdf-4778-93e2-9724a6004fb5",
+  "triggerCount": 0,
+  "tags": []
+}
