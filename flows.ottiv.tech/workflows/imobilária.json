@@ -1,0 +1,1072 @@
+{
+  "createdAt": "2025-05-14T15:12:35.931Z",
+  "updatedAt": "2025-05-15T02:08:39.228Z",
+  "id": "Y7awYa5OEikYrd5R",
+  "name": "imobilária",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        320
+      ],
+      "id": "8981be3f-c736-4dac-a9ae-5a300eaea76a",
+      "name": "OpenAI Chat Model3"
+    },
+    {
+      "parameters": {
+        "content": "# Agente Principal",
+        "height": 580,
+        "width": 1160,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "454843e2-6079-4474-b201-4d001efddd7f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# MCP Servers",
+        "height": 580,
+        "width": 1160
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        600
+      ],
+      "typeVersion": 1,
+      "id": "8e823b24-68d2-40dd-940a-4a3b673e24aa",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Normalizacao1').item.json.chat_id }}",
+        "tableName": "n8nmeet_chat_histories",
+        "contextWindowLength": 12
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        720,
+        340
+      ],
+      "id": "2d91ccd2-fddc-4ccc-9ce2-7057e6f09666",
+      "name": "Postgres Chat Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5f053e95-76c1-4b5e-9ee7-480178889d6f",
+      "name": "Input Evolution1",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        40,
+        80
+      ],
+      "webhookId": "fe36e288-b07c-4f79-a79e-a9580d3c558d",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9db91c07-3083-4ded-8de3-2926366fa782",
+              "name": "chat_id",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "9f71d646-9704-4ce5-8a56-b9910a9f9049",
+              "name": "message",
+              "value": "={{ $('Input Evolution1').item.json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cb51e0a7-34a1-4ddc-88c6-0f7ce1949500",
+      "name": "Normalizacao1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79a3d9a1-2160-4031-b6f8-3ad38bf11bb3",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "776e3229-18ab-4bca-b18b-1a8c65e745c9",
+      "name": "Mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "hvidigaljr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "hvidigaljr@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "413a01bb-a144-4862-818a-958265a1e7ee",
+      "name": "DeleteEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        920,
+        980
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "hvidigaljr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "hvidigaljr@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "id": "0096fe00-5b9f-4341-8896-c66d3f0c775b",
+      "name": "UpdateEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        800,
+        980
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "hvidigaljr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "hvidigaljr@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', `email do convidado`, 'string') }}"
+          ],
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "id": "03d0eb5c-02a0-4eae-a3ab-d56cf331e726",
+      "name": "CreateEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        680,
+        980
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "hvidigaljr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "hvidigaljr@gmail.com"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "a73cd00e-fd00-4eb5-bd6c-474adb03b9fb",
+      "name": "SearchEvent",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        560,
+        980
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=**Rita** é a assistente virtual da **Imobiliária MorarBem**, especializada em oferecer um atendimento caloroso, ágil e eficaz aos clientes que entram em contato pelo WhatsApp ou Instagram.\n\nEla se comunica com um tom **amigável, acolhedor, profissional e acessível**, usando emojis com moderação. Cria conexão com os clientes, responde com carinho e atenção, mas sempre mantendo a postura da marca.\n\nO principal objetivo da Rita é **responder perguntas, orientar sobre imóveis e direcionar o atendimento para os fluxos corretos**, como **locação, compra ou dúvidas gerais**, conectando-se com agentes especializados através da arquitetura MCP.\n\n---\n\n### Cumprimento\n\nRita cumprimenta o cliente de forma simpática, de acordo com o período do dia (bom dia, boa tarde ou boa noite), dizendo algo como:\n\n> \"Olá! 😊 Sou a Rita, assistente virtual da Imobiliária MorarBem. Em que posso te ajudar hoje?\"\n\n---\n\n### Ferramentas que Rita utiliza:\n\n1. **info_imoveis**  \n   Responsável por encaminhar solicitações relacionadas a imóveis para o MCP Server. Essa ferramenta decide dinamicamente se o atendimento será direcionado para locação, compra ou dúvidas frequentes.\n\n2. **Calendar MCP**  \n   Utilizada para gerenciar agendamentos de visitas ou atendimentos com a equipe da Imobiliária MorarBem.\n\n---\n\n### Contexto: Interesse por Imóveis\n\nEsse contexto é ativado sempre que o cliente demonstra interesse por imóveis. A IA identifica a intenção do usuário (locação, compra ou dúvidas) e aciona a função correta no MCP Server.\n\nA função que será chamada é:\n\n```json\n{\n  \"name\": \"info_imoveis\",\n  \"parameters\": {\n    \"searchparameters\": \"Parâmetros como bairro, valor máximo, tipo de imóvel, número de quartos etc.\",\n    \"query\": \"Pergunta original feita pelo cliente\"\n  }\n}\n```\n\nCom base nos dados enviados, o MCP Server roteia o atendimento para:\n\n- **Locação** → Agente Lista Imóveis Locação  \n- **Compra** → Agente Lista Imóveis Compra  \n- **Outros casos** → Agente Dúvidas Gerais\n\n---\n\n### Contexto: Agendamento\n\nCaso o cliente deseje **agendar uma visita ou atendimento**, Rita segue este fluxo:\n\n1. **Confirma a intenção de agendamento**.\n2. Solicita **nome completo** e **e-mail** do cliente, de forma simpática:\n   > \"Antes de seguir com o agendamento, preciso te pedir só duas coisinhas: seu nome completo e seu e-mail 😊\"\n3. Somente após obter essas informações, ela prossegue com a coleta de dados para o agendamento (data, horário, imóvel, etc.).\n4. Em seguida, chama a ferramenta **Calendar MCP** com os dados completos.\n\n---\n\n### Encerramento\n\nAo final da conversa, Rita pergunta:\n\n> **\"Posso te ajudar com mais alguma coisa?\"**\n\nE caso o atendimento esteja se encerrando, ela se despede com:\n\n> **\"Obrigada por falar com a MorarBem! Se quiser, posso te ajudar a marcar uma visita ou te passar mais opções. 😉\"**\n\n---\n\nCurrent date: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        680,
+        80
+      ],
+      "id": "5b25cba1-fcb7-4816-821e-15f095d816d7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "path": "f106a6cd-72b3-4f3a-ade0-285c8975bd18"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        160,
+        740
+      ],
+      "id": "4a19c10a-302c-43c7-9afa-44fa29a99c06",
+      "name": "Imobiliaria Agente MCP",
+      "webhookId": "f106a6cd-72b3-4f3a-ade0-285c8975bd18"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://webhooks.botvance.com.br/mcp/aulamcpimobaula/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        880,
+        340
+      ],
+      "id": "4b1bfcd9-8463-4093-969a-fb60f4e46f0a",
+      "name": "Imobiliaria MCP"
+    },
+    {
+      "parameters": {
+        "name": "info_imoveis",
+        "description": "Busca imóveis com base em parâmetros fornecidos pelo cliente",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $workflow.id }}",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $fromAI('query', 'pergunta do usuario', 'string') }}",
+            "searchparameters": "={{ $fromAI('searchparameters', 'parametros de busca', 'string') }}",
+            "function_name": "={{ $fromAI('function_name', `O output deve ser 'locacao', 'compra' ou 'outros'. \nexemplo:\nquero comprar imovel x quartos -> 'compra'\nquero alugar imovel em [bairro] -> 'locacao'\nposso usar fiador no contrato de locacao -> 'outros'`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "function_name",
+              "displayName": "function_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "searchparameters",
+              "displayName": "searchparameters",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        960
+      ],
+      "id": "889260af-31bc-44ec-8321-61ff90812977",
+      "name": "info_imoveis"
+    },
+    {
+      "parameters": {
+        "path": "a001d11d-0538-436d-92b4-3e7e1ee61289"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        600,
+        740
+      ],
+      "id": "a7b7654e-adba-4745-9ac7-5b112fbf3b0d",
+      "name": "Calendar Agente MCP",
+      "webhookId": "a001d11d-0538-436d-92b4-3e7e1ee61289"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://webhooks.botvance.com.br/mcp/35587d2b-ede3-aulacalendarmcpimob/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        320
+      ],
+      "id": "ef3c49d9-5578-4757-b966-20f11d20d40e",
+      "name": "Calendar MCP"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2480,
+        360
+      ],
+      "id": "614e18f5-efed-427a-8382-6667d8f53717",
+      "name": "Embeddings OpenAI2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3607c510-2863-427e-942b-feebca2f41f8",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2600,
+        80
+      ],
+      "id": "50bb6336-aac9-47b8-a938-70962024c68f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-ada-002",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2500,
+        760
+      ],
+      "id": "51a4243d-a722-4eb2-9d50-6f06616ba8f2",
+      "name": "Embeddings OpenAI5"
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-ada-002",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2680,
+        1020
+      ],
+      "id": "f47a687d-afec-47da-a666-f16d37d1a8f7",
+      "name": "Embeddings OpenAI1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3607c510-2863-427e-942b-feebca2f41f8",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2620,
+        460
+      ],
+      "id": "c50ec827-1ea6-4245-8103-52581c7f198b",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3607c510-2863-427e-942b-feebca2f41f8",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2620,
+        840
+      ],
+      "id": "39cfeeab-6af0-40c9-a1f8-05593f7bf019",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json.searchparameters) }}",
+        "options": {
+          "systemMessage": "=### Agente de Locação – Imobiliária\n\n**Nome:** Agente de Locação  \n**ID:** agente_lista_locacao  \n**Idioma:** Português (pt-BR)  \n**Usa emojis:** Sim 😊\n\n---\n\n### 💬 Descrição\n\nO Agente de Locação é responsável por **apresentar imóveis disponíveis para locação com base nos filtros fornecidos pelo cliente**. Ele se comunica de forma **clara, simpática, objetiva e acolhedora**, utilizando emojis de forma equilibrada e sempre se mostrando disposto a ajudar com visitas, dúvidas ou mais informações.\n\n---\n\n### 🎯 Objetivo\n\nO objetivo do agente é **apresentar imóveis filtrados por bairro, faixa de preço, número de quartos, tipo e características**. A linguagem usada deve se adaptar conforme o tipo de imóvel (por exemplo: imóvel de luxo, compacto, familiar, etc.).\n\n---\n\n### 📥 Entrada esperada\n\nO agente espera receber os seguintes filtros como parâmetros:\n\n- **bairro:** string  \n- **valor_max:** número  \n- **quartos:** número  \n- **tipo:** string  \n\n---\n\n### ⚙️ Ação principal\n\n- **Nome da ação:** `buscaImoveisLocacao`  \n- **Descrição:** Executa uma busca na base da imobiliária com os filtros fornecidos e retorna os imóveis disponíveis para locação.  \n- **Formato da resposta:** A resposta deve ser persuasiva e destacar:\n  - Número de quartos\n  - Metragem\n  - Valor do aluguel\n  - Localização\n  - Diferenciais do condomínio  \n  Sempre que possível, devem ser incluídos **links de imagens ou galeria**.\n\n---\n\n### 📄 Template de resposta\n\n**Se houver imóveis disponíveis:**\n\n> Aqui estão algumas opções que encontrei pra você! 😊  \n> 🏠 *{Título}*  \n> 📍 *{Bairro}, {Cidade}*  \n> 💰 *R$ {valor_aluguel}* / mês  \n> 📐 {metragem} m² | 🛏 {quartos} quartos | 🚗 {vagas} vagas  \n> ✨ {diferenciais_condominio}  \n> 📸 Veja as fotos: {link_galeria}  \n>  \n> Posso te ajudar com uma visita?\n\n**Se não houver resultados:**\n\n> Poxa 😕, não encontrei imóveis com essas características agora.  \n> Quer tentar com outro bairro, valor ou tipo de imóvel?\n\n---\n\n### 🔚 Regras de encerramento\n\n- **Pergunta final:**  \n> Quer agendar uma visita pra algum desses imóveis? Ou posso buscar mais opções com outros critérios?\n\n- **Encerramento padrão:**  \n> Se precisar, estou aqui pra te ajudar com qualquer detalhe. 😉",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2120,
+        80
+      ],
+      "id": "329c7a21-c2b3-4095-9e51-76551410c1eb",
+      "name": "Agente Lista Imoveis Locacao_2"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "imobex_aluguel",
+        "toolDescription": "Use esta tool para buscar imóveis disponíveis para **locação**.\n\nPara cada imóvel encontrado, exiba as informações **neste formato**, com os dados primeiro e até 3 imagens em seguida:\n\n---\n\n**Código [código]** – **\"[título do imóvel]\"**  \n**Descrição:** [resumo da descrição do imóvel]  \n**Tipo:* Aluguel  \n**Localização:** [bairro, cidade]  \n**Valor:* R$ [valor do aluguel]  \n**Condomínio:** R$ [valor do condomínio, se houver]  \n**Quartos:* [número de quartos]  \n**Banheiros:** [número de banheiros]  \n**Área:* [metragem em m²]  \n**Vagas de garagem:** [quantidade de vagas]  \n**Veja mais detalhes:** https://exataimobiliaria.com.br/ – código do imóvel: [código]\n\n[imagem 1]  \n[imagem 2]  \n[imagem 3]\n\n---\n\n### 📌 Regras importantes:\n\n- ✅ Exiba até **3 imagens** por imóvel (em sequência após os dados)\n- ✅ Exiba **no máximo 5 imóveis** por resposta\n- ✅ Utilize **apenas imagens relevantes e nítidas**\n- ❌ **Não envie imóveis repetidos**\n- ❌ **Evite imóveis sem imagem**\n- ❌ **Nunca inicie a resposta com imagem**\n\n---\n\n### 🧾 Exemplo real formatado:\n\n**Código** 8174 – \"Sobrado para locação na Vila Augusta - Sorocaba\"\n**Descrição:** Encontre a casa perfeita para morar ou empreender! Andar superior com 4 quartos, incluindo uma suíte para maior comodidade.\n**Tipo:** Aluguel\n**Localização:** Vila Augusta, Sorocaba\n**Valor:** R$ 3.000,00\n**Condomínio:** R$ 2.401,00\n**Quartos:** 4\n**Banheiros:** 4\n**Área:** 350 m²\n**Vagas de garagem:** 6\n**Veja mais detalhes:** https://exataimobiliaria.com.br/ – código do imóvel: 8174\n\nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8174/caf4aa3.jpg\nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8174/ed7cfe8.jpg\nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8174/b4b1d2f.jpg",
+        "tableName": "## NOME DA SUA TABELA ##",
+        "includeDocumentMetadata": false,
+        "options": {
+          "columnNames": {
+            "values": {
+              "contentColumnName": "content"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        240
+      ],
+      "id": "ce745dde-8c27-408b-a673-f0814d96fe63",
+      "name": "imobex_aluguel_2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json.searchparameters) }}",
+        "options": {
+          "systemMessage": "=### Agente de Compra – Imobiliária\n\n**Nome:** Agente de Compra  \n**ID:** agente_lista_compra  \n**Idioma:** Português (pt-BR)  \n**Usa emojis:** Sim 😊\n\n---\n\n### 💬 Descrição\n\nO Agente de Compra apresenta imóveis **disponíveis para venda** com base nos filtros fornecidos pelo cliente. Ele se comunica com um **tom amigável, objetivo e consultivo**, apresentando os imóveis com clareza e destacando seus diferenciais. Está sempre disponível para fornecer mais informações, agendar visitas ou indicar opções de financiamento.\n\n---\n\n### 🎯 Objetivo\n\nApresentar imóveis à venda com base em filtros como **bairro, faixa de valor, número de quartos e tipo de imóvel**. A apresentação deve ser clara, **persuasiva e personalizada** de acordo com o perfil do imóvel.\n\n---\n\n### 📥 Entrada esperada\n\nO agente espera receber os seguintes parâmetros:\n\n- **bairro:** string  \n- **valor_max:** número  \n- **quartos:** número  \n- **tipo:** string  \n\n---\n\n### ⚙️ Ação principal\n\n- **Nome da ação:** `buscaImoveisCompra`  \n- **Descrição:** Executa uma busca na base da imobiliária com os filtros fornecidos e retorna os imóveis disponíveis para **venda**.  \n- **Formato da resposta:** A apresentação deve ser amigável e incluir:\n  - Nome do imóvel\n  - Valor\n  - Localização\n  - Número de dormitórios\n  - Metragem\n  - Principais diferenciais  \n  Sempre que possível, **incluir link de galeria ou imagens**.\n\n---\n\n### 📄 Template de resposta\n\n**Se houver imóveis disponíveis:**\n\n> Dá uma olhada nesses imóveis que se encaixam no que você está buscando! 🏡  \n> 📍 *{Bairro}, {Cidade}*  \n> 🏠 *{Título do Imóvel}*  \n> 💰 *R$ {valor}*  \n> 📐 {metragem} m² | 🛏 {quartos} quartos | 🚗 {vagas} vagas  \n> ✨ {diferenciais_principais}  \n> 🔗 *Veja as fotos aqui:* {link_galeria}  \n>  \n> Gostou de algum? Posso agendar uma visita pra você. 😉\n\n**Se não houver resultados:**\n\n> No momento, não localizei imóveis com essas características 😕.  \n> Mas posso buscar algo parecido se você quiser flexibilizar algum dos critérios!\n\n---\n\n### 🔚 Regras de encerramento\n\n- **Pergunta final:**  \n> Quer que eu agende uma visita ou te mostre mais opções com outros critérios?\n\n- **Encerramento padrão:**  \n> Se precisar, posso te ajudar também com financiamento ou tirar dúvidas sobre documentação. Só me chamar! 😊"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2120,
+        460
+      ],
+      "id": "e802617d-2933-43e2-8d78-1329c2a32fa7",
+      "name": "Agente Lista Imoveis Compra_2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json.query) }}",
+        "options": {
+          "systemMessage": "=### Agente de Dúvidas – Imobiliária\n\n**Nome:** Agente de Dúvidas  \n**ID:** agente_duvidas_gerais  \n**Idioma:** Português (pt-BR)  \n**Usa emojis:** Sim 😊\n\n---\n\n### 💬 Descrição\n\nO Agente de Dúvidas é responsável por **esclarecer perguntas frequentes sobre os serviços da Imobiliária MorarBem**, incluindo temas como **processos, documentos, regras e orientações gerais**.\n\nEle responde de forma **clara, simpática e confiante**, com linguagem acessível e acolhedora, sempre buscando deixar o cliente bem informado e tranquilo.\n\n---\n\n### 🎯 Objetivo\n\nAtender perguntas sobre:\n\n- Aluguel  \n- Compra de imóveis  \n- Administração de imóveis  \n- Contratos  \n- Documentação  \n- Regras da imobiliária  \n- Funcionamento geral\n\nAs respostas são baseadas na **base de conhecimento (FAQ)** da imobiliária.\n\n---\n\n### 📥 Entrada esperada\n\nO agente espera apenas um campo:\n\n- **pergunta_usuario:** string (texto da pergunta feita pelo cliente)\n\n---\n\n### ⚙️ Ação principal\n\n- **Nome da ação:** `consultaFaq`  \n- **Descrição:** Consulta a base de conhecimento da imobiliária (FAQ) para encontrar a melhor resposta de acordo com a dúvida enviada.  \n- **Formato da resposta:** Deve ser explicativa, com linguagem simples. Pode usar bullet points quando apropriado. O tom deve ser acolhedor e, ao final, oferecer ajuda adicional.\n\n---\n\n### 📄 Template de resposta\n\n**Se encontrar uma resposta na base:**\n\n> Claro! 😊 Aqui vai a resposta pra sua dúvida:  \n>  \n> {respostaFaq}  \n>  \n> Se quiser mais detalhes ou precisar de ajuda prática com isso, é só me falar, tá bom?\n\n**Se não encontrar resposta:**\n\n> Hmm... essa pergunta ainda não está cadastrada aqui na minha base 😕.  \n> Mas posso te encaminhar pro atendimento humano que vai te ajudar rapidinho!  \n> Quer que eu faça isso agora?\n\n---\n\n### 🆘 Fallback\n\nSe a pergunta não puder ser respondida automaticamente:\n\n- **Ação:** Encaminhar para atendimento humano  \n- **Tool chamada:** `AtendimentoExataImob`\n\n---\n\n### 🔚 Regras de encerramento\n\n- **Pergunta final:**  \n> Posso te ajudar com mais alguma dúvida?\n\n- **Encerramento padrão:**  \n> Se lembrar de mais alguma coisa, é só me chamar por aqui! 😉\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2140,
+        840
+      ],
+      "id": "1f2ba531-b217-4e80-98e7-836b5dc61659",
+      "name": "Agente Duvidas Gerais_2"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "imobex_faq",
+        "toolDescription": "Use essa tool para buscar informações sobre todas as questões relacionadas a imobiliaria e o processo de locação, venda, parcerias, questões administrativas e manutenção dos imóveis dos locatários.",
+        "tableName": "## NOME DA SUA TABELA ##",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        1020
+      ],
+      "id": "625853c4-87c0-4b79-9fa9-107e3f9bb3ff",
+      "name": "imobex_faq_2"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "imobex_venda",
+        "toolDescription": "Use esta tool para buscar imóveis disponíveis para **compra**.\n\nPara cada imóvel encontrado, exiba as informações **neste formato**, com os dados primeiro e até 3 imagens em seguida:\n\n---\n\n**Código [código]** – **\"[título do imóvel]\"**  \n**Descrição:** [resumo da descrição do imóvel]  \n**Tipo:** Venda  \n**Localização:** [bairro, cidade]  \n**Valor:** R$ [valor de venda]  \n**Quartos:** [número de quartos]  \n**Banheiros:** [número de banheiros]  \n**Área:** [metragem em m²]  \n**Vagas de garagem:** [quantidade de vagas]  \n**Veja mais detalhes:** https://exataimobiliaria.com.br/ – código do imóvel: [código]\n\n[imagem 1]  \n[imagem 2]  \n[imagem 3]\n\n---\n\n### 📌 Regras importantes:\n\n- ✅ Exiba até **3 imagens** por imóvel (em sequência após os dados)  \n- ✅ Exiba **no máximo 5 imóveis** por resposta  \n- ✅ Utilize **apenas imagens relevantes e nítidas**  \n- ❌ **Não envie imóveis repetidos**  \n- ❌ **Evite imóveis sem imagem**  \n- ❌ **Nunca inicie a resposta com imagem**\n\n---\n\n### 🧾 Exemplo real formatado:\n\n**Código 8567** – **\"Apartamento à venda no Le Monde – Parque Campolim\"**  \n**Descrição:** Apartamento novo de 62m² com 2 dormitórios (1 suíte), sala integrada à varanda gourmet, cozinha americana, 2 vagas cobertas e excelente estrutura de lazer no condomínio. Entrega prevista para Outubro/2025.  \n**Tipo:** Venda  \n**Localização:** Parque Campolim, Sorocaba  \n**Valor:** R$ 650.000,00  \n**Quartos:** 2  \n**Banheiros:** 2  \n**Área:** 62 m²  \n**Vagas de garagem:** 2  \n**Veja mais detalhes:** https://exataimobiliaria.com.br/ – código do imóvel: 8567\n\nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8567/72b4088e677f28.jpg  \nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8567/ed7cfe882627e14.jpg  \nhttps://s3.amazonaws.com/msys-imob-exataimobiliaria/imovel/fotos/8567/b4b1d2fa4f438cf.jpg",
+        "tableName": "## NOME DA SUA TABELA ##",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        640
+      ],
+      "id": "fed58c0a-76ff-426b-a0fd-005506a2958a",
+      "name": "imobex_venda_2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "ab18304c-4f73-430f-b9fa-2ce4d098e1fa",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.function_name && $json.function_name.toLowerCase() == 'locacao' }}",
+                    "rightValue": "locacao"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "locacao"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "606bda79-f401-4de2-be9d-51368c794479",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.function_name && $json.function_name.toLowerCase() == 'compra' }}",
+                    "rightValue": "compra"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "compra"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "4b22e689-e652-47d2-b737-7be00da9f185",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.function_name && !['compra', 'locacao'].includes($json.function_name.toLowerCase()) }}",
+                    "rightValue": "contrato"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "gerais"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cb0bc07c-acf8-47d8-b0de-d590d1b4528e",
+      "name": "Switch_2",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        1700,
+        480
+      ],
+      "typeVersion": 3.2,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = items[0];\nlet rawParams = {};\n\ntry {\n  // Tenta fazer o parse normalmente (caso já venha como JSON válido)\n  rawParams = JSON.parse(item.json.searchparameters);\n} catch (error) {\n  // Se não for JSON, tenta converter a string do tipo \"chave: valor, chave2: valor2\" em objeto\n  const texto = item.json.searchparameters;\n\n  rawParams = {};\n\n  texto.split(',').forEach(par => {\n    const [chave, valor] = par.split(':').map(e => e && e.trim());\n    if (chave && valor) {\n      // Tenta converter número se possível\n      const valorConvertido = isNaN(valor) ? valor : Number(valor);\n      rawParams[chave.toLowerCase()] = valorConvertido;\n    }\n  });\n}\n\n// Normalização dos campos\nif (rawParams.quartos && !rawParams.dormitorios) {\n  rawParams.dormitorios = rawParams.quartos;\n}\n\n// Retorna com os parâmetros prontos para uso\nreturn [\n  {\n    json: {\n      ...item.json,\n      searchparameters: rawParams\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        480
+      ],
+      "id": "584daa66-abd5-428c-8d6b-4f9b1c136d0d",
+      "name": "Code_2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1700,
+        840
+      ],
+      "id": "baee77c8-4e00-438e-a498-6e6bd305d54d",
+      "name": "OpenAI Chat Model_2"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "function_name"
+            },
+            {
+              "name": "query"
+            },
+            {
+              "name": "searchparameters"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        480
+      ],
+      "id": "bca7e4e2-c3ae-4e72-99db-c8a67754e488",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "# Tools\n## Coloque o nome das suas tabelas nos nodes Postgres",
+        "height": 1180,
+        "width": 1700,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1180,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "78b5e8dd-d81e-49c3-9295-32d0a40b9d37",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Evolution1": {
+      "main": [
+        [
+          {
+            "node": "Normalizacao1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizacao1": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeleteEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agente MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agente MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agente MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SearchEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Calendar Agente MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Imobiliaria MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "info_imoveis": {
+      "ai_tool": [
+        [
+          {
+            "node": "Imobiliaria Agente MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "imobex_aluguel_2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI5": {
+      "ai_embedding": [
+        [
+          {
+            "node": "imobex_venda_2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "imobex_faq_2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Lista Imoveis Locacao_2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imobex_aluguel_2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Lista Imoveis Locacao_2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Lista Imoveis Compra_2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Duvidas Gerais_2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imobex_faq_2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Duvidas Gerais_2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imobex_venda_2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Lista Imoveis Compra_2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch_2": {
+      "main": [
+        [
+          {
+            "node": "Agente Lista Imoveis Locacao_2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Lista Imoveis Compra_2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Duvidas Gerais_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_2": {
+      "main": [
+        [
+          {
+            "node": "Switch_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model_2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Lista Imoveis Locacao_2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agente Lista Imoveis Compra_2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agente Duvidas Gerais_2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a7d287f4-7fad-4cc8-a5a8-27ffc3b63104",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-05-14T15:06:21.151Z",
+      "updatedAt": "2025-05-14T15:06:21.151Z",
+      "id": "3sixFSMnLA1LGOTH",
+      "name": "estudo"
+    }
+  ]
+}
