@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-12T01:27:30.626Z",
-  "updatedAt": "2025-05-12T01:27:30.626Z",
+  "updatedAt": "2025-06-19T22:02:09.454Z",
   "id": "1EE5BGZ4ggkI7HpG",
   "name": "Agente de Resumo de conversa",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {},
