@@ -4,6 +4,7 @@
   "id": "NzrrmOVj8X5WC38z",
   "name": "[Anna] Vector | Update | Disable | Create Manual",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
