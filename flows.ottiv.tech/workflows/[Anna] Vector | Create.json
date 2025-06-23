@@ -1,0 +1,1509 @@
+{
+  "createdAt": "2025-06-23T16:51:32.712Z",
+  "updatedAt": "2025-06-23T16:51:32.712Z",
+  "id": "M4nXM4HlkZCkIajH",
+  "name": "[Anna] Vector | Create",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "7407b70c-c5f5-475c-a78c-d20b597fbcdd",
+      "name": "NoOp.7",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "data",
+              "separateBy": " "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1404bc3-4222-488c-a47a-94b22dfa1409",
+      "name": "Summarize",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let concatenatedData = $('Summarize').first().json.concatenated_data;\n\n// Substituir todas as ocorrências de '\\n' por espaço para teste (opcional)\nconcatenatedData = concatenatedData.replace(/\\n/g, ' ');\n\nconst chunkLength = parseInt($('[Directus] Knowledge').first().json.data[0].chunks_length, 10);\nconst overlapPercentage = parseInt($('[Directus] Knowledge').first().json.data[0].overlap, 10);\n\n// Calcular o tamanho da sobreposição como uma porcentagem do comprimento do chunk\nconst overlapLength = Math.min(\n    Math.floor((overlapPercentage / 100) * chunkLength),\n    chunkLength - 1\n);\n\n// Funções auxiliares\nfunction findLastValidBreak(text, position) {\n    const lastNewline = text.lastIndexOf('\\n', position);\n    const regex = /[.!?]\\s/g;\n    let lastPunctuation = -1;\n    let match;\n\n    while ((match = regex.exec(text)) !== null) {\n        if (match.index < position) {\n            lastPunctuation = match.index + 1;\n        } else {\n            break;\n        }\n    }\n\n    const lastSpace = text.lastIndexOf(' ', position);\n    return Math.max(lastNewline, lastPunctuation, lastSpace);\n}\n\nfunction findNextValidStart(text, position) {\n    const nextNewline = text.indexOf('\\n', position);\n    const nextSpace = text.indexOf(' ', position);\n\n    const validStart = [nextNewline, nextSpace].filter(pos => pos > position);\n    return validStart.length > 0 ? Math.min(...validStart) + 1 : position;\n}\n\n// Função principal\nfunction splitTextIntoChunks(text, maxLength, overlapLength) {\n    const chunks = [];\n    let start = 0;\n\n    while (start < text.length) {\n        let end = Math.min(start + maxLength, text.length);\n        end = findLastValidBreak(text, end);\n\n        const chunk = text.substring(start, end).trim();\n        chunks.push(chunk);\n\n        let nextStart = end - overlapLength;\n        nextStart = findNextValidStart(text, nextStart);\n\n        if (nextStart <= start) {\n            break;\n        }\n\n        start = nextStart;\n    }\n\n    return chunks;\n}\n\n// Dividir o texto em chunks\nconst chunks = splitTextIntoChunks(concatenatedData, chunkLength, overlapLength);\n\n// Converter os chunks em itens individuais para n8n\nreturn chunks.map(chunk => ({ json: { chunk: chunk } }));\n"
+      },
+      "id": "df273f45-19c2-4de2-a378-af8b7c83ddbd",
+      "name": "SplitChunks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        1060
+      ],
+      "id": "6b4e1545-bb24-49bb-9727-0d6164406e9f",
+      "name": "wait.1",
+      "webhookId": "4b72106c-d702-4597-9f23-fa5272c02a01"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 740,
+        "width": 3640,
+        "color": 5
+      },
+      "id": "932061e1-c059-4097-bffb-6f5fcc1b42e0",
+      "name": "Sticky Note32",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 500,
+        "width": 3640,
+        "color": 5
+      },
+      "id": "11f7f520-4472-445f-9a9d-574fc58f99bb",
+      "name": "Sticky Note33",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "id": "c3eb8b09-c063-4e39-9b6c-cdfb517129af",
+      "name": "Gemini.1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3340,
+        1080
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cU3rVTqwNhh6u6h1",
+          "name": "Google Gemini(PaLM) - Sy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 230,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3260,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "fca172cd-2ed3-41b9-9da0-e614192295c5",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "update.files.create",
+        "options": {}
+      },
+      "id": "67a9e13f-2bd1-48eb-afa8-b5c0c13f6052",
+      "name": "Split Files",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "update.urls",
+        "options": {}
+      },
+      "id": "ef30ff1a-221f-45bd-9143-6974a3f57a85",
+      "name": "Split Website",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "16a0ef0a-e1b2-4a28-8d76-d80a4384a5ca",
+      "name": "Loop Scraping",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2200,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b5bbc927-4cda-4b74-acb0-65a1a5ec59fb",
+      "name": "Loop Questions",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        80,
+        960
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "LoopOverReset",
+        "options": {}
+      },
+      "id": "21cbf29e-7428-45ff-a553-fe1c4fa6e9e6",
+      "name": "Split Questions",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        840,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eabd5409-ef5c-4cb2-adff-8ff7bc9d723a",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            },
+            {
+              "id": "81120c08-fb1b-43a5-850b-86afbac44d10",
+              "name": "LoopOverReset",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        1060
+      ],
+      "id": "0dda7aa1-f3f1-4e25-83de-3fb749b8988e",
+      "name": "Add Loop Info"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1300,
+        "width": 3680,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "868a6572-cc10-4f2c-904c-a503de7bb855",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.update.files.create }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "50bab72e-e3fc-41da-940c-c24b5605c302"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "arquivo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1eeba314-6e25-4ec5-9118-1e0a2b0c3f38",
+                    "leftValue": "={{ $json.update.urls.create }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "url"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6d773051-35bf-4df8-9ffc-7539fe858b8c",
+                    "leftValue": "={{ $json.update.urls.update }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "url"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        860,
+        260
+      ],
+      "id": "73520819-4fb4-4c7f-bdcd-5d3a71db4f21",
+      "name": "Test File or URL"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1800,
+        260
+      ],
+      "id": "854df93b-802e-49a4-a2be-3d8dd6aa4c16",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c72b58f-359a-4bf9-ac25-b3e3fcba320e",
+              "name": "url",
+              "value": "={{ $json[\"0\"].url }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        260
+      ],
+      "id": "0cacb71b-0966-4b85-b64d-d0f27c3a7c92",
+      "name": "Create URL Website URL",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c9973b1-6755-4e94-b0a9-64482e26345d",
+              "name": "url",
+              "value": "={{\n  $('[Directus] GetFiles').all()\n    .map(urlDoc =>\n`${$('Parse').first().json.global_vars.s3_url}/${$('Parse').first().json.global_vars.bucket}/${urlDoc.json.data.filename_disk}`\n    )\n}}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        100
+      ],
+      "id": "e70d41d1-6bfe-4735-a5a5-839b7bf2fa76",
+      "name": "Create URL File",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": "={{ $json.LoopOverReset }}"
+        }
+      },
+      "id": "71361046-2a48-4c18-8e91-97b3458a5cd1",
+      "name": "Loop Vectors",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        960
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "81120c08-fb1b-43a5-850b-86afbac44d10",
+              "name": "LoopOverReset",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2000,
+        1060
+      ],
+      "id": "3dbbd669-6d86-455b-99fa-afe4ab925c7e",
+      "name": "Set Loop Rules"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Parse').first().json.global_vars.directus_service }}/items/knowledge/{{ $('Doc Handler').first().json.body.key }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Parse').first().json.global_vars.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "description",
+              "value": "={{ $json.response.text.trim() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2980,
+        160
+      ],
+      "id": "643d444b-4939-4340-9978-1a38bdc0cf27",
+      "name": "[Directus] Add Description"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Parse').first().json.global_vars.directus_service }}/items/dimensions/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Parse').first().json.global_vars.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "values",
+              "value": "={{ $json.data[0].embedding.join(\",\") }}"
+            },
+            {
+              "name": "vector_id",
+              "value": "={{ $('[Directus] Add Metadata').item.json.data.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        860
+      ],
+      "id": "21848c11-6bb0-4bee-9aae-e304c471df80",
+      "name": "[Directus] Add Dimensions"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "knowledge",
+              "value": "={{ $('Doc Handler').item.json.body.key }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        460,
+        260
+      ],
+      "id": "645a139a-6c0b-4118-aedb-d4f29a086d61",
+      "name": "Execution Data",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/vector/create",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        60,
+        260
+      ],
+      "id": "6be9d6c9-bd04-484a-91ea-3b94cee18690",
+      "name": "Doc Handler",
+      "webhookId": "ab5241ce-fb62-40e0-b647-e4a3ba9b003c",
+      "notesInFlow": true,
+      "notes": "Responde ao Doc Handler"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        260
+      ],
+      "id": "3ce11c64-f0b8-4699-9159-e28570d6d98d",
+      "name": "Split URLs"
+    },
+    {
+      "parameters": {
+        "url": "=https://r.jina.ai/{{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Parse').first().json.global_vars.jina_ai_token }}"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 20,
+              "batchInterval": 60000
+            }
+          }
+        }
+      },
+      "id": "82c261e3-8bb3-4c0f-9071-e1f1f29bf776",
+      "name": "[Jina] Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        580
+      ],
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Parse').first().json.global_vars.openai_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "input",
+              "value": "={{\n`Context: ${$('Loop Vectors').item.json.output.t} \nQuestion: ${$('Loop Vectors').item.json.output.q} \nAnswer: ${$('Loop Vectors').item.json.output.a} \nSimilar Questions: ${$('Loop Vectors').item.json.output.sq.join(\", \")}\nTags: ${$('Loop Vectors').item.json.output.tags.join(\", \")}` \n}}"
+            },
+            {
+              "name": "model",
+              "value": "text-embedding-3-small"
+            },
+            {
+              "name": "dimensions",
+              "value": "={{ 1536 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        860
+      ],
+      "id": "8fba264e-fd54-401b-83e0-b681c95b4bfa",
+      "name": "[OpenAi] Get Embeddings",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6cb343e8-65cd-4473-8b29-3c5eff767302",
+              "name": "update",
+              "value": "={{ $('Doc Handler').item.json.body.payload }}",
+              "type": "object"
+            },
+            {
+              "id": "3232cbb8-4275-4a41-b801-d28ed194eb96",
+              "name": "directus_url",
+              "value": "={{ $('Doc Handler').item.json.body.directus.address }}",
+              "type": "string"
+            },
+            {
+              "id": "0a36c1c8-2ff5-4998-ae3a-a78accb4e4be",
+              "name": "global_vars",
+              "value": "={{ $('Doc Handler').first().json.body.global_vars }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        260
+      ],
+      "id": "e3f850bd-9d99-46e6-be54-9b93777f2648",
+      "name": "Parse"
+    },
+    {
+      "parameters": {
+        "chunkSize": "={{ $('[Directus] Knowledge').first().json.data[0].chunks_length }}",
+        "chunkOverlap": "={{ $('[Directus] Knowledge').first().json.data[0].chunks_length * $('[Directus] Knowledge').first().json.data[0].overlap / 100 }}",
+        "options": {
+          "summarizationMethodAndPrompts": {
+            "values": {
+              "combineMapPrompt": "=Analise o texto a seguir e gere um resumo conciso e direto que destaque os principais tópicos e informações mais relevantes. Este resumo será utilizado para compor uma descrição geral do documento.\n\n\"{text}\"\n\nresumo:",
+              "prompt": "Com base nos resumos a seguir, crie uma descrição clara e objetiva do conteúdo geral do documento. A descrição deve funcionar como um prefácio, informando o que o documento aborda e destacando os temas principais, de forma que o leitor saiba o que esperar antes de começar a leitura.\n\n\"{text}\"\n\ndescrição:"
+            }
+          }
+        }
+      },
+      "id": "41d1fcdf-c80f-4667-ad01-76eb0bfd8573",
+      "name": "Description Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        160
+      ],
+      "notesInFlow": true,
+      "notes": "Cria uma descrição do documentos"
+    },
+    {
+      "parameters": {
+        "content": "Puxar Caracteres do banco de dados",
+        "height": 240,
+        "width": 200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3160,
+        100
+      ],
+      "typeVersion": 1,
+      "id": "56029b55-8dec-4efd-b05c-c38a4e05ae30",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Parse').first().json.global_vars.directus_service }}/items/vectors",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Parse').first().json.global_vars.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "={{ $json.output.q }}"
+            },
+            {
+              "name": "answer",
+              "value": "={{ $json.output.a }}"
+            },
+            {
+              "name": "context",
+              "value": "={{ $json.output.t }}"
+            },
+            {
+              "name": "similar_questions",
+              "value": "={{ $json.output.sq }}"
+            },
+            {
+              "name": "knowledge_id",
+              "value": "={{ $('Doc Handler').first().json.body.key }}"
+            },
+            {
+              "name": "tags",
+              "value": "={{ $json.output.tags }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        860
+      ],
+      "id": "530c327b-cffd-4b82-8e6d-50d0f74907c1",
+      "name": "[Directus] Add Metadata"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $('[Directus] Knowledge').first().json.data[0].pinecone_host_id.value.replace(/https?:\\/\\//, '') }}/vectors/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "={{ $('Parse').first().json.global_vars.pinecone_key }}"
+            },
+            {
+              "name": "X-Pinecone-API-Version",
+              "value": "2024-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"namespace\": \"{{ $('[Directus] Knowledge').first().json.data[0].name_id.value }}\",\n  \"vectors\": [\n    {\n      \"id\": \"{{ $('[Directus] Add Metadata').first().json.data.id }}\",\n      \"metadata\": {{ $('Loop Vectors').item.json.output.toJsonString() }},\n      \"values\": {{ $('[OpenAi] Get Embeddings').first().json.data[0].embedding.toJsonString() }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        860
+      ],
+      "id": "c51bc026-098a-4b0e-900f-f29e00dd0fe2",
+      "name": "[Pinecone] Upsert ",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Doc Handler').item.json.body.directus.address }}/files/{{ $json.directus_files_id.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Doc Handler').item.json.body.directus.token }}"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {}
+          }
+        }
+      },
+      "id": "9cf7cfc5-6d37-4fea-8f78-3a20579939ad",
+      "name": "[Directus] GetFiles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        100
+      ],
+      "notesInFlow": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"sucess\": \"rag inserted\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        860
+      ],
+      "id": "e1468831-2b34-4c44-9c78-6425cbbe4072",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Doc Handler').first().json.body.directus.address }}/items/knowledge/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "* , urls.*, files.directus_files_id, name_id.value, pinecone_host_id.value, knowledge_urls.id.url"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Doc Handler').first().json.body.directus.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        260
+      ],
+      "id": "90b6cc03-daa9-4b88-b0bd-adc5cecd5b3e",
+      "name": "[Directus] Knowledge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "14fd4b0f-4ae3-443f-8889-b308f094e4e2",
+              "leftValue": "={{ $json.url }}",
+              "rightValue": ".md",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            },
+            {
+              "id": "5fd17d60-9a17-4a37-94a9-4bbba8719b34",
+              "leftValue": "={{ $json.url }}",
+              "rightValue": ".txt",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2420,
+        460
+      ],
+      "id": "6efeb5db-d5ba-4afc-8f02-b7b6e78ba0e0",
+      "name": "Testa se é texto"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        360
+      ],
+      "id": "5b2daa08-a62e-4b87-a62a-104a34a0bf87",
+      "name": "Text"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Loop Questions').item.json.chunk }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"a\": {\n        \"type\": \"string\",\n        \"description\": \"A resposta ou informação extraída do chunk fornecido.\"\n      },\n      \"t\": {\n        \"type\": \"string\",\n        \"description\": \"O trecho ou situação exata e fidedigna do documento de onde a resposta foi retirada.\"\n      },\n      \"q\": {\n        \"type\": \"string\",\n        \"description\": \"A pergunta principal que tem como resposta a informação extraída (a).\"\n      },\n      \"sq\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"string\"\n        },\n        \"description\": \"Perguntas alternativas ou similares que poderiam ser feitas para obter a mesma resposta (a).\"\n      },\n      \"tags\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"string\"\n        },\n        \"description\": \"Tags relacionadas a pesquisa para ajudar com buscas no banco de dados vetorial.\"\n      }\n    },\n    \"required\": [\"a\", \"t\", \"q\", \"sq\", \"tags\"]\n  }\n}",
+        "options": {
+          "systemPromptTemplate": "=Você é um agente interno de um sistema especializado em extrair perguntas e respostas de documentos e transformalos em json parseavel em Javascript. Sua tarefa é analisar o chunk fornecido, que representa um segmento de um documento completo, e gerar perguntas e respostas baseadas nas informações contidas nele num formato diretamente iterável sem explicacoes, markdown ou nada que atrapalhe o parseamento das informações. \n\nResumo do assunto do documento: {{ $('[Directus] Add Description').first().json.data.description }}\n\nDiretrizes:\n1. Extraia informações relevantes (respostas) do chunk fornecido. Essas informações devem ser associadas a perguntas principais, mantendo sempre o tom e o estilo de comunicação do texto base, como se as perguntas e respostas fizessem parte do mesmo documento.\n2. Para cada resposta extraída:\n   - Crie uma pergunta principal (q) que tenha como resposta a informação extraída (a).\n   - Identifique o trecho específico do documento (t) de onde a resposta foi retirada.\n   - Formule perguntas alternativas (sq) que poderiam ser feitas para obter a mesma resposta (a). \n3. Sempre que encontrar múltiplas informações relevantes no chunk, crie múltiplas perguntas e respostas. \n4. Mantenha a maior originalidade possível no texto extraído, evitando interpretações fora do conteúdo fornecido. Dê preferência a situações diretas baseadas no texto base.\n5. A saída deve ser estruturada em formato de array JSON, seguindo o padrão abaixo:\n   - `a`: A resposta ou informação extraída do texto.\n   - `t`: O trecho ou contexto exato de onde a resposta foi retirada.\n   - `q`: A pergunta principal que leva à resposta (a).\n   - `sq`: Um array com perguntas alternativas que poderiam levar à mesma resposta.\n   - `tags`: Um array com tags que ajudariam a o RAG fazer a pesquisa de forma eficiente.\n\n**Importante**: não inclua explicações, markdown ou blocos ` ``` `. Somente o JSON puro."
+        }
+      },
+      "id": "13445c5a-60ce-411d-824f-4f671472d0ba",
+      "name": "Vectors & Questions",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        280,
+        1060
+      ],
+      "executeOnce": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3500,
+        580
+      ],
+      "id": "ea25ed60-6ecb-4c9f-b985-1e77145246e4",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Doc Handler').first().json.body.directus.address }}/items/knowledge_urls/Si3ltUfa63Yx9wHz",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Doc Handler').first().json.body.directus.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        440
+      ],
+      "id": "0a6524f3-f447-438d-b3cc-516c7cf9a5fd",
+      "name": "[Directus] Urls"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c72b58f-359a-4bf9-ac25-b3e3fcba320e",
+              "name": "url",
+              "value": "={{ $json.data.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        440
+      ],
+      "id": "e60d3344-3e2e-4115-8e43-774e991e9065",
+      "name": "Update URL Website URL",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "update.urls.update",
+        "options": {}
+      },
+      "id": "128fa0cd-5083-44a2-8bc2-58e18c03f884",
+      "name": "Split Website Update",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        440
+      ]
+    }
+  ],
+  "connections": {
+    "NoOp.7": {
+      "main": [
+        [
+          {
+            "node": "Create URL Website URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Description Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitChunks": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "wait.1": {
+      "main": [
+        [
+          {
+            "node": "Loop Questions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini.1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vectors & Questions",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Description Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Files": {
+      "main": [
+        [
+          {
+            "node": "[Directus] GetFiles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Website": {
+      "main": [
+        [
+          {
+            "node": "NoOp.7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Scraping": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Testa se é texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Questions": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vectors & Questions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Questions": {
+      "main": [
+        [
+          {
+            "node": "Loop Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Loop Info": {
+      "main": [
+        [
+          {
+            "node": "Split Questions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test File or URL": {
+      "main": [
+        [
+          {
+            "node": "Split Files",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Split Website",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Split Website Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Split URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create URL Website URL": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Create URL File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Vectors": {
+      "main": [
+        [
+          {
+            "node": "wait.1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "[Directus] Add Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Loop Rules": {
+      "main": [
+        [
+          {
+            "node": "Loop Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Add Description": {
+      "main": [
+        [
+          {
+            "node": "SplitChunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Add Dimensions": {
+      "main": [
+        [
+          {
+            "node": "[Pinecone] Upsert ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Data": {
+      "main": [
+        [
+          {
+            "node": "Parse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Doc Handler": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Knowledge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split URLs": {
+      "main": [
+        [
+          {
+            "node": "Loop Scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Jina] Scrape": {
+      "main": [
+        [
+          {
+            "node": "Loop Scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[OpenAi] Get Embeddings": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Add Dimensions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse": {
+      "main": [
+        [
+          {
+            "node": "Test File or URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Description Agent": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Add Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Add Metadata": {
+      "main": [
+        [
+          {
+            "node": "[OpenAi] Get Embeddings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Pinecone] Upsert ": {
+      "main": [
+        [
+          {
+            "node": "Set Loop Rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] GetFiles": {
+      "main": [
+        [
+          {
+            "node": "Create URL File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Knowledge": {
+      "main": [
+        [
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Testa se é texto": {
+      "main": [
+        [
+          {
+            "node": "Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "[Jina] Scrape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text": {
+      "main": [
+        [
+          {
+            "node": "Loop Scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vectors & Questions": {
+      "main": [
+        [
+          {
+            "node": "Add Loop Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Loop Questions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update URL Website URL": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "[Directus] Urls": {
+      "main": [
+        [
+          {
+            "node": "Update URL Website URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Website Update": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Urls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "6bbe261a-66d3-4c6b-bb80-8b31d5005e9b",
+  "triggerCount": 0,
+  "tags": []
+}
