@@ -1,0 +1,639 @@
+{
+  "createdAt": "2025-06-23T16:51:30.382Z",
+  "updatedAt": "2025-06-23T16:51:30.382Z",
+  "id": "cw3Uk3d69Czif39Y",
+  "name": "[Anna] Calendar | oAuth | Refresh Token",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/calendar/oauth/token/refresh",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        120,
+        500
+      ],
+      "id": "68856fba-287c-499d-b143-183d3b123cb8",
+      "name": "Webhook",
+      "webhookId": "d732a487-dab2-49ba-86b6-8815c51cebc5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://oauth2.googleapis.com/tokeninfo",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json.body.resource.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        500
+      ],
+      "id": "86b2f23d-8f5e-4c97-b6bc-49050c4db838",
+      "name": "[Google] Test Token",
+      "notesInFlow": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "notes": "Verifica token"
+    },
+    {
+      "parameters": {
+        "content": "## Token Google  \nO **access_token** do Google expira a cada 1 hora.  \n\nQuando isso ocorre, usamos o **refresh_token** para obter um novo **access_token**.  \n\n### Retorno para o **[Anna] Calendar Agent**  \n- **valid**: Token ainda válido, nenhuma ação tomada  \n- **expired**: Token expirado, novo gerado e salvo no banco  \n- **invalid**: Token inválido, Google rejeitou; tenta-se gerar um novo usando `clientId`, `clientSecret` e `refresh_token` do Directus  \n\n### Códigos de resposta HTTP  \n- `200 OK`: Tudo certo, token válido  \n- `201 Created`: Novo token criado com sucesso  \n- `401 Unauthorized`: Token inválido, precisa de nova autorização  \n- `500 Internal Server Error`: Erro ao tentar gerar ou salvar o token",
+        "height": 900,
+        "width": 1640,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "6660b293-05ae-4ca3-9de2-623f62579729",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 940,
+        "width": 1680,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "4f2c1fee-d903-4e81-947c-185984f3c7bb",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.expires_in }}",
+                    "rightValue": "={{ $now }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "after"
+                    },
+                    "id": "c1087862-d406-41d2-b0c4-5178c56c28cd"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "valid"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f9c5415e-29b6-4dcf-bc42-4f6895ccac1d",
+                    "leftValue": "={{ $json.expires_in }}",
+                    "rightValue": "={{ $now }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "before"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "expired"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1e298e9d-3aaf-423a-aea6-870133b12040",
+                    "leftValue": "={{ $json.error.message }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "invalid"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        520,
+        500
+      ],
+      "id": "2056c33d-0502-4af6-8ca4-c55b8c7800d5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://oauth2.googleapis.com/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "client_id",
+              "value": "={{ $('Webhook').item.json.body.resource.client_id }}"
+            },
+            {
+              "name": "client_secret",
+              "value": "={{ $('Webhook').item.json.body.resource.client_secret }}"
+            },
+            {
+              "name": "refresh_token",
+              "value": "={{ $('Webhook').item.json.body.resource.refresh_token }}"
+            },
+            {
+              "name": "grant_type",
+              "value": "refresh_token"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        700
+      ],
+      "id": "23d9c814-62e3-4388-bc07-44a2025f46fb",
+      "name": "[Google] Invalid"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://oauth2.googleapis.com/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "client_id",
+              "value": "={{ $('Webhook').item.json.body.resource.client_id }}"
+            },
+            {
+              "name": "client_secret",
+              "value": "={{ $('Webhook').item.json.body.resource.client_secret }}"
+            },
+            {
+              "name": "refresh_token",
+              "value": "={{ $('Webhook').item.json.body.resource.refresh_token }}"
+            },
+            {
+              "name": "grant_type",
+              "value": "refresh_token"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        500
+      ],
+      "id": "da1cb432-085c-4e86-a856-319af8c40bb2",
+      "name": "[Google] New"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        760,
+        300
+      ],
+      "id": "b534c8cc-b472-4417-883d-83e07bab8bea",
+      "name": "Same"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e76e43f8-67de-4005-a8fb-38a0dc84e197",
+              "name": "token_expiration",
+              "value": "={{ new Date(Date.now() + ($json.expires_in * 1000)).toDateTime().toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        300
+      ],
+      "id": "3d8b377e-130c-4e14-94ee-86f9fa091a52",
+      "name": "Transform Valid"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e76e43f8-67de-4005-a8fb-38a0dc84e197",
+              "name": "token_expiration",
+              "value": "={{ new Date(Date.now() + ($json.expires_in * 1000)).toDateTime().toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        500
+      ],
+      "id": "61fd06f2-f39b-416c-9e7a-7b3577db06a5",
+      "name": "Transform Expired"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e76e43f8-67de-4005-a8fb-38a0dc84e197",
+              "name": "token_expiration",
+              "value": "={{ new Date(Date.now() + ($json.expires_in * 1000)).toDateTime().toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        700
+      ],
+      "id": "7fecb934-9117-4dbc-8414-60c8820c318c",
+      "name": "Transform Invalid"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Webhook').item.json.body.directus.domain }}/items/calendars/{{ $('Webhook').item.json.body.resource.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').item.json.body.directus.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"access_token\": \"{{ $json.access_token }}\",\n  \"token_expiration\": \"{{ $json.token_expiration }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        700
+      ],
+      "id": "dcf1ae16-2b78-48ae-949a-ff00b80428f1",
+      "name": "[Directus] Update Invalid"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Webhook').item.json.body.directus.domain }}/items/calendars/{{ $('Webhook').item.json.body.resource.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').item.json.body.directus.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"access_token\": \"{{ $json.access_token }}\",\n  \"token_expiration\": \"{{ $json.token_expiration }}\",\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        500
+      ],
+      "id": "45e8898a-3d3e-4d28-aa35-29d342c373a5",
+      "name": "[Directus] Update Expired"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        300
+      ],
+      "id": "f49ec94b-b197-4a04-9586-3a4c782fad8f",
+      "name": "No Update",
+      "notesInFlow": true,
+      "notes": "Token valido, sem update"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"valid\",\n  \"action\":\"reuse_token\",\n  \"id\": {{ $('Webhook').item.json.body.resource.id || $json.data.id }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        300
+      ],
+      "id": "04c46717-ceb1-4875-b0c7-3d69429b0961",
+      "name": "200 | Valid"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"expired\",\n  \"action\":\"new_token\",\n  \"id\": {{ $json.data.id }}\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        500
+      ],
+      "id": "ff465d66-1f3e-4c22-bf7b-db9f102a8b9c",
+      "name": "201 | Expired"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"invalid\",\n  \"action\":\"new_token\",\n  \"id\": {{ $json.data.id }}\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        700
+      ],
+      "id": "706376fd-8cc4-4460-a4a9-eb04b45059ce",
+      "name": "201 | Invalid"
+    },
+    {
+      "parameters": {
+        "content": "## TODO\nAdicionar lista de calendarios no banco de dados\n",
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1240,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "b44c393e-a903-4cdd-b75a-cae8073464a2",
+      "name": "Sticky Note3"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "[Google] Test Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Google] Test Token": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Same",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "[Google] New",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "[Google] Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Google] Invalid": {
+      "main": [
+        [
+          {
+            "node": "Transform Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Google] New": {
+      "main": [
+        [
+          {
+            "node": "Transform Expired",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Same": {
+      "main": [
+        [
+          {
+            "node": "Transform Valid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Valid": {
+      "main": [
+        [
+          {
+            "node": "No Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Expired": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Update Expired",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Invalid": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Update Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Update Invalid": {
+      "main": [
+        [
+          {
+            "node": "201 | Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Update Expired": {
+      "main": [
+        [
+          {
+            "node": "201 | Expired",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Update": {
+      "main": [
+        [
+          {
+            "node": "200 | Valid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "616408dd-8c6a-4858-a5fc-cab3312a985c",
+  "triggerCount": 0,
+  "tags": []
+}
