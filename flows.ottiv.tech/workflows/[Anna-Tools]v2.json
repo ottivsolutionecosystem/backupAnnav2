@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-11T15:21:41.252Z",
-  "updatedAt": "2025-05-13T22:52:32.879Z",
+  "updatedAt": "2025-06-19T22:01:19.571Z",
   "id": "om4ttWclw2bmQACi",
   "name": "[Anna-Tools]v2",
   "active": true,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
