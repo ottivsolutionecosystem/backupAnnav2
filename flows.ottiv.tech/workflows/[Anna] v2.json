@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-06-23T16:51:35.142Z",
-  "updatedAt": "2025-06-23T16:51:35.142Z",
+  "updatedAt": "2025-06-23T17:12:23.980Z",
   "id": "0taqu9NUfzml2MOr",
   "name": "[Anna] v2",
   "active": false,
@@ -311,8 +311,8 @@
       "name": "Consumer",
       "credentials": {
         "rabbitmq": {
-          "id": "y7AUQleCvBmrCdDT",
-          "name": "RabbitMQ 2.1"
+          "id": "J5zvYNI1tbp2cp5B",
+          "name": "RabbitMQ account"
         }
       }
     },
@@ -1328,8 +1328,8 @@
       "name": "Openai",
       "credentials": {
         "openAiApi": {
-          "id": "kM2vxyaM9jSLq2tk",
-          "name": "prod.flows.bitfy.ai"
+          "id": "AI4IQqSjjt7NDuVK",
+          "name": "OpenAi account"
         }
       }
     },
@@ -2446,8 +2446,8 @@
       "name": "Debouncer Delay",
       "credentials": {
         "rabbitmq": {
-          "id": "y7AUQleCvBmrCdDT",
-          "name": "RabbitMQ 2.1"
+          "id": "J5zvYNI1tbp2cp5B",
+          "name": "RabbitMQ account"
         }
       }
     },
@@ -3491,8 +3491,8 @@
   "settings": {},
   "staticData": null,
   "meta": null,
-  "pinData": null,
-  "versionId": "f7dea2e9-d596-4ab1-afcf-38ec06c435d6",
+  "pinData": {},
+  "versionId": "877d59d2-087b-43d6-8b4b-957da206d1b9",
   "triggerCount": 0,
   "tags": []
 }
