@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-14T15:12:35.931Z",
-  "updatedAt": "2025-05-15T02:08:39.228Z",
+  "updatedAt": "2025-06-19T22:01:58.042Z",
   "id": "Y7awYa5OEikYrd5R",
   "name": "imobilária",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
