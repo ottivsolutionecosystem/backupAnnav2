@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-11T22:51:24.399Z",
-  "updatedAt": "2025-05-12T01:29:23.228Z",
+  "updatedAt": "2025-06-19T22:02:05.946Z",
   "id": "co0rO6nl9PEY2TSN",
   "name": "SDR+FOLLOW UP",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
