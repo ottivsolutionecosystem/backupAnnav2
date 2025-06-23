@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-12T03:02:53.287Z",
-  "updatedAt": "2025-05-12T03:02:53.287Z",
+  "updatedAt": "2025-06-19T22:02:03.068Z",
   "id": "BYwLLGVvl57bliuU",
   "name": "Recuperador de Vendas V2",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
