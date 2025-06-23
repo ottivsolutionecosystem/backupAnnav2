@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-13T17:49:53.016Z",
-  "updatedAt": "2025-05-13T20:01:52.776Z",
+  "updatedAt": "2025-06-19T22:02:01.278Z",
   "id": "2wpenovGPz9tSEv3",
   "name": "chatwoot",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {},
