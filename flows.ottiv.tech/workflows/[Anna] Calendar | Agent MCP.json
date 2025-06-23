@@ -4,6 +4,7 @@
   "id": "9rDUJpuo5the5PYK",
   "name": "[Anna] Calendar | Agent MCP",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
