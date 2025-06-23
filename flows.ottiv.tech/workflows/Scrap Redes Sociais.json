@@ -4,6 +4,7 @@
   "id": "Lh9R5a8f2tdltgrt",
   "name": "Scrap Redes Sociais",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
