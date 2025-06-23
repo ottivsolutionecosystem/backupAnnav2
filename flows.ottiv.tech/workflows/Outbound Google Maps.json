@@ -4,6 +4,7 @@
   "id": "b0JqFQG44sutE2lS",
   "name": "Outbound Google Maps",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
