@@ -4,6 +4,7 @@
   "id": "cw3Uk3d69Czif39Y",
   "name": "[Anna] Calendar | oAuth | Refresh Token",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
