@@ -1,0 +1,1474 @@
+{
+  "createdAt": "2025-06-23T16:51:31.549Z",
+  "updatedAt": "2025-06-23T16:51:31.549Z",
+  "id": "sOwCcEzinYGWlk3r",
+  "name": "[Anna] Calendar | oAuth | Sync",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Formulário de Consentimento</title>\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n</head>\n<body class=\"bg-black text-white min-h-screen flex items-center justify-center px-4\">\n\n  <div class=\"w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8\">\n    \n    <!-- FORMULÁRIO -->\n    <div class=\"bg-neutral-900 rounded-lg shadow-lg p-8\">\n      <h1 class=\"text-2xl font-bold text-center mb-2\">Gerar Login do Google</h1>\n      <p class=\"text-gray-300 text-center mb-6 text-sm\">\n        Gere a tela de Login do Google e envie o link ao cliente clicando no botão de copiar.\n      </p>\n\n      <form class=\"space-y-4\" method=\"GET\" action=\"{{ $('Google').item.json.redirect_uri }}\">\n        <div>\n          <label for=\"client_id\" class=\"block mb-1 font-medium\">Client ID:</label>\n          <input type=\"text\" id=\"client_id\" name=\"client_id\" placeholder=\"Normalmente inicia com 12 números\" required class=\"w-full rounded border border-gray-700 bg-neutral-800 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base\"/>\n        </div>\n\n        <div>\n          <label for=\"secret\" class=\"block mb-1 font-medium\">Secret:</label>\n          <input type=\"password\" type=\"text\" id=\"secret\" name=\"secret\" placeholder=\"Normalmente inicia com GOCSPX-\" required class=\"w-full rounded border border-gray-700 bg-neutral-800 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base\"/>\n        </div>\n\n        <div>\n          <label for=\"redirect_uri\" class=\"block mb-1 font-medium\">Redirect URI:</label>\n          <input\n            type=\"text\"\n            id=\"redirect_uri\"\n            name=\"redirect_uri\"\n            value=\"{{ $('Google').item.json.redirect_uri }}\"\n            readonly\n            required\n            class=\"w-full rounded border border-gray-700 bg-neutral-800 p-2 focus:outline-none cursor-pointer select-none text-base\"\n            title=\"Clique para copiar o link\"\n          />\n        </div>\n\n        <div>\n          <label for=\"company\" class=\"block mb-1 font-medium\">Empresa:</label>\n          <select id=\"company\" name=\"company\" required class=\"w-full rounded border border-gray-700 bg-neutral-800 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base\">\n            <option value=\"\">Selecione um Agente</option>\n            {{ $('List Companies').all().map(agente => `<option value=\"${agente.json.id}\">${agente.json.name}</option>`) }}\n          </select>\n        </div>\n\n        <div class=\"flex space-x-2\">\n          <button\n            type=\"submit\"\n            class=\"flex-1 flex items-center justify-center bg-blue-600 hover:bg-blue-700 rounded py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 text-base\"\n          >\n            <svg class=\"w-6 h-6 mr-2\" viewBox=\"0 0 48 48\">\n              <path fill=\"#EA4335\" d=\"M24 9.5c3.94 0 7.07 1.62 9.21 3l6.77-6.77C35.54 2.68 30.21 0 24 0 14.57 0 6.06 5.7 2.45 13.93l7.95 6.17C12.54 12.06 17.69 9.5 24 9.5z\"/>\n              <path fill=\"#4285F4\" d=\"M46.01 24.5c0-1.56-.14-3.06-.4-4.5H24v9h12.4c-.52 2.17-1.67 4-3.39 5.27l7.77 6c4.54-4.19 7.23-10.37 7.23-15.77z\"/>\n              <path fill=\"#FBBC05\" d=\"M10.4 28.07a9.53 9.53 0 0 1-.52-3.07c0-1.07.19-2.1.52-3.07l-7.95-6.17A23.95 23.95 0 0 0 0 25c0 3.94.94 7.65 2.45 10.93l7.95-6.17z\"/>\n              <path fill=\"#34A853\" d=\"M24 48c6.48 0 11.92-2.15 15.89-5.87l-7.77-6c-2.16 1.45-4.93 2.3-8.12 2.3-6.31 0-11.66-4.24-13.58-10.03l-7.95 6.17C6.06 42.3 14.57 48 24 48z\"/>\n              <path fill=\"none\" d=\"M0 0h48v48H0z\"/>\n            </svg>\n            Gerar Login do Google\n          </button>\n          <button\n            type=\"button\"\n            id=\"copyGoogleLink\"\n            title=\"Copiar link da Tela para enviar a um Cliente\"\n            class=\"flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded py-2 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500\"\n            onclick=\"copyGoogleConsentLink()\"\n          >\n            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\"\n                 viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                    d=\"M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h9a2 2 0 002-2v-3M15 3H9a2 2 0 00-2 2v2m4 4H9a2 2 0 00-2 2v2\"/>\n            </svg>\n          </button>\n        </div>\n      </form>\n    </div>\n\n    <!-- TUTORIAL LATERAL COM DUAS ABAS -->\n    <div class=\"bg-neutral-900 rounded-lg shadow-lg p-6 text-sm\">\n\n      <!-- BOTÕES DE ABA -->\n      <div class=\"flex space-x-4 border-b border-neutral-800 mb-4\">\n        <button\n          id=\"tabIam\"\n          class=\"py-2 px-4 text-white font-bold border-b-2 border-blue-500\"\n          onclick=\"showTab('iam')\"\n        >\n          <!-- Ícone ilustrativo -->\n          <span class=\"mr-1\">👤</span> Adicionar usuário no IAM\n        </button>\n        <button\n          id=\"tabCalendar\"\n          class=\"py-2 px-4 text-white font-bold border-b-2 border-transparent hover:border-gray-500\"\n          onclick=\"showTab('calendar')\"\n        >\n          🛠️ Como configurar o Google Calendar\n        </button>\n      </div>\n\n      <!-- CONTEÚDO DA ABA 1: IAM -->\n      <div id=\"tabContentIam\" class=\"space-y-5\">\n      \n        <!-- Passo 1 -->\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">1. Acesse o Google Cloud IAM</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Vá em <a href=\"https://console.cloud.google.com/iam-admin/iam\"\n                    class=\"underline text-blue-400\" target=\"_blank\">\n              IAM &amp; Admin &gt; IAM\n            </a> no Google Cloud Console.\n          </p>\n        </div>\n      \n        <!-- Passo 2 -->\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">2. Clique em <em>Conceder Acesso</em></h3>\n          <p class=\"text-gray-300 mt-1\">\n            Insira o e-mail do usuário que deseja adicionar e confirme clicando em <em>Conceder Acesso</em>.\n          </p>\n        </div>\n      \n        <!-- Passo 3 -->\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">3. Selecione o papel <em>Proprietário</em></h3>\n          <p class=\"text-gray-300 mt-1\">\n            Na lista de papéis, selecione <strong>Proprietário</strong> (Owner) para conceder permissões completas.  \n          </p>\n        </div>\n      \n        <!-- Passo 4 -->\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">4. Salve</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Clique em <strong>Salvar</strong> para concluir. Verifique se o usuário aparece na lista do IAM com o papel de <strong>Proprietário</strong>.\n          </p>\n        </div>\n      \n        <!-- Passo 5 -->\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">5. Confirme o acesso</h3>\n          <p class=\"text-gray-300 mt-1\">\n            O usuário receberá um e-mail de notificação do Google Cloud. Peça para ele confirmar, se necessário. Assim, o acesso ficará totalmente liberado.\n          </p>\n        </div>\n      </div>\n\n\n      <!-- CONTEÚDO DA ABA 2: GOOGLE CALENDAR -->\n      <div id=\"tabContentCalendar\" class=\"space-y-5 hidden\">\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">1. Criar uma conta no Google Cloud</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Acesse o <a href=\"https://console.cloud.google.com/\" class=\"underline text-blue-400\" target=\"_blank\">Google Cloud Console</a> e crie uma conta, se ainda não tiver uma.\n          </p>\n        </div>\n\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">2. Ativar a API do Google Calendar</h3>\n          <p class=\"text-gray-300 mt-1\">\n            No menu lateral, vá até <strong>APIs e Serviços &gt; Biblioteca</strong>. Busque por \"Google Calendar API\" e clique em <em>Ativar</em>.\n          </p>\n        </div>\n\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">3. Criar credenciais de OAuth</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Em <strong>APIs e Serviços &gt; Credenciais</strong>, clique em <em>Criar credenciais</em> e selecione <em>ID do cliente OAuth 2.0</em>.  \n            Escolha \"Aplicativo Web\" como tipo de aplicação e adicione o <strong>Redirect URI</strong> exibido no formulário.\n          </p>\n        </div>\n\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">4. Copiar o Client ID e o Secret</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Após criar, copie o <strong>Client ID</strong> e o <strong>Client Secret</strong> e preencha no formulário ao lado.\n          </p>\n        </div>\n\n        <div>\n          <h3 class=\"font-semibold text-blue-400\">5. Gerar o link de consentimento</h3>\n          <p class=\"text-gray-300 mt-1\">\n            Clique em <strong>Gerar Login do Google</strong> e depois no ícone de copiar para obter o link.  \n            Envie esse link ao cliente para que ele autorize a sincronização.\n          </p>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <script>\n    // Ao clicar no campo redirect_uri, copiar o valor\n    document.getElementById('redirect_uri').addEventListener('click', function (event) {\n      event.preventDefault();\n      const redirectUrl = this.value;\n      navigator.clipboard.writeText(redirectUrl)\n        .then(() => alert('Redirect URL copiado!'))\n        .catch(err => alert('Erro ao copiar o link: ' + err));\n    });\n\n    // Função para copiar o link de consentimento do Google\n    function copyGoogleConsentLink() {\n      const clientId = document.getElementById('client_id').value;\n      const redirectUrl = document.getElementById('redirect_uri').value;\n      if (!clientId) {\n        alert('Por favor, insira o Client ID e o Secret para poder copiar o link.');\n        return;\n      }\nconst googleConsentLink =\n  `https://accounts.google.com/o/oauth2/v2/auth?` +\n  `client_id=${encodeURIComponent(clientId)}` +\n  `&redirect_uri=${encodeURIComponent(redirectUrl)}` +\n  `&response_type=${$('Google').item.json.response_type}` +\n  `&scope=${encodeURIComponent($('Google').item.json.scope.join(' '))}` +\n  `&access_type=${$('Google').item.json.access_type}` +\n  `&prompt=${$('Google').item.json.prompt}`;\n\n      navigator.clipboard.writeText(googleConsentLink)\n        .then(() => alert('Link do Google copiado!'))\n        .catch(err => alert('Erro ao copiar o link: ' + err));\n    }\n\n    // Controle de abas\n    function showTab(tab) {\n      const tabIamButton = document.getElementById('tabIam');\n      const tabCalendarButton = document.getElementById('tabCalendar');\n      const tabContentIam = document.getElementById('tabContentIam');\n      const tabContentCalendar = document.getElementById('tabContentCalendar');\n\n      if (tab === 'iam') {\n        // Muda estilo do botão\n        tabIamButton.classList.add('border-blue-500');\n        tabIamButton.classList.remove('border-transparent');\n        tabCalendarButton.classList.remove('border-blue-500');\n        tabCalendarButton.classList.add('border-transparent');\n\n        // Mostra a aba de IAM, esconde a de Calendar\n        tabContentIam.classList.remove('hidden');\n        tabContentCalendar.classList.add('hidden');\n      } else if (tab === 'calendar') {\n        tabCalendarButton.classList.add('border-blue-500');\n        tabCalendarButton.classList.remove('border-transparent');\n        tabIamButton.classList.remove('border-blue-500');\n        tabIamButton.classList.add('border-transparent');\n\n        tabContentIam.classList.add('hidden');\n        tabContentCalendar.classList.remove('hidden');\n      }\n    }\n\n    // Exibir a aba IAM por padrão\n    window.onload = () => {\n      showTab('iam');\n    };\n  </script>\n\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        140
+      ],
+      "id": "83afdd9a-89b4-4f7e-825f-022f2bc1e0ac",
+      "name": "Form"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Request HTML').item.json.headers[\"x-real-ip\"] }}",
+        "value": "={{ \n  $('Request HTML').item.json.query\n    .toJsonString()\n}}",
+        "expire": true,
+        "ttl": 3599
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        760,
+        380
+      ],
+      "id": "4d7dc024-a8c1-4c7e-b2be-a4729ca91376",
+      "name": "Set Redis",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "data",
+        "key": "={{ $('Request HTML').item.json.headers[\"x-real-ip\"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        760,
+        780
+      ],
+      "id": "5697293d-7fc0-44ce-a875-bca07f983fcd",
+      "name": "Get Redis",
+      "alwaysOutputData": false,
+      "executeOnce": true,
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1100,
+        "width": 3360,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -220,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "7e2234bd-0cff-4127-83f8-397c7d8672ad",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        140
+      ],
+      "id": "9d8650bf-fc6e-4305-a82d-b9e274fff8b8",
+      "name": "Respond Form"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Link de Consentimento</title>\n  <!-- Importando Tailwind via CDN -->\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n</head>\n<body class=\"bg-black text-white min-h-screen flex items-center justify-center\">\n  <div class=\"max-w-md w-full bg-neutral-900 rounded-lg shadow-lg p-8 mx-4 text-center\">\n    <h1 class=\"text-2xl font-bold mb-6\">Seu Link de Consentimento</h1>\n    <p>\n      <a\n        href=\"https://accounts.google.com/o/oauth2/v2/auth?client_id={{ $('Request HTML').item.json.query.client_id }}&redirect_uri={{ $('Request HTML').item.json.query.redirect_uri }}&response_type=code&scope={{ $('Google').item.json.scope.join(\" \") }}&access_type=offline&prompt=consent\"\n        class=\"inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded\"\n      >\n        <!-- Ícone do Google -->\n        <svg class=\"w-6 h-6 mr-2\" viewBox=\"0 0 48 48\">\n          <path fill=\"#EA4335\" d=\"M24 9.5c3.2 0 5.8 1.4 7.2 2.6l5.3-5.2C33.8 4.3 29.3 2 24 2 14.9 2 6.8 7.1 2.7 13.8l6.4 5C10.8 13.6 16.6 9.5 24 9.5z\"/>\n          <path fill=\"#4285F4\" d=\"M46.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h12.5c-.5 2.7-1.9 5-4.1 6.6l6.5 5c3.8-3.5 6-8.7 6-15.8z\"/>\n          <path fill=\"#FBBC05\" d=\"M9.1 28.6c-.8-2.2-1.3-4.5-1.3-6.9s.5-4.7 1.3-6.9L2.7 13.8C1 17.2 0 21 0 25c0 4 1 7.8 2.7 11.2l6.4-5.6z\"/>\n          <path fill=\"#34A853\" d=\"M24 46c6.5 0 12-2.2 16-6.1l-6.5-5c-2.1 1.5-4.8 2.4-9.5 2.4-7.4 0-13.2-4.1-15.4-9.8l-6.4 5.6C6.8 40.9 14.9 46 24 46z\"/>\n          <path fill=\"none\" d=\"M0 0h48v48H0z\"/>\n        </svg>\n        Autorize com Google\n      </a>\n    </p>\n    <p class=\"mt-6 text-sm text-gray-300\">\n      Após autorizar, você será redirecionado para: <br>\n      <strong>{{ $('Request HTML').item.json.query.redirect_uri }}</strong>\n    </p>\n  </div>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        380
+      ],
+      "id": "7b63a1af-9f55-4e35-9082-ed0c1433ae2c",
+      "name": "Login Screen"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1160,
+        380
+      ],
+      "id": "51c8675d-be0a-4519-8618-51d1f0bcfaf0",
+      "name": "Respond Login Screen"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Calendário Sincronizado</title>\n  <!-- Importando Tailwind via CDN -->\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n</head>\n<body class=\"bg-black text-white min-h-screen flex items-center justify-center px-4\">\n  <div class=\"bg-neutral-900 p-8 rounded-lg shadow-lg max-w-md text-center\">\n    <div class=\"flex justify-center mb-4\">\n      <svg class=\"w-16 h-16 text-green-500\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\">\n        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5 13l4 4L19 7\" />\n      </svg>\n    </div>\n    <h1 class=\"text-2xl font-bold text-white mb-2\">Sucesso!</h1>\n    <p class=\"text-gray-300 mb-6\">Seu calendário foi sincronizado com sucesso. Já pode fechar essa pagina.</p>\n  </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2380,
+        680
+      ],
+      "id": "07a026e8-530f-4c79-ab9d-ec678d136d70",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2580,
+        680
+      ],
+      "id": "1c34be96-f69d-4e61-9b2b-31168fbda1c4",
+      "name": "Respond Success"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Erro na Sincronização do Calendário</title>\n  <!-- Importando Tailwind via CDN -->\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n</head>\n<body class=\"bg-black text-white flex items-center justify-center min-h-screen\">\n  <div class=\"bg-neutral-900 p-8 rounded-2xl shadow-xl max-w-md text-center\">\n    <div class=\"flex justify-center mb-4\">\n      <!-- Ícone de erro -->\n      <svg class=\"w-16 h-16 text-red-500\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewBox=\"0 0 24 24\">\n        <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M6 18L18 6M6 6l12 12\" />\n      </svg>\n    </div>\n    <h1 class=\"text-2xl font-bold text-white mb-2\">Erro!</h1>\n    <p class=\"text-gray-300 mb-6\">\n      Seu calendário não foi sincronizado.<br/> Erro {{ $json.error.status }}: {{ $json.error.code }}.\n    </p>\n    <a href=\"#\" onclick=\"window.close()\" class=\"bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-300\">\n      Voltar para o Início\n    </a>\n  </div>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1160,
+        900
+      ],
+      "id": "5e47b056-d251-4ad7-ba66-de68e0025034",
+      "name": "Error"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseCode": "={{ $('Google Request Tokens').item.json.error.code }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        900
+      ],
+      "id": "00d14983-ce64-4296-836d-43c523ed9df1",
+      "name": "Respond Error"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Request HTML').item.json.query }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "dd5b3168-d6cd-4fe5-96b6-87e509bc3b6c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "token"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cc0ee2f1-2975-4228-82f0-879afab96c72",
+                    "leftValue": "={{ \n  [\n    'client_id', \n    'redirect_uri', \n    'secret',\n  ].every(key => Object.keys($('Request HTML').item.json.query).includes(key))\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "consent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4900992a-ed94-4e4c-80db-d6fd69303a29",
+                    "leftValue": "={{ \n  [\n    'code', \n    'scope'\n  ].every(key => Object.keys($('Request HTML').item.json.query).includes(key))\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "success"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        500,
+        440
+      ],
+      "id": "3b029a4a-aa2d-428b-b052-be855d0f7188",
+      "name": "Test URL Query"
+    },
+    {
+      "parameters": {
+        "path": "/calendar/sync",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        440
+      ],
+      "id": "ef6c4e74-40bf-4459-a86f-72a045e44a42",
+      "name": "Request HTML",
+      "webhookId": "166e0f19-f3f1-4cde-ac47-59fb98a65125"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1060,
+        "width": 3320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -200,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "d367782a-a03a-4247-8a5c-fbf3a8cb1f39",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Formulário para inserção de tokens do Google\n",
+        "height": 220,
+        "width": 2120,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "30a522b0-04de-4e5b-b7bb-cffdec0f0285",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Botão de Login do Google",
+        "height": 220,
+        "width": 2120,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "7079ddf7-1b09-4940-8f68-9da618f1cf0c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Guarda Refresh Token e Access Token no Banco de dados\n",
+        "height": 500,
+        "width": 2400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "fae77800-9a5a-4aaa-bf26-66cdfef69884",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Usa parâmetros query do GET para decidir qual tela responder.\n\nNenhum = Form\nExiste client_id = Login\nExiste code = sucesso\n",
+        "height": 400,
+        "width": 180,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "5f61e4ff-994c-48f0-93cc-29a5a8a56bd7",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### Login do google\nUsado para gerar tokens de acesso do google",
+        "height": 100,
+        "width": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "91893d1c-9b54-4146-b33d-44c28e7723b4",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n_editor:5678/api/v1/credentials",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "=SEU_TOKEN_API_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"Calendar_{{ $('Calendario Existe?').item.json.name }}\",\n  \"type\": \"googleCalendarOAuth2Api\",\n  \"data\": {\n    \"clientId\": \"={{ $('Get Redis').item.json.data.parseJson().client_id }}\",\n    \"clientSecret\": \"={{ $('Get Redis').item.json.data.parseJson().secret }}\",\n    \"oauthTokenData\": {\n      \"access_token\": \"={{ $('Google Request Tokens').item.json.access_token }}\",\n      \"refresh_token\": \"={{ $('Google Request Tokens').item.json.refresh_token }}\",\n      \"token_type\": \"Bearer\",\n      \"expires_in\": 3599,\n      \"scope\": \"https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events\",\n      \"callbackQueryString\": {\n        \"scope\": \"https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events\"\n      }\n    }\n  },\n  \"nodesAccess\": []\n}",
+        "options": {}
+      },
+      "name": "[n8n] Create Credential",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2180,
+        680
+      ],
+      "id": "bf687271-4cf2-46ad-92c6-b6d8791597a5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ai_agents",
+          "mode": "list",
+          "cachedResultName": "ai_agents"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Get Redis').item.json.data.parseJson().company }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "id",
+            "calendar"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1160,
+        680
+      ],
+      "id": "3be64e35-9faf-44de-8542-f5d5ecbb03d6",
+      "name": "Search Calendars",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "calendars",
+          "mode": "list",
+          "cachedResultName": "calendars"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "token_expiration": "={{ new Date(Date.now() + ($('Google Request Tokens').item.json.expires_in * 1000)).toISOString() }}",
+            "status": "active",
+            "refresh_token": "={{ $('Google Request Tokens').item.json.refresh_token }}",
+            "access_token": "={{ $('Google Request Tokens').item.json.access_token }}",
+            "name": "={{ $('Google - User Info').item.json.email }}",
+            "client_secret": "={{ $('Get Redis').first().json.data.parseJson().secret }}",
+            "client_id": "={{ $('Get Redis').first().json.data.parseJson().client_id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sort",
+              "displayName": "sort",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_created",
+              "displayName": "user_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_created",
+              "displayName": "date_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_updated",
+              "displayName": "user_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_updated",
+              "displayName": "date_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "refresh_token",
+              "displayName": "refresh_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "client_secret",
+              "displayName": "client_secret",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "client_id",
+              "displayName": "client_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "access_token",
+              "displayName": "access_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "token_expiration",
+              "displayName": "token_expiration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1760,
+        580
+      ],
+      "id": "bcefebed-d69c-4040-9915-fa17f2c1c2ad",
+      "name": "Cria Calendario",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "calendars",
+          "mode": "list",
+          "cachedResultName": "calendars"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Search Calendars').item.json.calendar.key }}",
+            "status": "active",
+            "name": "={{ $('Google - User Info').item.json.email }}",
+            "access_token": "={{ $('Google Request Tokens').item.json.access_token }}",
+            "token_expiration": "={{ new Date(Date.now() + ($('Google Request Tokens').item.json.expires_in * 1000)).toISOString() }}",
+            "refresh_token": "={{ $('Google Request Tokens').item.json.refresh_token }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sort",
+              "displayName": "sort",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_created",
+              "displayName": "user_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_created",
+              "displayName": "date_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_updated",
+              "displayName": "user_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_updated",
+              "displayName": "date_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "refresh_token",
+              "displayName": "refresh_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_secret",
+              "displayName": "client_secret",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "client_id",
+              "displayName": "client_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "access_token",
+              "displayName": "access_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "token_expiration",
+              "displayName": "token_expiration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1760,
+        780
+      ],
+      "id": "4ae283ad-4853-4842-8daa-73d4237e422a",
+      "name": "Atualiza Calendario",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e8ff450f-ac29-4978-8876-3d3539629318",
+              "name": "redirect_uri",
+              "value": "={{ $env['WEBHOOK_URL'].replace(/\\/$/, '') }}/webhook/calendar/sync",
+              "type": "string"
+            },
+            {
+              "id": "f9aedd68-0971-4b8b-a304-317daec9269a",
+              "name": "scope",
+              "value": "=[\n  \"https://www.googleapis.com/auth/userinfo.profile\",\n  \"https://www.googleapis.com/auth/userinfo.email\",\n  \"https://www.googleapis.com/auth/calendar\",\n  \"https://www.googleapis.com/auth/calendar.events\" \n]",
+              "type": "array"
+            },
+            {
+              "id": "69369095-efab-4036-b206-1c5d7907f74f",
+              "name": "response_type",
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "id": "50712eee-c916-44e0-9c3a-dca13555947c",
+              "name": "access_type",
+              "value": "offline",
+              "type": "string"
+            },
+            {
+              "id": "84e370d8-f4c0-4ff2-85c4-025835eb0a2f",
+              "name": "prompt",
+              "value": "consent",
+              "type": "string"
+            },
+            {
+              "id": "51fd9404-6990-4dc7-9d77-a7017ac5f9b4",
+              "name": "include_granted_scopes",
+              "value": "true",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        440
+      ],
+      "id": "149b0ef2-7fbb-46a8-b4d2-7642442853b4",
+      "name": "Google",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ai_agents",
+          "mode": "list",
+          "cachedResultName": "ai_agents"
+        },
+        "returnAll": true,
+        "options": {
+          "outputColumns": [
+            "id",
+            "name"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        280,
+        440
+      ],
+      "id": "60e0d4e5-6edb-4ab8-8284-7877d86a3d4a",
+      "name": "List Companies",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "52e266ef-2ece-4626-bf2d-5ee940c585f3",
+              "leftValue": "={{ $('Search Calendars').item.json.calendar }}",
+              "rightValue": "={{ null }}",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1560,
+        680
+      ],
+      "id": "71037838-2de5-4ba8-a83f-c24a4443bfb4",
+      "name": "Calendario Existe?"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/oauth2/v3/userinfo",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Google Request Tokens').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        680
+      ],
+      "id": "06e8a346-189e-4601-8bb7-d88bb1f319a7",
+      "name": "Google - User Info"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://oauth2.googleapis.com/token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "code",
+              "value": "={{ $('Request HTML').item.json.query.code }}"
+            },
+            {
+              "name": "client_id",
+              "value": "={{ $('Get Redis').first().json.data.parseJson().client_id }}"
+            },
+            {
+              "name": "client_secret",
+              "value": "={{ $json.data.parseJson().secret }}"
+            },
+            {
+              "name": "redirect_uri",
+              "value": "={{ $json.data.parseJson().redirect_uri }}"
+            },
+            {
+              "name": "grant_type",
+              "value": "authorization_code"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        780
+      ],
+      "id": "3cb76525-ae79-4707-8474-ea52e7ed9afa",
+      "name": "Google Request Tokens",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ai_agents",
+          "mode": "list",
+          "cachedResultName": "ai_agents"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Search Calendars').item.json.id }}",
+            "calendar": "={{ $('Search Calendars').item.json.calendar }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "sort",
+              "displayName": "sort",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_created",
+              "displayName": "user_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_created",
+              "displayName": "date_created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_updated",
+              "displayName": "user_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date_updated",
+              "displayName": "date_updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "calendar",
+              "displayName": "calendar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1960,
+        580
+      ],
+      "id": "3a1c3c9e-96f2-4874-870b-670d178a6ef0",
+      "name": "Vincula Calendario",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        780
+      ],
+      "id": "0772d36e-df12-434f-b4b9-9bf4ad682a10",
+      "name": "No Op"
+    }
+  ],
+  "connections": {
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "Respond Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Redis": {
+      "main": [
+        [
+          {
+            "node": "Login Screen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Redis": {
+      "main": [
+        [
+          {
+            "node": "Google Request Tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Login Screen": {
+      "main": [
+        [
+          {
+            "node": "Respond Login Screen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error": {
+      "main": [
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test URL Query": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request HTML": {
+      "main": [
+        [
+          {
+            "node": "Google",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[n8n] Create Credential": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Calendars": {
+      "main": [
+        [
+          {
+            "node": "Google - User Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria Calendario": {
+      "main": [
+        [
+          {
+            "node": "Vincula Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Calendario": {
+      "main": [
+        [
+          {
+            "node": "No Op",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google": {
+      "main": [
+        [
+          {
+            "node": "List Companies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Companies": {
+      "main": [
+        [
+          {
+            "node": "Test URL Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendario Existe?": {
+      "main": [
+        [
+          {
+            "node": "Cria Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google - User Info": {
+      "main": [
+        [
+          {
+            "node": "Calendario Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Request Tokens": {
+      "main": [
+        [
+          {
+            "node": "Search Calendars",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vincula Calendario": {
+      "main": [
+        [
+          {
+            "node": "[n8n] Create Credential",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Op": {
+      "main": [
+        [
+          {
+            "node": "[n8n] Create Credential",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "b6182604-a17a-4e7a-b45e-c5840ec57dad",
+  "triggerCount": 0,
+  "tags": []
+}
