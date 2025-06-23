@@ -4,6 +4,7 @@
   "id": "Eu1LuedPQ4eum5ex",
   "name": "[Anna] Calendar | Agent",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
