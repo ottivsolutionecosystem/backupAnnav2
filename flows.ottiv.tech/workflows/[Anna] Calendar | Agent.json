@@ -1,0 +1,685 @@
+{
+  "createdAt": "2025-06-23T16:51:29.309Z",
+  "updatedAt": "2025-06-23T16:51:29.309Z",
+  "id": "Eu1LuedPQ4eum5ex",
+  "name": "[Anna] Calendar | Agent",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('[Conversations] Find Calendar').first().json.data[0].id }}",
+        "sessionTTL": 5400,
+        "contextWindowLength": 8
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1740,
+        280
+      ],
+      "id": "13fb6606-1cd3-402e-9da4-dbc7aca0d190",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "S1Vnd8lbrWqKqvKj",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $items(\"[Main Agent] Request\")[0]?.json?.body?.solicitacao }}\n Solicitação para o calendário de id {{ $items('[Calendars] Get Calendar')[0].json.data.id }}",
+        "options": {
+          "systemMessage": "={{ \n   $('[Calendars] Get Calendar').first().json.data.prompt\n    .replaceAll('${now}', $now)\n    .replaceAll('${userName}'\n,$('[Conversations] Find Calendar').first().json.data[0].user_id.username)\n    .replaceAll('${role}', ($('[Directus Users] Get Admins').first().json.errors \n? \"Sem email no campo email do contato\" : $('[Directus Users] Get Admins').first()?.json?.data[0]?.role?.name))\n    .replaceAll('${conversationHistory}'\n, $('[Core Chat] Histories').first().json.data.map(c => {\n      const tipo = c.message.type;\n      const conteudo = c.message.content;\n      const remetente = tipo === 'human'\n        ? 'Contact'\n        : 'IA';\n    return `${remetente}: ${conteudo}`;   }).join('\\n') )\n}} \n\n{{ $('[Tool] Dates').first().json.configuracao_data }}\n\nSempre chame a tool 'Get Google Access Token' antes de qualquer operacão com calendario passando o id do calendario e não seja redudante na confirmação do e-mail.\n\n  <functions>\n    <function name=\"Get Access Token\" required>Obtém tokens necessários para acessar calendários.</function>\n    <function name=\"List Events\">Lista eventos existentes para verificar conflitos.</function>\n    <function name=\"Calendar List\">Recupera calendários disponíveis ao usuário.</function>\n    <function name=\"Create Events\">Cria eventos sem conflito após confirmação.</function>\n    <function name=\"Delete Events\">Remove eventos específicos.</function>\n    <function name=\"Update Event\">Atualiza eventos existentes.</function>\n  </functions>\n\n<calendarId>calendarId: {{ $items('[Calendars] Get Calendar')[0].json.data.id }}</calendarId>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1360,
+        80
+      ],
+      "id": "d9772e96-1a4e-4c09-b601-183f46d2397c",
+      "name": "AI Agent",
+      "retryOnFail": false,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "={{ $env.WEBHOOK_URL }}mcp/calendar/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        300
+      ],
+      "id": "a58b2f3f-37ea-4c1c-a8bc-10d4622d8308",
+      "name": "Calendar"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "last",
+              "value": "={{ $json.headers['last-workflow'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        -1320,
+        80
+      ],
+      "id": "0076750a-88e7-43cf-9b82-374e6b470633",
+      "name": "Execution Data"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        80
+      ],
+      "id": "beb1e3ee-bd43-4d4d-a4cf-858be28aa998",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('[Main Agent] Request').item.json.headers['api-address'] }}/items/calendars/{{ $json.user_id.ai_agent.calendar.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id, client_id, client_secret, access_token, refresh_token, token_expiration, prompt"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('[Main Agent] Request').item.json.headers['api-token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -660,
+        80
+      ],
+      "id": "a42ccfe8-f7a7-4613-b823-7d55b4d549c1",
+      "name": "[Calendars] Get Calendar",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.headers['api-address'] }}/items/conversations",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[user_id][_eq]",
+              "value": "={{ $json.body.contact }}"
+            },
+            {
+              "name": "fields",
+              "value": "id, user_id.ai_agent.calendar.id, user_id.id, user_id.username, user_id.email"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.headers['api-token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1100,
+        80
+      ],
+      "id": "353ca2eb-7845-4ac2-9ebd-34f694b87b9a",
+      "name": "[Conversations] Find Calendar"
+    },
+    {
+      "parameters": {
+        "url": "={{ $items('[Main Agent] Request')[0].json.headers['api-address'] }}/items/core_chat_histories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[session_id][_eq]",
+              "value": "={{ $('[Conversations] Find Calendar').first().json.data[0].id }}"
+            },
+            {
+              "name": "fields",
+              "value": "message, date_created"
+            },
+            {
+              "name": "sort",
+              "value": "-date_created"
+            },
+            {
+              "name": "limit",
+              "value": "12"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $items('[Main Agent] Request')[0].json.headers['api-token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        80
+      ],
+      "id": "7c4cc074-56b7-477f-98e5-6ba03d2afa7c",
+      "name": "[Core Chat] Histories"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        440,
+        80
+      ],
+      "id": "d1514c8a-01f1-4bc3-a7a2-195b2e202446",
+      "name": "Calendar Query",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $items('[Main Agent] Request')[0].json.headers['api-address'] }}/users ",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[email][_eq]",
+              "value": "={{ $items(\"[Conversations] Find Calendar\")[0].json.data[0].user_id.email }}"
+            },
+            {
+              "name": "fields",
+              "value": "id, first_name, last_name, email, role.name, status"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $items('[Main Agent] Request')[0].json.headers['api-token'] }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        80
+      ],
+      "id": "c6baee84-602e-4bd6-ba87-1e24dfae0588",
+      "name": "[Directus Users] Get Admins",
+      "executeOnce": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/calendar/agent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1540,
+        80
+      ],
+      "id": "c030b57c-6300-410d-a52d-d1a626111f39",
+      "name": "[Main Agent] Request",
+      "webhookId": "66e95eb6-5783-4025-82af-b189ac106775"
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.WEBHOOK_URL }}webhook/tools/dates",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        80
+      ],
+      "id": "37049ff1-3186-4aba-b724-b2b73874adaf",
+      "name": "[Tool] Dates"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6ff5758c-983e-49cf-9903-331781d6d185",
+              "leftValue": "={{ $json.helper.minutes }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        80
+      ],
+      "id": "57342600-d700-4ea9-80da-af9f5545d52d",
+      "name": "Token Vencido"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "221c1aca-23b5-46e0-a4b4-c4b3c18e35d5",
+              "name": "helper.expiration",
+              "value": "=Esse token expira em {{ Math.floor((new Date($json.data.token_expiration).getTime() - Date.now()) / 60000) }} minutos",
+              "type": "string"
+            },
+            {
+              "id": "44ff01ce-a03c-4bdc-b43a-9bf624a2f3f5",
+              "name": "helper.minutes",
+              "value": "={{ Math.floor((new Date($json.data.token_expiration).getTime() - Date.now()) / 60000) }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -440,
+        80
+      ],
+      "id": "35d50f34-eaf1-4f0c-8798-505eb78163ac",
+      "name": "Token Helper"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        300
+      ],
+      "id": "dd1e52b9-bd4d-4ca3-b62f-08fd22b44bb9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kM2vxyaM9jSLq2tk",
+          "name": "prod.flows.bitfy.ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Use the tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.\n\nUse also to save api keys or relevant information about the calendar."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        300
+      ],
+      "id": "b60d211c-1002-4da2-80f8-7d469193d1a0",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1760,
+        80
+      ],
+      "id": "e9388b49-c533-4dee-8456-cd5725b18c03",
+      "name": "Response to Main Agent"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('[Main Agent] Request').item.json.headers['api-address'] }}/items/calendars/yXg3jf7aDiw3qQnM",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id, client_id, client_secret, access_token, refresh_token, token_expiration, prompt"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('[Main Agent] Request').item.json.headers['api-token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "5b4075a6-1678-4e43-81fc-c6256ce1b2bb",
+      "name": "[Calendars] Get Calendar When New Token",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WEBHOOK_URL.replace(/\\/$/, '') }}/webhook/calendar/oauth/token/refresh",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"directus\": {\n    \"domain\": \"{{ $('[Main Agent] Request').item.json.headers['api-address'] }}\",\n    \"token\": \"{{ $('[Main Agent] Request').item.json.headers['api-token'] }}\"\n  },\n  \"resource\": {{ JSON.stringify($json.data, 0, 2) }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c44c062-056a-468e-bf8b-66bed3f75410",
+      "name": "[Auth Handler] Renew Token"
+    }
+  ],
+  "connections": {
+    "Redis Chat Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Response to Main Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Data": {
+      "main": [
+        [
+          {
+            "node": "[Conversations] Find Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "[Calendars] Get Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Calendars] Get Calendar": {
+      "main": [
+        [
+          {
+            "node": "Token Helper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Conversations] Find Calendar": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Core Chat] Histories": {
+      "main": [
+        [
+          {
+            "node": "[Tool] Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Query": {
+      "main": [
+        [
+          {
+            "node": "[Directus Users] Get Admins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus Users] Get Admins": {
+      "main": [
+        [
+          {
+            "node": "[Core Chat] Histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Main Agent] Request": {
+      "main": [
+        [
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Tool] Dates": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Vencido": {
+      "main": [
+        [
+          {
+            "node": "[Auth Handler] Renew Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar Query",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Token Helper": {
+      "main": [
+        [
+          {
+            "node": "Token Vencido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Calendars] Get Calendar When New Token": {
+      "main": [
+        [
+          {
+            "node": "Calendar Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Auth Handler] Renew Token": {
+      "main": [
+        [
+          {
+            "node": "[Calendars] Get Calendar When New Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "4033386f-d11a-4e20-a774-cd14ab50fb26",
+  "triggerCount": 0,
+  "tags": []
+}
