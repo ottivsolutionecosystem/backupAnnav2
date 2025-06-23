@@ -4,6 +4,7 @@
   "id": "sOwCcEzinYGWlk3r",
   "name": "[Anna] Calendar | oAuth | Sync",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
