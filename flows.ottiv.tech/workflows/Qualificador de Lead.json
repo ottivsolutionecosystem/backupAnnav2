@@ -4,6 +4,7 @@
   "id": "tNPY0GkXMueCfLf3",
   "name": "Qualificador de Lead",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
