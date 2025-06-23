@@ -1,0 +1,343 @@
+{
+  "createdAt": "2025-06-23T16:51:28.194Z",
+  "updatedAt": "2025-06-23T16:51:28.194Z",
+  "id": "9rDUJpuo5the5PYK",
+  "name": "[Anna] Calendar | Agent MCP",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Config de credencial\nTela de consentimento\nCode (valido uma vez) \nCode é usado no **Request Refrensh Token With Code** para gerar um **refesh_token** que é guardado no nosso Directus e na mesma requisição é gerado o primeiro **access_token** que expira em 60 minutos\n\n## Uso da credencial\nPara chamar o Google precisamos de um access_token que é usado da seguinte forma em cada requisição:\n```json\n{\n  \"headers\": {\n    \"Authorization\": \"Bearer access_token\"\n  }\n}\n```\n## Fluxo de renovacao\nPara poder não ter que ficar manualmente gerando token usamos uma função (fluxo) middleware antes de ser chamado efetivamente o Calendar o nome desse fluxo é **[Calendar] Auth Handler**\n\nEle é chamado toda vez que iremos fazer uma requisição como \"meio de campo\" para efetivamente chamar o Google Calendar checando pra gente se o token ta expirado meu chapa.\n\n## Chamando o MCP\nChamamos o MCP com o token renovado pra nao da xabu.\n\n### Problema\nCredenciais nos nós oficiais do n8n não são variaveis, ou seja, teriamos que duplicar cada um dos fluxos para cada cliente, imagina o inferno?\n\n### Por que usamos HTTP ao contrario do nó do google calendar\nPor que podemos passar credenciais personalizadas via HTTP node\n\n\n",
+        "height": 1175,
+        "width": 1786
+      },
+      "id": "13533028-c59d-4e10-8339-7298dec65a1c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "toolDescription": "Deleta os eventos do calendário, necessário id do evento, pode usar a ferramenta 'Search Events' para buscar eventos com uma query e obter o id do evento a ser excluído.",
+        "method": "DELETE",
+        "url": "=https://www.googleapis.com/calendar/v3/calendars/primary/events/{{ $fromAI('eventId','Id do evento a ser excluido do calendario, obtido usado a ferramenta Search events','string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $fromAI(\n  'access_token',\n  `Obtido usando a tool 'Get Access Token'`,\n  'string')\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        1000
+      ],
+      "id": "b54de5cd-78b6-417b-a9f2-429504502853",
+      "name": "Delete Events"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Atualiza os eventos do calendário, necessário id do evento, pode usar a ferramenta 'Search Events' para buscar eventos com uma query e obter o id do evento a ser atualizado.",
+        "method": "PUT",
+        "url": "=https://www.googleapis.com/calendar/v3/calendars/primary/events/{{ $fromAI('eventId','Id do evento a ser atualizado no calendario','string') }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"summary\": \"{{ $fromAI(\"summary\", \"Summary do evento\", \"string\") }}\",\n  \"description\": \"{{ $fromAI(\"description\", \"Descrição do evento\", \"string\") }}\", \n  \"start\": {\n    \"dateTime\": \"{{ $fromAI(\"start\",\"Horario de inicio\", \"string\") }}\"\n  },\n  \"end\": {\n    \"dateTime\": \"{{ $fromAI(\"end\", \"Horario de encerramento\", \"string\") }}\"\n  },\n  \"attendees\": [{ \"email\": \"{{ $fromAI(\"attendees\",\"Array de emails dos participantes, vazio se não houver email informado\", \"string\") }}\" }]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        1000
+      ],
+      "id": "363bb67e-40ae-468e-91b6-c400f3130640",
+      "name": "Update Event"
+    },
+    {
+      "parameters": {
+        "path": "calendar"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        740
+      ],
+      "id": "1abeac02-3df3-43e7-a87f-2bdfe3a97f79",
+      "name": "MCP Agenda",
+      "webhookId": "69372ee4-7dba-4767-b36f-a0fd8dd7fed2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Request the calendars list",
+        "url": "https://www.googleapis.com/calendar/v3/users/me/calendarList",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $fromAI(\n  'access_token',\n  `Google calendar API Access Token`,\n  'string')\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        1000
+      ],
+      "id": "27ec7d0f-e5a9-4c97-a519-cb5f0b97e1a0",
+      "name": "Calendar list",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "toolDescription": "Cria um evento no calendário.",
+        "method": "POST",
+        "url": "=https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "conferenceDataVersion",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $fromAI(\n  'access_token',\n  `Obtido usando a tool 'Get Access Token'`,\n  'string')\n}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"summary\": \"{{ $fromAI(\"summary\", \"Summary do evento\", \"string\") }}\",\n  \"description\": \"{{ $fromAI(\"description\", \"Descrição do evento\", \"string\") }}\", \n  \"start\": {\n    \"dateTime\": \"{{ $fromAI(\"start\",\"Horario de inicio\", \"string\") }}\"\n  },\n  \"end\": {\n    \"dateTime\": \"{{ $fromAI(\"end\", \"Horario de encerramento\", \"string\") }}\"\n  },\n  \"attendees\": [{ \"email\": \"{{ $fromAI(\"attendees\",\"Array de emails dos participantes, vazio se não houver email informado\", \"string\") }}\" }],\n  \"conferenceData\": {\n    \"createRequest\": {\n      \"requestId\": \"{{ $now.toISO() }}\", \n      \"conferenceSolutionKey\": {\n        \"type\": \"hangoutsMeet\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        1000
+      ],
+      "id": "83ec0f61-7226-40ff-81b5-055f32be0458",
+      "name": "Create Events"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Lista os eventos disponíveis em uma janela de tempo. Usado para checagem de conflitos ou consulta retornando response.items[] aonde dentro de item ficam os eventos do Google Calendar, se vazio, horário está disponível.",
+        "url": "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={\n  \"singleEvents\": true,\n  \"orderBy\": \"startTime\",\n  \"timeMin\": \"{{ $fromAI(\n    'timeMin', \n    'Data inicio da pesquisa do google calendar', \n    'string'\n  )}}\",\n  \"timeMax\": \"{{ $fromAI(\n    'timeMax', \n    'Data limite da pesquisa do Google Calendar, minimo de 30 minutos a mais que o timeMin', \n    'string'\n  )}}\"\n}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $fromAI(\n  'access_token',\n  `Obtido usando a tool 'Get Access Token'`,\n  'string').trim()\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        1000
+      ],
+      "id": "9bfde10e-1720-4695-928c-4720466dd618",
+      "name": "List Events"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "calendars",
+          "mode": "list",
+          "cachedResultName": "calendars"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ \n  $fromAI(\n    'calendarId', \n    'Id do calendário para obter access_token', \n    'string') }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "access_token"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        140,
+        1000
+      ],
+      "id": "89759a38-ac3f-4cbc-997b-0486b785475f",
+      "name": "Get Access Token",
+      "credentials": {
+        "postgres": {
+          "id": "3MQp3asn7q8U485D",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Faz uma busca dos eventos usando o parâmetro 'q' com uma chamada no Google Calendar.",
+        "url": "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={\n  \"singleEvents\": true,\n  \"q\": \"{{ $fromAI('q','Conteudo do parametro q usado na chamada http para buscar eventos no google calendar','string')}}\",\n  \"orderBy\": \"startTime\",\n  \"timeMin\": \"{{ $fromAI(\n    'timeMin', \n    'Data inicio da pesquisa do google calendar', \n    'string'\n  )}}\",\n  \"timeMax\": \"{{ $fromAI(\n    'timeMax', \n    'Data limite da pesquisa do Google Calendar, minimo de 30 minutos a mais que o timeMin', \n    'string'\n  )}}\"\n}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $fromAI(\n  'access_token',\n  `Obtido usando a tool 'Get Access Token'`,\n  'string').trim()\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        1000
+      ],
+      "id": "d1b24cf8-e773-4bfb-b873-967abcb6e12f",
+      "name": "Search Events"
+    },
+    {
+      "parameters": {
+        "content": "## TODO\n- Parametrizar a janela de horarios padrao de eventos\n- Adicionar lista de calendarios no database\n- Adicionar logica de como selecionar o calendario certo no prompt do Calendar Agent\n- Ativar o node tool de List Calendars",
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1100,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "e3247725-d6c0-401a-b674-58a1f9a0f5b5",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "Delete Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar list": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Access Token": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agenda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "e13c2d85-178d-4a10-a303-6b01212492df",
+  "triggerCount": 0,
+  "tags": []
+}
