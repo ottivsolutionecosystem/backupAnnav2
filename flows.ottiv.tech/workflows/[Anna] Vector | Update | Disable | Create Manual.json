@@ -1,0 +1,971 @@
+{
+  "createdAt": "2025-06-23T16:51:33.911Z",
+  "updatedAt": "2025-06-23T16:51:33.911Z",
+  "id": "NzrrmOVj8X5WC38z",
+  "name": "[Anna] Vector | Update | Disable | Create Manual",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/vector/update",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1000,
+        980
+      ],
+      "id": "ce46f2da-9622-4936-acb1-b7e26bc9d1ce",
+      "name": "Webhook",
+      "webhookId": "b90d1a68-b55f-4c47-86c7-53f60cd03b29"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('[Directus] Host').first().json.data.knowledge_id.pinecone_host_id.value }}/vectors/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "={{ $('Webhook').first().json.body.services.find(item => item.service == \"Pinecone\").token }}"
+            },
+            {
+              "name": "X-Pinecone-API-Version",
+              "value": "2024-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"namespace\": \"{{ $('[Directus] Host').item.json.data.knowledge_id.name_id.value }}\",\n  \"vectors\": [\n    {\n      \"id\": \"{{ $('Webhook').item.json.body.keys }}\",\n      \"metadata\": {{ $('Vectors').first().json.toJsonString() }},\n      \"values\": {{ $('[OpenAi] Get Embeddings').first().json.data[0].embedding.toJsonString() }}\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -20,
+        440
+      ],
+      "id": "4cde561c-1e2b-4e26-8e12-e56b0effdbff",
+      "name": "[Pinecone] Upsert ",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body.services.find(campo => campo.service == 'Directus').address }}/items/{{ $json.body.collection }}/{{ $json.body.keys }}",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={\n  \"fields\": [\n    \"question\",\n    \"answer\",\n    \"context\",\n    \"similar_questions\",\n    \"tags\",\n    \"knowledge_id.pinecone_host_id.value\",\n    \"knowledge_id.name_id.value\"\n  ]\n}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').first().json.body.services.find(campo => campo.service == 'Directus').token }}"
+            }
+          ]
+        },
+        "options": {
+          "queryParameterArrays": "brackets"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -620,
+        740
+      ],
+      "id": "10e5de3c-4331-47b3-b23e-f751faea39c4",
+      "name": "[Directus] Host",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').first().json.body.services.find(item => item.service == \"OpenAI\").token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "input",
+              "value": "=`Context: ${$json.context}\nQuestion: ${$json.question}\nAnswer: ${$json.answer}\nSimilar Questions: ${($json.similar_questions || []).join(\", \")}\nTags: ${($json.tags || []).join(\", \")}`"
+            },
+            {
+              "name": "model",
+              "value": "text-embedding-3-small"
+            },
+            {
+              "name": "dimensions",
+              "value": "={{ 1536 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        540
+      ],
+      "id": "d45fb6ab-38a2-486b-a8ea-980c7fd2827c",
+      "name": "[OpenAi] Get Embeddings",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bcada437-102c-4f8d-99a0-856064e3e3b9",
+              "name": "question",
+              "value": "={{ $('Webhook').item.json.body.payload?.question || $json.data.question || ''}}",
+              "type": "string"
+            },
+            {
+              "id": "dd66e75b-b70d-454f-8b26-3385e9877f14",
+              "name": "answer",
+              "value": "={{ $('Webhook').item.json.body.payload?.answer || $json.data.answer || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "51084a81-4768-4870-b3d0-39a4272d59f6",
+              "name": "context",
+              "value": "={{ $('Webhook').item.json.body.payload?.context || $json.data.context || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "da7b500f-fd8e-4799-9d54-37cca846f404",
+              "name": "similar_questions",
+              "value": "={{ $('Webhook').item.json.body.payload?.similar_questions || $json.data.similar_questions || '' }}",
+              "type": "array"
+            },
+            {
+              "id": "13985bf0-d8ab-4b5e-a078-c1d8a8b38fcd",
+              "name": "tags",
+              "value": "={{ $('Webhook').item.json.body.payload?.tags || $json.data.tags || '' }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -420,
+        640
+      ],
+      "id": "9705927b-ac0a-4cec-ac3d-a4eb88e185c9",
+      "name": "Vectors"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Vetor atualizado com sucesso\",\n  \"execution\": \"success\",\n  \"data\": {}\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        320
+      ],
+      "id": "b6f44e12-46eb-4cbc-80d5-a445f4a515d4",
+      "name": "Success1"
+    },
+    {
+      "parameters": {
+        "content": "# Atualiza vetores e Ativa/Desativa vetores",
+        "height": 1760,
+        "width": 2100,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1340,
+        -180
+      ],
+      "typeVersion": 1,
+      "id": "c8b3d233-93a3-407d-895c-982646c55734",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "# Descrição do Fluxo\n## Disparado pelo directus flows chamado: `Vector update`\n\nEste fluxo é responsável por gerenciar o ciclo de vida dos vetores (embeddings) em sua base de dados no Pinecone, acionado por eventos do Directus. Ele lida com a **criação/atualização** e a **desativação (exclusão)** de vetores.\n\n## Configuração de Credenciais\nAs credenciais para os serviços de **Pinecone**, **Directus** e **OpenAI** são dinamicamente extraídas do `body.services` recebido pelo nó `Webhook`. Isso proporciona flexibilidade, permitindo que as chaves de API e tokens variem conforme a origem da requisição.\n\n## Uso das Credenciais\nPara interagir com as APIs externas (Pinecone, Directus, OpenAI), os tokens de autorização são enviados nos cabeçalhos (`headers`) de cada requisição HTTP.\n",
+        "height": 1660,
+        "width": 2060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1320,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "cc9120f4-a050-4cf1-b0d7-67c85d37552b",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"message\": \"\",\n  \"code\": \"{{ $json.error.code }}\",\n  \"execution\": \"\"\n}",
+        "options": {
+          "responseCode": "={{ $json.error.status }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        760
+      ],
+      "id": "22ccebc7-c17c-431a-b2c5-40dbd4b28693",
+      "name": "Erro"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ! (Object.keys($json.body.payload).length === 1 && $json.body.payload.enabled === false) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "87b5f1cc-0c4e-4dd0-8e23-ef55fbb499e1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Atualizar/Reativar Vetor"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "417eb542-5c31-444a-9323-78c3032825f8",
+                    "leftValue": "={{\n  Object.keys($json.body.payload).length === 1 \n  && $json.body.payload.enabled === false \n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Desativar Vetor"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -800,
+        980
+      ],
+      "id": "3eabc94a-a1f2-4a8b-b890-967dc4febebf",
+      "name": "Switch",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('[Directus] Host2').first().json.data.knowledge_id.pinecone_host_id.value }}/vectors/delete",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "={{ $('Webhook').first().json.body.services.find(item => item.service == \"Pinecone\").token }}"
+            },
+            {
+              "name": "X-Pinecone-API-Version",
+              "value": "2024-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"namespace\": \"{{$('[Directus] Host2').item.json.data.knowledge_id.name_id.value}}\",\n  \"ids\": [\"{{ $('Webhook').item.json.body.keys }}\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        1020
+      ],
+      "id": "96f41a4c-cf33-41e7-8542-ef79ba66ae42",
+      "name": "[Pinecone] Upsert 2",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body.services.find(campo => campo.service == 'Directus').address }}/items/{{ $json.body.collection }}/{{ $json.body.keys }}",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={\n  \"fields\": [\n    \"question\",\n    \"answer\",\n    \"context\",\n    \"similar_questions\",\n    \"tags\",\n    \"knowledge_id.pinecone_host_id.value\",\n    \"knowledge_id.name_id.value\"\n  ]\n}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').first().json.body.services.find(campo => campo.service == 'Directus').token }}"
+            }
+          ]
+        },
+        "options": {
+          "queryParameterArrays": "brackets"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -620,
+        1280
+      ],
+      "id": "198bd3ba-51ed-49ac-9a69-6e28f079d585",
+      "name": "[Directus] Host2",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook').first().json.body.services.find(item => item.service == \"OpenAI\").token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "input",
+              "value": "=`Context: ${$json.context}\nQuestion: ${$json.question}\nAnswer: ${$json.answer}\nSimilar Questions: ${($json.similar_questions || []).join(\", \")}\nTags: ${($json.tags || []).join(\", \")}`"
+            },
+            {
+              "name": "model",
+              "value": "text-embedding-3-small"
+            },
+            {
+              "name": "dimensions",
+              "value": "={{ 1536 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -420,
+        1160
+      ],
+      "id": "a6cc9973-501a-4d8c-b817-3a808ad588a6",
+      "name": "[OpenAi] Get Embeddings2",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Vetor atualizado com sucesso\",\n  \"execution\": \"success\",\n  \"data\": {}\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        880
+      ],
+      "id": "eca87ac2-2148-4f75-a044-c1d536d496e8",
+      "name": "Success3"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"message\": \"\",\n  \"code\": \"{{ $json.error.code }}\",\n  \"execution\": \"\"\n}",
+        "options": {
+          "responseCode": "={{ $json.error.status }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1280
+      ],
+      "id": "e0acec43-d391-4030-afb5-555e94760958",
+      "name": "Erro2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/vector/create/manual",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        1300
+      ],
+      "id": "6f030c24-bc44-46da-9a6e-60eee26c4218",
+      "name": "Webhook2",
+      "webhookId": "b90d1a68-b55f-4c47-86c7-53f60cd03b29"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('[Directus] Host1').first().json.data.knowledge_id.pinecone_host_id.value }}/vectors/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "={{ $('Webhook2').item.json.body.global_vars.pinecone_key }}"
+            },
+            {
+              "name": "X-Pinecone-API-Version",
+              "value": "2024-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"namespace\": \"{{ $('[Directus] Host1').item.json.data.knowledge_id.name_id.value }}\",\n  \"vectors\": [\n    {\n      \"id\": \"{{ $('Webhook2').item.json.body.payload.key }}\",\n      \"metadata\": {{ $('Vectors1').first().json.toJsonString() }},\n      \"values\": {{ $('[OpenAi] Get Embeddings1').first().json.data[0].embedding.toJsonString() }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2040,
+        840
+      ],
+      "id": "539e6bd2-3f4b-46e0-9ec9-58f829a7967d",
+      "name": "[Pinecone] Upsert 1",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook2').first().json.body.global_vars.directus_service }}/items/{{ $('Webhook2').first().json.body.payload.collection }}/{{ $('Webhook2').first().json.body.payload.key }}",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={\n  \"fields\": [\n    \"question\",\n    \"answer\",\n    \"context\",\n    \"similar_questions\",\n    \"tags\",\n    \"knowledge_id.pinecone_host_id.value\",\n    \"knowledge_id.name_id.value\"\n  ]\n}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook2').item.json.body.global_vars.directus_token }}"
+            }
+          ]
+        },
+        "options": {
+          "queryParameterArrays": "brackets"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        1300
+      ],
+      "id": "ce97d0d4-78d3-4ff1-bd6a-dacbcb1f9d55",
+      "name": "[Directus] Host1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook2').item.json.body.global_vars.openai_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "input",
+              "value": "=`Context: ${$json[0].context}\nQuestion: ${$json[0].question}\nAnswer: ${$json[0].answer}\nSimilar Questions: ${($json[0].similar_questions || []).join(\", \")}\nTags: ${($json[0].tags || []).join(\", \")}` "
+            },
+            {
+              "name": "model",
+              "value": "text-embedding-3-small"
+            },
+            {
+              "name": "dimensions",
+              "value": "={{ 1536 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        1080
+      ],
+      "id": "548a5ee6-1113-4e7c-882d-e5299917530c",
+      "name": "[OpenAi] Get Embeddings1",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bcada437-102c-4f8d-99a0-856064e3e3b9",
+              "name": "question",
+              "value": "={{ $('Webhook2').item.json.body.payload?.question || $json.data.question || ''}}",
+              "type": "string"
+            },
+            {
+              "id": "dd66e75b-b70d-454f-8b26-3385e9877f14",
+              "name": "answer",
+              "value": "={{ $('Webhook2').item.json.body.payload?.answer || $json.data.answer || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "51084a81-4768-4870-b3d0-39a4272d59f6",
+              "name": "context",
+              "value": "={{ $('Webhook2').item.json.body.payload?.context || $json.data.context || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "da7b500f-fd8e-4799-9d54-37cca846f404",
+              "name": "similar_questions",
+              "value": "={{ $('Webhook2').item.json.body.payload?.similar_questions || $json.data.similar_questions || '' }}",
+              "type": "array"
+            },
+            {
+              "id": "13985bf0-d8ab-4b5e-a078-c1d8a8b38fcd",
+              "name": "tags",
+              "value": "={{ $('Webhook2').item.json.body.payload?.tags || $json.data.tags || '' }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        1200
+      ],
+      "id": "9e8777b2-c314-4d34-aca3-561223723d2c",
+      "name": "Vectors1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Vetor atualizado com sucesso\",\n  \"execution\": \"success\",\n  \"data\": {}\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        2240,
+        740
+      ],
+      "id": "3d2f6d5b-c05e-484b-8536-6612f97a6dba",
+      "name": "Success2"
+    },
+    {
+      "parameters": {
+        "content": "# Cria os vetores adicionados manualmente",
+        "height": 1400,
+        "width": 1580,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "faa4744e-60d8-4430-8acc-d431cca54324",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "# Fluxo: Criação Manual de Vetores\n## Disparado pelo directus flows chamado: `Vector create`\n\nEste fluxo tem como objetivo principal a **criação de novos vetores (embeddings)** no Pinecone, a partir de dados recebidos via um webhook manual.\n\n## Credenciais Dinâmicas\n\nTodas as credenciais (Directus, OpenAI, Pinecone) são passadas dinamicamente via `global_vars` no `body` do webhook. Isso permite a reutilização do fluxo em diferentes ambientes sem a necessidade de alterar as credenciais diretamente nos nós HTTP.\n\n## Respostas\n\nO fluxo inclui tratamento de erro (`Erro1`) e respostas de sucesso (`Success2`) para informar a origem da requisição sobre o status da operação.",
+        "height": 1320,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        220
+      ],
+      "typeVersion": 1,
+      "id": "dc0e5ab9-5fc5-4267-aeed-5eb2f9f957a3",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"message\": \"\",\n  \"code\": \"{{ $json.error.code }}\",\n  \"execution\": \"\"\n}",
+        "options": {
+          "responseCode": "={{ $json.error.status }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        2220,
+        1220
+      ],
+      "id": "07dc05e3-bb5e-42f0-b150-9b9183a3dfd8",
+      "name": "Erro1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook2').item.json.body.global_vars.directus_service }}/items/dimensions/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Webhook2').item.json.body.global_vars.directus_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "values",
+              "value": "={{ $json.data[0].embedding.join(\",\") }}"
+            },
+            {
+              "name": "vector_id",
+              "value": "={{ $('Webhook2').item.json.body.payload.key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        960
+      ],
+      "id": "2383a7cd-d6c4-45d0-8a05-5138e58979ed",
+      "name": "[Directus] Add Dimensions"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Pinecone] Upsert ": {
+      "main": [
+        [
+          {
+            "node": "Success1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Host": {
+      "main": [
+        [
+          {
+            "node": "Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[OpenAi] Get Embeddings": {
+      "main": [
+        [
+          {
+            "node": "[Pinecone] Upsert ",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vectors": {
+      "main": [
+        [
+          {
+            "node": "[OpenAi] Get Embeddings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Host",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "[Directus] Host2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Pinecone] Upsert 2": {
+      "main": [
+        [
+          {
+            "node": "Success3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Host2": {
+      "main": [
+        [
+          {
+            "node": "[OpenAi] Get Embeddings2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[OpenAi] Get Embeddings2": {
+      "main": [
+        [
+          {
+            "node": "[Pinecone] Upsert 2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Host1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Pinecone] Upsert 1": {
+      "main": [
+        [
+          {
+            "node": "Success2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Host1": {
+      "main": [
+        [
+          {
+            "node": "Vectors1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[OpenAi] Get Embeddings1": {
+      "main": [
+        [
+          {
+            "node": "[Directus] Add Dimensions",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vectors1": {
+      "main": [
+        [
+          {
+            "node": "[OpenAi] Get Embeddings1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[Directus] Add Dimensions": {
+      "main": [
+        [
+          {
+            "node": "[Pinecone] Upsert 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "d7d55f31-3b32-4617-a451-05fb7019641e",
+  "triggerCount": 0,
+  "tags": []
+}
