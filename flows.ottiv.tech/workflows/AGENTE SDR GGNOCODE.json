@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-12T01:28:57.029Z",
-  "updatedAt": "2025-05-12T01:29:01.398Z",
+  "updatedAt": "2025-06-19T22:02:07.601Z",
   "id": "JQymOETG3BoulViW",
   "name": "AGENTE SDR GGNOCODE",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
