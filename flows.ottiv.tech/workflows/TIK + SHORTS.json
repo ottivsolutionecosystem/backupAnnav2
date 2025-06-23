@@ -1,9 +1,10 @@
 {
   "createdAt": "2025-05-15T02:01:03.808Z",
-  "updatedAt": "2025-05-15T02:10:08.720Z",
+  "updatedAt": "2025-06-19T22:02:20.509Z",
   "id": "fbrx6pIyPwtgM4nl",
   "name": "TIK + SHORTS",
   "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
